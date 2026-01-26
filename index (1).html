@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OVA — Objeto Virtual de Aprendizaje</title>
+  <meta name="description" content="OVA interactivo y atractivo — HTML, CSS y JS" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">OVA</div>
+        <div>
+          <h1>OVA Interactivo</h1>
+          <p class="lead">Aprende informática de forma guiada y atractiva</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn" onclick="startLesson()">Empezar</button>
+        <button class="btn outline" onclick="togglePreview()">Vista rápida</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="card hero">
+        <div class="hero-info">
+          <h2>Bienvenido/a al OVA</h2>
+          <p>Aca encontraras lecciones, cuestionarios interactivos, un "chatbot" guía y un panel para docentes. 
+            Cualquier Profe Puede adaptar contenidos y preguntas.
+            Como primer paso da click en el boton de "Probar cuestionario", antes de ingresar a las lecciones para saber que debes reforzar. Bienvenidos</p>
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <button class="btn" onclick="startLesson()">Ir a lección 1</button>
+            <button class="btn outline" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Probar cuestionario</button>
+          </div>
+        </div>
+        <div style="width:220px;text-align:center">
+  <img src="img/info.jpg"
+       alt="Imagen Informática"
+       style="width:180px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6)" />
+</div>
+
+      </section>
+
+      <section class="card">
+        <h3 style="margin-top:0">Lecciones</h3>
+        <div class="lessons" id="lessons">
+          <!-- Lección plantilla -->
+        </div>
+      </section>
+
+      <section class="card">
+        <h3 id="quizTitle">Cuestionario de conocimientos basicos</h3>
+        <div id="quiz" class="quiz">
+          
+          <!-- Quiz dinámico -->
+        </div>
+      </section>
+
+      <section class="card interactive">
+        <div class="chatbox card">
+          <h3 style="margin-top:0">Asistente guía</h3>
+          <div class="messages" id="messages">
+            <div class="msg bot">¡Hola! Soy tu asistente. Escribe una pregunta sobre la lección.</div>
+          </div>
+          <div class="compose">
+            <input id="inputMsg" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter') sendMsg()" />
+            <button class="btn" onclick="sendMsg()">Enviar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recursos rápidos</h3>
+          <ul style="margin:8px 0 0;padding-left:18px;color:var(--muted)">
+            <li>Guía de HTML básica</li>
+            <li>Ejercicios resueltos</li>
+            <li>Banco de preguntas</li>
+            <li>Panel del docente</li>
+          </ul>
+
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
+          <h4 style="margin:0">Progreso</h4>
+          <div class="progress" style="margin-top:8px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted)">
+              <span>Lecciones completadas</span><strong id="progressTxt">0/4</strong>
+            </div>
+            <div class="bar"><div class="fill" id="fillBar" style="width:0%"></div></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="sidebar">
+      <div class="card">
+        <h3 style="margin-top:0">Panel docente</h3>
+        <p style="color:var(--muted);font-size:13px">Sube material, edita preguntas y controla el acceso a soluciones.</p>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="file" type="file" />
+          <button class="btn outline" onclick="uploadMaterial()">Subir</button>
+        </div>
+        <div style="margin-top:10px;color:var(--muted);font-size:13px">Modo prueba: <label><input type="checkbox" id="lockAnswers"> Bloquear respuestas</label></div>
+      </div>
+
+      <div class="card">
+        <h4 style="margin:0">Estadísticas rápidas</h4>
+        <p style="margin:6px 0 0;color:var(--muted);font-size:13px">Alumnos activos: <strong id="activeCount">12</strong></p>
+        <p style="margin:6px 0 0;color:var(--muted);font-size:13px">Último acceso: <span id="lastAccess">Hoy</span></p>
+      </div>
+
+      <div class="card">
+        <h4 style="margin:0">Accesos</h4>
+        <p style="color:var(--muted);font-size:13px;margin-top:8px">Comparte este OVA copiando el enlace o exportando un paquete.</p>
+        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn outline" onclick="copyLink()">Copiar enlace</button></div>
+      </div>
+    </aside>
+
+    <footer>
+      Diseñado con ❤️ para clases dinámicas — adapta el contenido y pruébalo en tu colegio.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -240,9 +240,44 @@ function bot(){
   input.value = "";
 }
 </script>
+<script>
+const video = document.getElementById("videoClase");
+const quiz = document.getElementById("quizVideo");
+const feedback = document.getElementById("feedback");
+
+// ⏱ segundo exacto donde se pausa el video
+const tiempoPregunta = 5; 
+let preguntaMostrada = false;
+
+// Detecta el tiempo del video
+video.addEventListener("timeupdate", () => {
+  if (video.currentTime >= tiempoPregunta && !preguntaMostrada) {
+    video.pause();
+    quiz.style.display = "block";
+    preguntaMostrada = true;
+  }
+});
+
+// Respuesta del estudiante
+function responder(correcta){
+  if(correcta){
+    feedback.innerText = "🎉 ¡Excelente! Respuesta correcta.";
+    quiz.style.display = "none";
+    video.play();
+  } else {
+    feedback.innerText = "❌ Incorrecto. Intenta de nuevo para continuar el video.";
+  }
+}
+
+// Redirección a evaluación
+function irAEvaluacion(){
+  window.location.href = "evaluacion.html";
+}
+</script>
 
 </body>
 </html>
+
 
 
 

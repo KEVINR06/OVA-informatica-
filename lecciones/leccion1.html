@@ -234,14 +234,6 @@ function responder(sel) {
     feedback.innerText = "❌ Incorrecto. Intenta nuevamente.";
   }
 }
-  /* boton evaluacion */
-<div class="card">
-  <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
-</div>
-<script>
-function irAEvaluacion() {
-  window.location.href = "evaluacion.html";
-}
 /* CHATBOT */
 function bot(){
   const input = document.getElementById("msg");
@@ -258,10 +250,20 @@ function bot(){
   input.value = "";
 }
 </script>
+  <!-- BOTÓN A EVALUACIÓN -->
+<div class="card">
+  <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
+</div>
+<script>
+function irAEvaluacion() {
+  window.location.href = "evaluacion.html";
+}
+</script>
 
 </div>
 </body>
 </html>
+
 
 
 

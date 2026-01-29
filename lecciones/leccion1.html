@@ -128,6 +128,17 @@ En esta lección aprenderás qué es la informática y sus componentes.
     <li><b>Software:</b> programas del computador.</li>
   </ul>
 </div>
+  <!-- Imagenes -->
+  <div class="card">
+  <h2>🖼 Imágenes relacionadas</h2>
+
+  <div class="img-box">
+    <img src="imagenes1/software-a-medida.jpg">
+    <img src="imagenes1/hardware.jpg">
+    <img src="imagenes1/hard2.jpg">
+    <img src="imagenes1/tipos-de-software.jpg">
+  </div>
+</div>
 
 <!-- CHATBOT -->
 <div id="chatbot-window">
@@ -205,7 +216,14 @@ function responder(sel) {
     feedback.innerText = "❌ Incorrecto. Intenta nuevamente.";
   }
 }
-
+  /* boton evaluacion */
+<div class="card">
+  <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
+</div>
+<script>
+function irAEvaluacion() {
+  window.location.href = "evaluacion.html";
+}
 /* CHATBOT */
 function bot(){
   const input = document.getElementById("msg");
@@ -226,4 +244,5 @@ function bot(){
 </div>
 </body>
 </html>
+
 

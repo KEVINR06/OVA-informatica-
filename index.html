@@ -32,6 +32,11 @@
             Como primer paso da click en el boton de "Probar cuestionario", antes de ingresar a las lecciones para saber que debes reforzar. Bienvenidos</p>
           <div style="margin-top:12px;display:flex;gap:10px">
             <button class="btn" onclick="startLesson()">Ir a lección 1</button>
+            <script>
+              function startLesson() {
+              window.location.href = "lecciones/leccion1.html";
+              }
+              </script>
             <button class="btn outline" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Probar cuestionario</button>
           </div>
         </div>

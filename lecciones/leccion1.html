@@ -148,10 +148,10 @@ En esta lección aprenderás qué es la informática, qué elementos la componen
 <!-- QUIZ DEL VIDEO -->
 <div class="card" id="quizVideo" style="display:none;">
   <h3>🧠 Pregunta rápida</h3>
-  <p>¿El teclado es hardware o software?</p>
+  <p>¿De que hablaremos hoy?</p>
 
-  <button class="btn" onclick="responder(true)">Hardware</button>
-  <button class="btn" onclick="responder(false)">Software</button>
+  <button class="btn" onclick="responder(true)">De informatica y sus partes</button>
+  <button class="btn" onclick="responder(false)">De informatica y minecraft</button>
 
   <p id="feedback"></p>
 </div>
@@ -206,7 +206,7 @@ const video = document.getElementById("videoClase");
 const quiz = document.getElementById("quizVideo");
 const feedback = document.getElementById("feedback");
 
-const tiempoPregunta = 35;
+const tiempoPregunta = 15;
 let preguntaMostrada = false;
 
 video.addEventListener("timeupdate", () => {
@@ -254,6 +254,7 @@ function bot(){
 
 </body>
 </html>
+
 
 
 

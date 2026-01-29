@@ -5,6 +5,7 @@
 <title>Lección 1 - Introducción a la informática</title>
 <link rel="stylesheet" href="../styles.css">
 <script src="leccion1.js"></script>
+
 <style>
 body { 
   padding: 24px; 
@@ -16,18 +17,43 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 100%;
   max-width: 900px;
 }
 
-h1 { margin-bottom: 10px; text-align:center; }
+h1 {
+  margin-bottom: 10px;
+  text-align:center;
+}
 
 .card { 
   background:#0e2734; 
-  padding:20px; 
+  padding:24px; 
   border-radius:30px; 
   margin-top:25px;
 }
+
+/* ---------- VIDEO ---------- */
+
+.video-box {
+  margin-top: 12px;
+}
+
+.video-wrapper {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden; /* 🔑 CLAVE: el video no se sale del óvalo */
+  background: black;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ---------- BOTONES ---------- */
 
 .btn { 
   background:#42ffbf; 
@@ -38,18 +64,7 @@ h1 { margin-bottom: 10px; text-align:center; }
   margin:5px;
 }
 
-.video-box {
-  width:100%;
-  height:350px;
-  background:#0b1d27;
-  border-radius:20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#7dd8ff;
-  font-size:20px;
-  margin-top:10px;
-}
+/* ---------- IMÁGENES ---------- */
 
 .img-box {
   display:flex;
@@ -62,6 +77,9 @@ h1 { margin-bottom: 10px; text-align:center; }
   width:180px;
   border-radius:12px;
 }
+
+/* ---------- CHATBOT ---------- */
+
 #chatbot-window {
   position: fixed;
   bottom: 20px;
@@ -89,49 +107,18 @@ h1 { margin-bottom: 10px; text-align:center; }
   margin-bottom: 10px;
 }
 
-#chatbot-window input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 6px;
-}
-
+#chatbot-window input,
 #chatbot-window button {
   width: 100%;
   padding: 8px;
-  background:#42ffbf;
-  border: none;
   border-radius: 8px;
+  border: none;
+}
+
+#chatbot-window button {
+  background:#42ffbf;
   cursor: pointer;
 }
-.video-box {
-  width: 100%;
-  max-width: 900px;
-  margin: auto;
-  padding: 16px;
-  border-radius: 18px;
-  border: 2px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  background: #07131d;
-
-  display: flex;
-  flex-direction: column; /* ⬅ Video arriba, texto abajo */
-  gap: 16px;
-
-  overflow: visible; /* ⬅ NO se corta nada */
-}
-.video-box video {
-  width: 100%;
-  height: auto;          /* ⬅ Mantiene proporción */
-  max-height: 450px;     /* ⬅ Controla el tamaño */
-  object-fit: contain;   /* ⬅ NO recorta */
-  border-radius: 12px;
-}
-
-
-
-
 </style>
 </head>
 
@@ -140,18 +127,21 @@ h1 { margin-bottom: 10px; text-align:center; }
 <div class="container">
 
 <h1>Lección 1: Introducción a la informática</h1>
-<p style="text-align:center;">En esta lección aprenderás qué es la informática, qué elementos la componen y por qué es fundamental en la vida moderna.</p>
+<p style="text-align:center;">
+En esta lección aprenderás qué es la informática, qué elementos la componen y por qué es fundamental en la vida moderna.
+</p>
 
-<!-- VIDEO INTERACTIVO -->
 <!-- VIDEO -->
 <div class="card">
   <h2>🎬 Video introductorio</h2>
 
   <div class="video-box">
-    <video id="videoClase" width="100%" controls>
-      <source src="videos1/Softwaredefini.mp4" type="video/mp4">
-      Tu navegador no soporta videos HTML5.
-    </video>
+    <div class="video-wrapper">
+      <video id="videoClase" controls>
+        <source src="videos1/Softwaredefini.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+      </video>
+    </div>
   </div>
 </div>
 
@@ -160,37 +150,30 @@ h1 { margin-bottom: 10px; text-align:center; }
   <h3>🧠 Pregunta rápida</h3>
   <p>¿El teclado es hardware o software?</p>
 
-  <button onclick="responder(true)">Hardware</button>
-  <button onclick="responder(false)">Software</button>
+  <button class="btn" onclick="responder(true)">Hardware</button>
+  <button class="btn" onclick="responder(false)">Software</button>
 
   <p id="feedback"></p>
 </div>
 
-<!-- BOTÓN A EVALUACIÓN -->
+<!-- BOTÓN -->
 <div class="card">
   <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
 </div>
-<script>
-function irAEvaluacion() {
-  window.location.href = "evaluacion.html";
-}
-</script>
-
 
 <!-- CONTENIDO -->
 <div class="card">
   <h2>📘 Contenido</h2>
-  <p></p>Apartir de aca abordaremos los siguientes temas, ten en cuenta que la informática se divide en dos componentes esenciales:</p>
+  <p>A partir de acá abordaremos los siguientes temas:</p>
   <ul>
-    <li><b>Hardware:</b> la parte física del computador.</li>
-    <li><b>Software:</b> los programas que controlan el hardware.</li>
+    <li><b>Hardware:</b> partes físicas del computador.</li>
+    <li><b>Software:</b> programas que controlan el hardware.</li>
   </ul>
 </div>
 
-<!-- IMÁGENES RELACIONADAS -->
+<!-- IMÁGENES -->
 <div class="card">
   <h2>🖼 Imágenes relacionadas</h2>
-
   <div class="img-box">
     <img src="imagenes1/software-a-medida.jpg">
     <img src="imagenes1/hardware.jpg">
@@ -209,13 +192,6 @@ function irAEvaluacion() {
 
   <p id="result" style="font-size:18px;margin-top:10px;"></p>
 </div>
-<!-- Mini actividad -->
-<script>
-function check(ans){
-  document.getElementById("result").innerText = 
-    ans ? "Correcto 🎉" : "Incorrecto ❌";
-}
-</script>
 
 <!-- CHATBOT -->
 <div id="chatbot-window">
@@ -224,37 +200,15 @@ function check(ans){
   <input id="msg" placeholder="Escribe tu mensaje...">
   <button onclick="bot()">Enviar</button>
 </div>
-<script>
-function bot(){
-  const input = document.getElementById("msg");
-  const chat = document.getElementById("chat");
-  const q = input.value.toLowerCase();
 
-  if(!q) return;
-
-  let r = "No entendí eso, intenta preguntarlo de otra forma.";
-
-  if(q.includes("hardware")) r = "El hardware son las partes físicas del computador.";
-  if(q.includes("software")) r = "El software son los programas que controlan el hardware.";
-  if(q.includes("computador")) r = "Un computador procesa información usando hardware y software.";
-
-  chat.innerHTML += `<p><b>Tú:</b> ${input.value}</p>`;
-  chat.innerHTML += `<p><b>Bot:</b> ${r}</p>`;
-  chat.scrollTop = chat.scrollHeight;
-
-  input.value = "";
-}
-</script>
 <script>
 const video = document.getElementById("videoClase");
 const quiz = document.getElementById("quizVideo");
 const feedback = document.getElementById("feedback");
 
-// ⏱ segundo exacto donde se pausa el video
-const tiempoPregunta = 35; 
+const tiempoPregunta = 35;
 let preguntaMostrada = false;
 
-// Detecta el tiempo del video
 video.addEventListener("timeupdate", () => {
   if (video.currentTime >= tiempoPregunta && !preguntaMostrada) {
     video.pause();
@@ -263,32 +217,43 @@ video.addEventListener("timeupdate", () => {
   }
 });
 
-// Respuesta del estudiante
 function responder(correcta){
   if(correcta){
     feedback.innerText = "🎉 ¡Excelente! Respuesta correcta.";
     quiz.style.display = "none";
     video.play();
   } else {
-    feedback.innerText = "❌ Incorrecto. Intenta de nuevo para continuar el video.";
+    feedback.innerText = "❌ Incorrecto. Intenta de nuevo.";
   }
 }
 
-// Redirección a evaluación
 function irAEvaluacion(){
   window.location.href = "evaluacion.html";
+}
+
+function check(ans){
+  document.getElementById("result").innerText = ans ? "Correcto 🎉" : "Incorrecto ❌";
+}
+
+function bot(){
+  const input = document.getElementById("msg");
+  const chat = document.getElementById("chat");
+  const q = input.value.toLowerCase();
+  if(!q) return;
+
+  let r = "No entendí eso.";
+  if(q.includes("hardware")) r = "El hardware son las partes físicas del computador.";
+  if(q.includes("software")) r = "El software son los programas del computador.";
+
+  chat.innerHTML += `<p><b>Tú:</b> ${input.value}</p>`;
+  chat.innerHTML += `<p><b>Bot:</b> ${r}</p>`;
+  chat.scrollTop = chat.scrollHeight;
+  input.value = "";
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 

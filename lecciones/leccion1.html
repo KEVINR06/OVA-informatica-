@@ -165,7 +165,15 @@ En esta lección aprenderás qué es la informática y sus componentes.
   <input id="msg" placeholder="Escribe tu mensaje...">
   <button onclick="bot()">Enviar</button>
 </div>
-
+<!-- BOTÓN A EVALUACIÓN -->
+<div class="card">
+  <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
+</div>
+<script>
+function irAEvaluacion() {
+  window.location.href = "evaluacion.html";
+}
+</script>
 <script>
 /* VIDEO Y QUIZ */
 const video = document.getElementById("videoClase");
@@ -250,19 +258,11 @@ function bot(){
   input.value = "";
 }
 </script>
-  <!-- BOTÓN A EVALUACIÓN -->
-<div class="card">
-  <button class="btn" onclick="irAEvaluacion()">Ir a la evaluación</button>
-</div>
-<script>
-function irAEvaluacion() {
-  window.location.href = "evaluacion.html";
-}
-</script>
 
 </div>
 </body>
 </html>
+
 
 
 

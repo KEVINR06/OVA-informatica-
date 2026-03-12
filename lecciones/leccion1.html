@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,8 +36,6 @@ cursor:pointer;
 margin:5px;
 }
 
-/* progreso */
-
 .progress-box{
 width:100%;
 height:25px;
@@ -55,8 +52,6 @@ background:#42ffbf;
 transition:0.5s;
 }
 
-/* video */
-
 .video-wrapper{
 width:100%;
 border-radius:20px;
@@ -67,8 +62,6 @@ background:black;
 .video-wrapper video{
 width:100%;
 }
-
-/* chatbot */
 
 #chatbot-window{
 position:fixed;
@@ -88,8 +81,6 @@ padding:10px;
 border-radius:10px;
 margin-bottom:10px;
 }
-
-/* opinion */
 
 textarea{
 width:100%;
@@ -112,7 +103,7 @@ border-radius:8px;
 
 <h1 style="text-align:center">Lección 1: Introducción a la informática</h1>
 
-<!-- REGISTRO ESTUDIANTE -->
+<!-- ESTUDIANTE -->
 
 <div class="card">
 
@@ -181,14 +172,10 @@ La informática es la ciencia que estudia el procesamiento automático de la inf
 </p>
 
 <p>
-Gracias a la informática hoy podemos comunicarnos por internet, almacenar grandes cantidades de datos, crear programas, automatizar procesos industriales y desarrollar tecnologías inteligentes.
+Gracias a la informática hoy podemos comunicarnos por internet, almacenar grandes cantidades de datos, crear programas y automatizar procesos.
 </p>
 
 <h3>Hardware</h3>
-
-<p>
-El hardware corresponde a las partes físicas del computador.
-</p>
 
 <ul>
 <li>Teclado</li>
@@ -200,20 +187,16 @@ El hardware corresponde a las partes físicas del computador.
 
 <h3>Software</h3>
 
-<p>
-El software son los programas que permiten que el hardware funcione.
-</p>
-
 <ul>
-<li>Sistema operativo</li>
+<li>Sistemas operativos</li>
 <li>Programas educativos</li>
-<li>Aplicaciones móviles</li>
+<li>Aplicaciones</li>
 <li>Videojuegos</li>
 </ul>
 
 </div>
 
-<!-- QUIZ -->
+<!-- QUIZ GENERAL -->
 
 <div class="card">
 
@@ -258,8 +241,6 @@ El software son los programas que permiten que el hardware funcione.
 
 <h2>💬 Opinión del estudiante</h2>
 
-<p>¿Qué te pareció la lección?</p>
-
 <textarea id="comentario" rows="4"></textarea>
 
 <p>Califica la experiencia:</p>
@@ -276,21 +257,9 @@ El software son los programas que permiten que el hardware funcione.
 
 <br><br>
 
-<button class="btn" onclick="guardarOpinion()">
-Guardar opinión
-</button>
+<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
 
 <p id="msgGuardado"></p>
-
-</div>
-
-<!-- BOTONES -->
-
-<div class="card" style="text-align:center">
-
-<button class="btn" onclick="volver()">Volver al menú principal</button>
-
-<button class="btn" onclick="evaluacion()">Ir a la evaluación</button>
 
 </div>
 
@@ -315,8 +284,17 @@ Guardar opinión
 /* VARIABLES */
 
 let score=0
-let progress=0
+
 let totalPreguntas=5
+let preguntasRespondidas=0
+
+function actualizarProgreso(){
+
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+
+document.getElementById("progress-bar").style.width=progreso+"%"
+
+}
 
 /* ESTUDIANTE */
 
@@ -330,23 +308,24 @@ document.getElementById("welcome").innerText="Bienvenido "+name
 
 }
 
-/* QUIZ */
+/* QUIZ GENERAL */
 
 function quiz(correct){
 
 if(correct){
 
 score+=10
-progress+=20
+preguntasRespondidas++
 
 document.getElementById("score").innerText=score
-document.getElementById("progress-bar").style.width=progress+"%"
 
-alert("Respuesta correcta")
+actualizarProgreso()
+
+alert("Correcto")
 
 }else{
 
-alert("Respuesta incorrecta")
+alert("Incorrecto")
 
 }
 
@@ -361,18 +340,8 @@ let name=localStorage.getItem("student")
 document.getElementById("final").innerHTML=
 
 "Estudiante: "+name+"<br>"+
-"Puntaje final: "+score+" / 100"
+"Puntaje final: "+score
 
-}
-
-/* BOTONES */
-
-function volver(){
-window.location.href="../index.html"
-}
-
-function evaluacion(){
-window.location.href="evaluacion.html"
 }
 
 /* VIDEO QUIZ */
@@ -384,20 +353,24 @@ const opciones=document.getElementById("quizOpciones")
 const feedback=document.getElementById("feedback")
 
 const preguntas=[
-{tiempo:5,pregunta:"¿De qué trata la informática?",op:["Información","Cocina"],correcta:0},
+{tiempo:5,pregunta:"¿Qué estudia la informática?",op:["Información","Cocina"],correcta:0},
 {tiempo:12,pregunta:"¿Qué es hardware?",op:["Partes físicas","Programas"],correcta:0}
 ]
 
-let i=0
+let indicePregunta=0
+let preguntaMostrada=false
 
-video.addEventListener("timeupdate",()=>{
+video.addEventListener("timeupdate",function(){
 
-if(i>=preguntas.length) return
+if(indicePregunta>=preguntas.length) return
 
-if(video.currentTime>=preguntas[i].tiempo){
+if(video.currentTime>=preguntas[indicePregunta].tiempo && !preguntaMostrada){
 
 video.pause()
+
 mostrarPregunta()
+
+preguntaMostrada=true
 
 }
 
@@ -407,42 +380,57 @@ function mostrarPregunta(){
 
 quizDiv.style.display="block"
 
-pregunta.innerText=preguntas[i].pregunta
+pregunta.innerText=preguntas[indicePregunta].pregunta
 
 opciones.innerHTML=""
 
-preguntas[i].op.forEach((o,index)=>{
+preguntas[indicePregunta].op.forEach(function(opcion,index){
 
-let b=document.createElement("button")
+let boton=document.createElement("button")
 
-b.className="btn"
-b.innerText=o
+boton.className="btn"
 
-b.onclick=()=>responder(index)
+boton.innerText=opcion
 
-opciones.appendChild(b)
+boton.onclick=function(){
+
+responder(index)
+
+}
+
+opciones.appendChild(boton)
 
 })
 
 }
 
-function responder(sel){
+function responder(seleccion){
 
-if(sel===preguntas[i].correcta){
+if(seleccion===preguntas[indicePregunta].correcta){
 
 feedback.innerText="Correcto"
 
 score+=10
-progress+=20
+
+preguntasRespondidas++
 
 document.getElementById("score").innerText=score
-document.getElementById("progress-bar").style.width=progress+"%"
 
-i++
+actualizarProgreso()
+
+setTimeout(function(){
 
 quizDiv.style.display="none"
 
+feedback.innerText=""
+
+indicePregunta++
+
+preguntaMostrada=false
+
 video.play()
+
+},1000)
 
 }else{
 
@@ -465,10 +453,7 @@ if(input.value.toLowerCase().includes("hardware"))
 r="El hardware son las partes físicas del computador."
 
 if(input.value.toLowerCase().includes("software"))
-r="El software son los programas que permiten que el computador funcione."
-
-if(input.value.toLowerCase().includes("informatica"))
-r="La informática estudia el procesamiento automático de la información."
+r="El software son los programas."
 
 chat.innerHTML+=`<p><b>Tú:</b> ${input.value}</p>`
 chat.innerHTML+=`<p><b>Bot:</b> ${r}</p>`
@@ -497,7 +482,6 @@ document.getElementById("msgGuardado").innerText="Opinión guardada"
 
 </body>
 </html>
-```
 
 
 

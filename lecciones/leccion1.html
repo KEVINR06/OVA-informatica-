@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -109,65 +108,36 @@ cursor:not-allowed;
 
 <h1 style="text-align:center">Lección 1: Introducción a la informática</h1>
 
-<!-- ESTUDIANTE -->
-
 <div class="card">
-
 <h2>👤 Estudiante</h2>
-
 <input id="studentName" placeholder="Escribe tu nombre">
-
 <button class="btn" onclick="saveName()">Guardar</button>
-
 <p id="welcome"></p>
-
 </div>
 
-<!-- PROGRESO -->
-
 <div class="card">
-
 <h2>📊 Progreso</h2>
-
 <p>Puntaje: <span id="score">0</span></p>
-
 <div class="progress-box">
 <div id="progress-bar"></div>
 </div>
-
 </div>
 
-<!-- VIDEO -->
-
 <div class="card">
-
 <h2>🎬 Video introductorio</h2>
-
 <div class="video-wrapper">
-
 <video id="videoClase" controls>
 <source src="videos1/Softwaredefini.mp4" type="video/mp4">
 </video>
-
 </div>
-
 </div>
-
-<!-- QUIZ VIDEO -->
 
 <div class="card" id="quizVideo" style="display:none">
-
 <h3>Pregunta del video</h3>
-
 <p id="quizPregunta"></p>
-
 <div id="quizOpciones"></div>
-
 <p id="feedback"></p>
-
 </div>
-
-<!-- CONTENIDO -->
 
 <div class="card">
 
@@ -202,8 +172,6 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 </div>
 
-<!-- QUIZ -->
-
 <div class="card">
 
 <h2>🧠 Quiz</h2>
@@ -229,19 +197,11 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 </div>
 
-<!-- RESULTADO -->
-
 <div class="card">
-
 <h2>Resultado final</h2>
-
 <button class="btn" onclick="resultado()">Ver resultado</button>
-
 <p id="final"></p>
-
 </div>
-
-<!-- OPINION -->
 
 <div class="card">
 
@@ -269,8 +229,6 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 </div>
 
-<!-- NAVEGACION -->
-
 <div class="card" style="text-align:center">
 
 <h2>📂 Navegación</h2>
@@ -288,8 +246,6 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 </div>
 
 </div>
-
-<!-- CHATBOT -->
 
 <div id="chatbot-window">
 
@@ -376,97 +332,6 @@ document.getElementById("final").innerHTML=
 
 }
 
-/* VIDEO QUIZ */
-
-const video=document.getElementById("videoClase")
-const quizDiv=document.getElementById("quizVideo")
-const pregunta=document.getElementById("quizPregunta")
-const opciones=document.getElementById("quizOpciones")
-const feedback=document.getElementById("feedback")
-
-const preguntas=[
-{tiempo:5,pregunta:"¿Qué estudia la informática?",op:["Información","Cocina"],correcta:0},
-{tiempo:12,pregunta:"¿Qué es hardware?",op:["Partes físicas","Programas"],correcta:0}
-]
-
-let indice=0
-let mostrada=false
-
-video.addEventListener("timeupdate",function(){
-
-if(indice>=preguntas.length) return
-
-if(video.currentTime>=preguntas[indice].tiempo && !mostrada){
-
-video.pause()
-
-mostrarPregunta()
-
-mostrada=true
-
-}
-
-})
-
-function mostrarPregunta(){
-
-quizDiv.style.display="block"
-
-pregunta.innerText=preguntas[indice].pregunta
-
-opciones.innerHTML=""
-
-preguntas[indice].op.forEach(function(op,index){
-
-let b=document.createElement("button")
-
-b.className="btn"
-b.innerText=op
-
-b.onclick=function(){
-
-responder(index)
-
-}
-
-opciones.appendChild(b)
-
-})
-
-}
-
-function responder(sel){
-
-if(sel===preguntas[indice].correcta){
-
-feedback.innerText="Correcto"
-
-score+=10
-preguntasRespondidas++
-
-document.getElementById("score").innerText=score
-
-actualizarProgreso()
-
-setTimeout(function(){
-
-quizDiv.style.display="none"
-
-indice++
-mostrada=false
-
-video.play()
-
-},1000)
-
-}else{
-
-feedback.innerText="Incorrecto intenta otra vez"
-
-}
-
-}
-
 /* CHATBOT */
 
 function bot(){
@@ -491,17 +356,40 @@ input.value=""
 
 }
 
-/* OPINION */
+/* OPINION (ACTUALIZADA PARA GUARDAR EN EXCEL) */
 
 function guardarOpinion(){
 
 let comentario=document.getElementById("comentario").value
 let calificacion=document.getElementById("calificacion").value
+let nombre=localStorage.getItem("student")
+
+let datos = {
+
+nombre:nombre,
+puntaje:score,
+progreso:preguntasRespondidas,
+comentario:comentario,
+calificacion:calificacion
+
+}
+
+fetch("https://script.google.com/macros/s/AKfycbxbKd1YfbPvE3yF28lnY_3afhivPQf0tJIddWVOaoBcGyxwwsT_sS2G-yYzm1rO39SE/exec",{
+
+method:"POST",
+body:JSON.stringify(datos)
+
+})
+
+.then(res=>res.text())
+.then(data=>{
 
 localStorage.setItem("comentario",comentario)
 localStorage.setItem("calificacion",calificacion)
 
 document.getElementById("msgGuardado").innerText="Opinión guardada"
+
+})
 
 }
 
@@ -533,7 +421,6 @@ window.location.href="evaluacion.html"
 
 </body>
 </html>
-```
 
 
 

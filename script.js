@@ -134,4 +134,31 @@ setInterval(()=>{
   document.getElementById('lastAccess').innerText = new Date().toLocaleTimeString();
 },5000);
 
+function guardarResultados(){
 
+let datos = {
+
+nombre: document.getElementById("nombre").value,
+puntaje: score,
+progreso: progress,
+comentario: document.getElementById("comentario").value,
+calificacion: document.getElementById("rating").value
+
+}
+
+fetch("https://script.google.com/macros/s/AKfycbxbKd1YfbPvE3yF28lnY_3afhivPQf0tJIddWVOaoBcGyxwwsT_sS2G-yYzm1rO39SE/exec", {
+
+method:"POST",
+
+body: JSON.stringify(datos)
+
+})
+
+.then(res=>res.text())
+.then(data=>{
+
+alert("Resultados guardados correctamente")
+
+})
+
+}

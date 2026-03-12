@@ -186,7 +186,7 @@ calificacion: document.getElementById("rating").value
 
 }
 
-fetch("https://script.google.com/macros/s/AKfycbxbKd1YfbPvE3yF28lnY_3afhivPQf0tJIddWVOaoBcGyxwwsT_sS2G-yYzm1rO39SE/exec", {
+fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec", {
 
 method:"POST",
 

@@ -1,241 +1,478 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<title>Lección 3 - Estructura HTML y CSS</title>
-<link rel="stylesheet" href="../styles.css">
+
+<title>Lección 2 - HTML y CSS</title>
+
 <style>
-body { 
-  padding: 24px; 
-  color: white; 
-  background:#07131d; 
-  font-family: Arial; 
-  display:flex; 
-  justify-content:center;
+
+body{
+background:#07131d;
+color:white;
+font-family:Arial;
+padding:20px;
+display:flex;
+justify-content:center;
 }
 
-.container {
-  width: 80%;
-  max-width: 900px;
+.container{
+width:80%;
+max-width:900px;
 }
 
-h1 { margin-bottom: 10px; text-align:center; }
-
-.card { 
-  background:#0e2734; 
-  padding:20px; 
-  border-radius:30px; 
-  margin-top:25px;
+.card{
+background:#0e2734;
+padding:20px;
+border-radius:25px;
+margin-top:20px;
 }
 
-.btn { 
-  background:#42ffbf; 
-  padding:8px 14px; 
-  border:none; 
-  border-radius:8px; 
-  cursor:pointer; 
-  margin:5px;
+.btn{
+background:#42ffbf;
+border:none;
+padding:8px 15px;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
 }
 
-.video-box {
-  width:100%;
-  height:350px;
-  background:#0b1d27;
-  border-radius:20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#7dd8ff;
-  font-size:20px;
-  margin-top:10px;
+input{
+padding:7px;
+border-radius:6px;
+border:none;
+margin-top:5px;
 }
 
-.img-box {
-  display:flex;
-  gap:12px;
-  margin-top:10px;
-  flex-wrap:wrap;
+.video-box{
+background:#0b1d27;
+height:350px;
+border-radius:15px;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-.img-box img {
-  width:180px;
-  border-radius:12px;
-}
-#chatbot-window {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 280px;
-  background:#0e2734;
-  padding: 15px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.6);
-  z-index: 9999;
+.progress-box{
+width:100%;
+height:25px;
+background:#0b1d27;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
 }
 
-#chatbot-window h3 {
-  margin-top: 0;
-  text-align: center;
-  color: #42ffbf;
+#progress-bar{
+height:100%;
+width:0%;
+background:#42ffbf;
+transition:0.5s;
 }
 
-#chat {
-  height: 180px;
-  overflow-y: auto;
-  background:#07131d;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
+#chatbot-window{
+position:fixed;
+bottom:20px;
+right:20px;
+width:260px;
+background:#0e2734;
+padding:15px;
+border-radius:15px;
 }
 
-#chatbot-window input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 6px;
+#chat{
+height:180px;
+overflow-y:auto;
+background:#07131d;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
 }
-
-#chatbot-window button {
-  width: 100%;
-  padding: 8px;
-  background:#42ffbf;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.video-box {
-  width: 100%;
-  max-width: 900px;
-  height: 350px;           /* ⬅ Aumenta la altura del recuadro */
-  margin: auto;
-  overflow: hidden;
-  border-radius: 18px;
-  border: 2px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  display: flex;           /* ⬅ Asegura buen centrado */
-  justify-content: center;
-  align-items: center;
-}
-.video-box video {
-  width: 100%;
-  height: 100%;      /* ⬅ Así llena el contenedor sin cortarse */
-  object-fit: cover; /* ⬅ Ajusta proporciones sin deformarse */
-  border-radius: 18px;
-}
-
-
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>Lección 3 - Estructura HTML y CSS</h1>
-<p style="text-align:center;">En esta lección aprenderás qué es la informática, qué elementos la componen y por qué es fundamental en la vida moderna.</p>
+<h1 style="text-align:center">
+Lección 2 — HTML y CSS
+</h1>
 
-<!-- VIDEO -->
+<!-- registro -->
+
 <div class="card">
-  <h2>🎬 Video introductorio</h2>
 
-  <div class="video-box">
-    <video width="100%" controls>
-      <source src="videos1/Software-hardaware.mp4" type="video/mp4">
-      Tu navegador no soporta videos HTML5.
-    </video>
-  </div>
+<h2>👤 Registro del estudiante</h2>
+
+<input id="studentName" placeholder="Escribe tu nombre">
+
+<button class="btn" onclick="saveName()">Guardar</button>
+
+<p id="welcome"></p>
+
 </div>
 
+<!-- progreso -->
 
-
-<!-- CONTENIDO -->
 <div class="card">
-  <h2>📘 Contenido</h2>
-  <p></p>Apartir de aca abordaremos los siguientes temas, ten en cuenta que la informática se divide en dos componentes esenciales:</p>
-  <ul>
-    <li><b>Hardware:</b> la parte física del computador.</li>
-    <li><b>Software:</b> los programas que controlan el hardware.</li>
-  </ul>
+
+<h2>📊 Progreso</h2>
+
+<p>Puntaje: <span id="score">0</span> puntos</p>
+
+<div class="progress-box">
+
+<div id="progress-bar"></div>
+
 </div>
 
-<!-- IMÁGENES RELACIONADAS -->
-<div class="card">
-  <h2>🖼 Imágenes relacionadas</h2>
-
-  <div class="img-box">
-    <img src="imagenes1/software-a-medida.jpg">
-    <img src="imagenes1/hardware.jpg">
-    <img src="imagenes1/hard2.jpg">
-    <img src="imagenes1/tipos-de-software.jpg">
-  </div>
 </div>
 
-<!-- QUIZ -->
+<!-- video -->
+
 <div class="card">
-  <h2>🧩 Actividad / Quiz</h2>
-  <p>Haz clic en la respuesta correcta:</p>
 
-  <button class="btn" onclick="check(1)">¿El mouse es hardware?</button>
-  <button class="btn" onclick="check(0)">¿El mouse es software?</button>
+<h2>🎬 Video explicativo</h2>
 
-  <p id="result" style="font-size:18px;margin-top:10px;"></p>
+<div class="video-box">
+
+<video width="100%" controls>
+
+<source src="videos1/htmlcss.mp4" type="video/mp4">
+
+</video>
+
 </div>
-// Mini actividad
-function check(ans){
-  document.getElementById("result").innerText = 
-    ans ? "Correcto 🎉" : "Incorrecto ❌";
+
+</div>
+
+<!-- contenido -->
+
+<div class="card">
+
+<h2>📘 ¿Qué es HTML?</h2>
+
+<p>
+
+HTML significa <b>HyperText Markup Language</b>.  
+Es el lenguaje que se utiliza para crear páginas web.
+
+</p>
+
+<p>
+
+HTML funciona mediante <b>etiquetas</b> que indican al navegador
+cómo mostrar la información.
+
+</p>
+
+<p>Ejemplo de etiquetas:</p>
+
+<pre>
+
+&lt;h1&gt;Título&lt;/h1&gt;
+
+&lt;p&gt;Este es un párrafo&lt;/p&gt;
+
+</pre>
+
+<p>
+
+Las etiquetas siempre tienen una apertura y un cierre.
+
+</p>
+
+<hr>
+
+<h2>¿Qué es CSS?</h2>
+
+<p>
+
+CSS significa <b>Cascading Style Sheets</b>.
+
+</p>
+
+<p>
+
+Sirve para darle estilo a las páginas web, como colores,
+tamaños de letra, fondos y organización visual.
+
+</p>
+
+<p>Ejemplo:</p>
+
+<pre>
+
+h1{
+color:blue;
+font-size:30px;
 }
-<!-- CHATBOT -->
+
+</pre>
+
+<p>
+
+HTML crea la estructura de la página  
+CSS define cómo se ve esa página.
+
+</p>
+
+</div>
+
+<!-- quiz -->
+
+<div class="card">
+
+<h2>🧩 Quiz</h2>
+
+<p>¿Qué significa HTML?</p>
+
+<button class="btn" onclick="quiz1(true)">Lenguaje de marcado</button>
+
+<button class="btn" onclick="quiz1(false)">Lenguaje de programación</button>
+
+<button class="btn" onclick="quiz1(false)">Base de datos</button>
+
+<p id="quiz1R"></p>
+
+<hr>
+
+<p>¿Para qué sirve CSS?</p>
+
+<button class="btn" onclick="quiz2(true)">Para diseñar la página</button>
+
+<button class="btn" onclick="quiz2(false)">Para almacenar datos</button>
+
+<button class="btn" onclick="quiz2(false)">Para crear redes</button>
+
+<p id="quiz2R"></p>
+
+</div>
+
+<!-- actividades -->
+
+<div class="card">
+
+<h2>🧠 Actividades</h2>
+
+<p>¿Cuál etiqueta se usa para crear un título?</p>
+
+<input id="a1">
+
+<button class="btn" onclick="act1()">Verificar</button>
+
+<p id="r1"></p>
+
+<hr>
+
+<p>¿Qué lenguaje se usa para dar estilo a una página web?</p>
+
+<input id="a2">
+
+<button class="btn" onclick="act2()">Verificar</button>
+
+<p id="r2"></p>
+
+</div>
+
+<!-- resultado -->
+
+<div class="card" style="text-align:center">
+
+<h2>📊 Resultado final</h2>
+
+<button class="btn" onclick="showFinal()">
+Ver resultado
+</button>
+
+<p id="result"></p>
+
+</div>
+
+<!-- evaluacion -->
+
+<div class="card" style="text-align:center">
+
+<h2>Evaluación</h2>
+
+<a href="../evaluacion/evaluacion2.html">
+
+<button class="btn">
+Ir a evaluación
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<!-- chatbot -->
+
 <div id="chatbot-window">
-  <h3>🤖 Chatbot</h3>
-  <div id="chat"></div>
-  <input id="msg" placeholder="Escribe tu mensaje...">
-  <button onclick="bot()">Enviar</button>
+
+<h3 style="color:#42ffbf;text-align:center">
+🤖 Tutor
+</h3>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Pregunta algo...">
+
+<button onclick="bot()">Enviar</button>
+
 </div>
 
 <script>
+
+let score=0
+let progress=0
+
+function saveName(){
+
+let name=document.getElementById("studentName").value
+
+localStorage.setItem("student",name)
+
+document.getElementById("welcome").innerText=
+"Bienvenido "+name
+
+}
+
+function correctAnswer(){
+
+score+=10
+progress+=10
+
+document.getElementById("score").innerText=score
+
+document.getElementById("progress-bar").style.width=progress+"%"
+
+}
+
+function quiz1(correct){
+
+if(correct){
+
+document.getElementById("quiz1R").innerText="✅ Correcto"
+correctAnswer()
+
+}else{
+
+document.getElementById("quiz1R").innerText="❌ Incorrecto"
+
+}
+
+}
+
+function quiz2(correct){
+
+if(correct){
+
+document.getElementById("quiz2R").innerText="✅ Correcto"
+correctAnswer()
+
+}else{
+
+document.getElementById("quiz2R").innerText="❌ Incorrecto"
+
+}
+
+}
+
+function act1(){
+
+let r=document.getElementById("a1").value.toLowerCase()
+
+if(r=="h1"){
+
+document.getElementById("r1").innerText="Correcto 🎉"
+correctAnswer()
+
+}else{
+
+document.getElementById("r1").innerText="Incorrecto"
+
+}
+
+}
+
+function act2(){
+
+let r=document.getElementById("a2").value.toLowerCase()
+
+if(r=="css"){
+
+document.getElementById("r2").innerText="Correcto 🎉"
+correctAnswer()
+
+}else{
+
+document.getElementById("r2").innerText="Incorrecto"
+
+}
+
+}
+
+function showFinal(){
+
+let name=localStorage.getItem("student")
+
+let level=""
+
+if(score>=80){
+
+level="Excelente"
+
+}else if(score>=50){
+
+level="Buen trabajo"
+
+}else{
+
+level="Debes repasar el tema"
+
+}
+
+document.getElementById("result").innerHTML=
+
+"Estudiante: "+name+"<br>"+
+"Puntaje: "+score+" puntos<br>"+
+"Nivel: "+level
+
+}
+
+/* chatbot */
+
 function bot(){
-  const box = document.getElementById("msg");
-  const q = box.value.toLowerCase().trim();
 
-  if (!q) return; // evita enviar vacío
+let q=document.getElementById("msg").value.toLowerCase()
 
-  let r = "No entendí eso, intenta preguntarlo de otra forma 😊";
+let r="No entendí tu pregunta"
 
-  if(q.includes("hardware"))
-      r = "El hardware son las partes físicas del computador.";
-  else if(q.includes("software"))
-      r = "El software son los programas que controlan el hardware.";
-  else if(q.includes("computador"))
-      r = "Un computador procesa información usando hardware y software.";
-  else if(q.includes("hola"))
-      r = "¡Hola! ¿En qué parte de la lección necesitas apoyo?";
-  else if(q.includes("informática"))
-      r = "La informática estudia el procesamiento automático de la información.";
+if(q.includes("html"))
+r="HTML sirve para crear la estructura de las páginas web."
 
-  const chat = document.getElementById("chat");
-  chat.innerHTML += `<p><b>Tú:</b> ${q}</p>`;
-  chat.innerHTML += `<p><b>Bot:</b> ${r}</p>`;
+if(q.includes("css"))
+r="CSS sirve para dar estilos como colores y tamaños."
 
-  box.value = "";
-  chat.scrollTop = chat.scrollHeight;
-}
-function startBotMessage() {
-  const chat = document.getElementById("chat");
-  chat.innerHTML += `<p><b>Bot:</b> Estoy aquí para ayudarte 😊 ¿Qué necesitas?</p>`;
+if(q.includes("hola"))
+r="Hola, soy tu tutor virtual."
+
+let chat=document.getElementById("chat")
+
+chat.innerHTML+=`<p><b>Tú:</b> ${q}</p>`
+chat.innerHTML+=`<p><b>Bot:</b> ${r}</p>`
+
+document.getElementById("msg").value=""
+
 }
 
-window.onload = startBotMessage;
-
-// Mini actividad
-function check(ans){
-  document.getElementById("result").innerText = 
-    ans ? "Correcto 🎉" : "Incorrecto ❌";
-}
 </script>
-
 
 </body>
 </html>

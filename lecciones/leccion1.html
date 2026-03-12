@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -94,6 +95,11 @@ padding:8px;
 border-radius:8px;
 }
 
+.disabled{
+background:gray;
+cursor:not-allowed;
+}
+
 </style>
 </head>
 
@@ -172,7 +178,7 @@ La informática es la ciencia que estudia el procesamiento automático de la inf
 </p>
 
 <p>
-Gracias a la informática hoy podemos comunicarnos por internet, almacenar grandes cantidades de datos, crear programas y automatizar procesos.
+Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos, crear programas y automatizar procesos.
 </p>
 
 <h3>Hardware</h3>
@@ -188,7 +194,7 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar grand
 <h3>Software</h3>
 
 <ul>
-<li>Sistemas operativos</li>
+<li>Sistema operativo</li>
 <li>Programas educativos</li>
 <li>Aplicaciones</li>
 <li>Videojuegos</li>
@@ -196,7 +202,7 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar grand
 
 </div>
 
-<!-- QUIZ GENERAL -->
+<!-- QUIZ -->
 
 <div class="card">
 
@@ -263,6 +269,24 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar grand
 
 </div>
 
+<!-- NAVEGACION -->
+
+<div class="card" style="text-align:center">
+
+<h2>📂 Navegación</h2>
+
+<button class="btn" onclick="volverPagina()">
+⬅ Volver al menú principal
+</button>
+
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
+📝 Ir a la evaluación final
+</button>
+
+<p id="msgEval"></p>
+
+</div>
+
 </div>
 
 <!-- CHATBOT -->
@@ -284,7 +308,6 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar grand
 /* VARIABLES */
 
 let score=0
-
 let totalPreguntas=5
 let preguntasRespondidas=0
 
@@ -293,6 +316,16 @@ function actualizarProgreso(){
 let progreso=(preguntasRespondidas/totalPreguntas)*100
 
 document.getElementById("progress-bar").style.width=progreso+"%"
+
+if(progreso>=100){
+
+let btn=document.getElementById("btnEvaluacion")
+
+btn.classList.remove("disabled")
+
+document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
+
+}
 
 }
 
@@ -338,7 +371,6 @@ function resultado(){
 let name=localStorage.getItem("student")
 
 document.getElementById("final").innerHTML=
-
 "Estudiante: "+name+"<br>"+
 "Puntaje final: "+score
 
@@ -357,20 +389,20 @@ const preguntas=[
 {tiempo:12,pregunta:"¿Qué es hardware?",op:["Partes físicas","Programas"],correcta:0}
 ]
 
-let indicePregunta=0
-let preguntaMostrada=false
+let indice=0
+let mostrada=false
 
 video.addEventListener("timeupdate",function(){
 
-if(indicePregunta>=preguntas.length) return
+if(indice>=preguntas.length) return
 
-if(video.currentTime>=preguntas[indicePregunta].tiempo && !preguntaMostrada){
+if(video.currentTime>=preguntas[indice].tiempo && !mostrada){
 
 video.pause()
 
 mostrarPregunta()
 
-preguntaMostrada=true
+mostrada=true
 
 }
 
@@ -380,38 +412,36 @@ function mostrarPregunta(){
 
 quizDiv.style.display="block"
 
-pregunta.innerText=preguntas[indicePregunta].pregunta
+pregunta.innerText=preguntas[indice].pregunta
 
 opciones.innerHTML=""
 
-preguntas[indicePregunta].op.forEach(function(opcion,index){
+preguntas[indice].op.forEach(function(op,index){
 
-let boton=document.createElement("button")
+let b=document.createElement("button")
 
-boton.className="btn"
+b.className="btn"
+b.innerText=op
 
-boton.innerText=opcion
-
-boton.onclick=function(){
+b.onclick=function(){
 
 responder(index)
 
 }
 
-opciones.appendChild(boton)
+opciones.appendChild(b)
 
 })
 
 }
 
-function responder(seleccion){
+function responder(sel){
 
-if(seleccion===preguntas[indicePregunta].correcta){
+if(sel===preguntas[indice].correcta){
 
 feedback.innerText="Correcto"
 
 score+=10
-
 preguntasRespondidas++
 
 document.getElementById("score").innerText=score
@@ -422,11 +452,8 @@ setTimeout(function(){
 
 quizDiv.style.display="none"
 
-feedback.innerText=""
-
-indicePregunta++
-
-preguntaMostrada=false
+indice++
+mostrada=false
 
 video.play()
 
@@ -478,10 +505,35 @@ document.getElementById("msgGuardado").innerText="Opinión guardada"
 
 }
 
+/* NAVEGACION */
+
+function volverPagina(){
+
+window.location.href="../index.html"
+
+}
+
+function irEvaluacion(){
+
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+
+if(progreso<100){
+
+alert("Debes completar la lección primero")
+
+return
+
+}
+
+window.location.href="evaluacion.html"
+
+}
+
 </script>
 
 </body>
 </html>
+```
 
 
 

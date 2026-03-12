@@ -1,4 +1,8 @@
 // Archivo script.js - lógica del OVA (lecciones, quiz y chat)
+
+let score = 0;
+let progress = 0;
+
 const lessons = [
   {id:1,title:'Introducción a la informática',desc:'Conceptos básicos: hardware, software y sistemas.',content:'Contenido de la lección 1. Explicaciones, imágenes y ejemplos.'},
   {id:2,title:'Sistemas de numeración',desc:'Binario, hexadecimal y su aplicación en electrónica.',content:'Contenido de la lección 2 con ejercicios.'},
@@ -66,13 +70,25 @@ renderQuiz();
 function answer(i,j,el){
   const locked = document.getElementById('lockAnswers').checked;
   const correct = questions[i].answer===j;
+
+  if(correct){
+    score += 10;
+  }
+
   if(locked){
     alert('El docente ha bloqueado la visualización de respuestas completas.');
     el.classList.add('wrong');
     el.innerHTML += ' — Pista: repasa la lección.';
     return;
   }
-  if(correct){ el.classList.add('correct'); alert('¡Correcto!'); } else { el.classList.add('wrong'); alert('Respuesta incorrecta. Revisa la lección.'); }
+
+  if(correct){
+    el.classList.add('correct');
+    alert('¡Correcto!');
+  } else {
+    el.classList.add('wrong');
+    alert('Respuesta incorrecta. Revisa la lección.');
+  }
 }
 
 // Chat simple (simulación)
@@ -80,17 +96,18 @@ function sendMsg(){
   const input = document.getElementById('inputMsg');
   const text = input.value.trim(); if(!text) return;
   addMsg(text,'user'); input.value='';
-  // respuesta simulada
   setTimeout(()=>{
     const reply = generateReply(text);
     addMsg(reply,'bot');
   },500 + Math.random()*800);
 }
+
 function addMsg(txt,who){
   const container = document.getElementById('messages');
   const d = document.createElement('div'); d.className='msg '+(who==='user'?'user':'bot'); d.innerText=txt;
   container.appendChild(d); container.scrollTop = container.scrollHeight;
 }
+
 function generateReply(text){
   text = text.toLowerCase();
   if(text.includes('hola')||text.includes('buenas')) return 'Hola! ¿Sobre qué lección quieres ayuda?';
@@ -101,24 +118,42 @@ function generateReply(text){
 
 // Funciones UI
 function startLesson(){ openLesson(1); }
+
 function goToLesson(id){
   window.open(`lecciones/leccion${id}.html`, '_blank');
 }
 
-function markDone(id,btn){ btn.innerText='Leído'; btn.disabled=true; completeLesson(id); }
-function completeLesson(id){
-  const done = JSON.parse(localStorage.getItem('ova_done')||'[]'); if(!done.includes(id)) done.push(id); localStorage.setItem('ova_done', JSON.stringify(done)); updateProgress();
+function markDone(id,btn){
+  btn.innerText='Leído';
+  btn.disabled=true;
+  completeLesson(id);
 }
+
+function completeLesson(id){
+  const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
+  if(!done.includes(id)) done.push(id);
+  localStorage.setItem('ova_done', JSON.stringify(done));
+  updateProgress();
+}
+
 function updateProgress(){
   const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
   const percent = Math.round((done.length/lessons.length)*100);
+
+  progress = percent;
+
   document.getElementById('fillBar').style.width = percent+'%';
   document.getElementById('progressTxt').innerText = `${done.length}/${lessons.length}`;
 }
+
 updateProgress();
 
 function uploadMaterial(){
-  const f = document.getElementById('file'); if(f.files.length===0){ alert('Selecciona un archivo'); return; }
+  const f = document.getElementById('file');
+  if(f.files.length===0){
+    alert('Selecciona un archivo');
+    return;
+  }
   alert('Archivo subido (simulación). En un sistema real enviarías a un servidor.');
 }
 
@@ -126,13 +161,18 @@ function copyLink(){
   navigator.clipboard?.writeText(location.href).then(()=>alert('Enlace copiado'));
 }
 
-function togglePreview(){ window.scrollTo({top:0,behavior:'smooth'}); }
+function togglePreview(){
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 setInterval(()=>{
   const n = Math.max(8,12 + Math.floor(Math.random()*6));
   document.getElementById('activeCount').innerText = n;
   document.getElementById('lastAccess').innerText = new Date().toLocaleTimeString();
 },5000);
+
+
+// GUARDAR RESULTADOS EN GOOGLE SHEETS
 
 function guardarResultados(){
 
@@ -150,6 +190,10 @@ fetch("https://script.google.com/macros/s/AKfycbxbKd1YfbPvE3yF28lnY_3afhivPQf0tJ
 
 method:"POST",
 
+headers:{
+"Content-Type":"application/json"
+},
+
 body: JSON.stringify(datos)
 
 })
@@ -158,6 +202,11 @@ body: JSON.stringify(datos)
 .then(data=>{
 
 alert("Resultados guardados correctamente")
+
+})
+.catch(error=>{
+
+alert("Error al guardar resultados")
 
 })
 

@@ -27,6 +27,12 @@ border-radius:10px;
 margin-top:20px;
 }
 
+select{
+padding:10px;
+border-radius:10px;
+margin-top:20px;
+}
+
 </style>
 
 </head>
@@ -39,6 +45,14 @@ margin-top:20px;
 
 <p>Visualización del rendimiento de estudiantes</p>
 
+<!-- 🔥 SELECTOR -->
+<h3>Seleccionar estudiante</h3>
+<select id="selectorEstudiante" onchange="mostrarEstudiante()">
+<option value="">Seleccione un estudiante</option>
+</select>
+
+<p id="infoEstudiante"></p>
+
 <canvas id="graficoPuntaje"></canvas>
 <canvas id="graficoCalificacion"></canvas>
 
@@ -46,22 +60,36 @@ margin-top:20px;
 
 <script>
 
-let URL="PEGA_AQUI_TU_LINK" // 👈 AQUÍ
+let URL="PEGA_AQUI_TU_LINK" // 👈 TU LINK
+
+let datosGlobal=[]
 
 fetch(URL)
 .then(res=>res.json())
 .then(data=>{
 
 data.shift() // elimina encabezados
+datosGlobal=data
 
 let nombres=[]
 let puntajes=[]
 let calificaciones=[]
 
-data.forEach(row=>{
+let selector=document.getElementById("selectorEstudiante")
+
+data.forEach((row,i)=>{
+
+// 🔥 llenar selector
+let option=document.createElement("option")
+option.value=i
+option.text=row[0] // nombre
+selector.appendChild(option)
+
+// datos para gráficas
 nombres.push(row[0])
 puntajes.push(row[1])
 calificaciones.push(row[4])
+
 })
 
 /* GRAFICO PUNTAJE */
@@ -96,6 +124,27 @@ calificaciones.filter(x=>x==5).length
 })
 
 })
+
+/* 🔥 MOSTRAR ESTUDIANTE */
+
+function mostrarEstudiante(){
+
+let index=document.getElementById("selectorEstudiante").value
+
+if(index==="") return
+
+let estudiante=datosGlobal[index]
+
+document.getElementById("infoEstudiante").innerHTML=
+`
+<b>Nombre:</b> ${estudiante[0]} <br>
+<b>Puntaje:</b> ${estudiante[1]} <br>
+<b>Progreso:</b> ${estudiante[2]} <br>
+<b>Calificación:</b> ${estudiante[4]} <br>
+<b>Lección:</b> ${estudiante[5] || "No definida"}
+`
+
+}
 
 </script>
 

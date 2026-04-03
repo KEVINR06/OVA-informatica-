@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard OVA</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#07131d;
+color:white;
+text-align:center;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+canvas{
+background:white;
+border-radius:10px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Dashboard del Docente</h1>
+
+<p>Visualización del rendimiento de estudiantes</p>
+
+<canvas id="graficoPuntaje"></canvas>
+<canvas id="graficoCalificacion"></canvas>
+
+</div>
+
+<script>
+
+let URL="PEGA_AQUI_TU_LINK" // 👈 AQUÍ
+
+fetch(URL)
+.then(res=>res.json())
+.then(data=>{
+
+data.shift() // elimina encabezados
+
+let nombres=[]
+let puntajes=[]
+let calificaciones=[]
+
+data.forEach(row=>{
+nombres.push(row[0])
+puntajes.push(row[1])
+calificaciones.push(row[4])
+})
+
+/* GRAFICO PUNTAJE */
+
+new Chart(document.getElementById("graficoPuntaje"), {
+type:"bar",
+data:{
+labels:nombres,
+datasets:[{
+label:"Puntaje de estudiantes",
+data:puntajes
+}]
+}
+})
+
+/* GRAFICO CALIFICACION */
+
+new Chart(document.getElementById("graficoCalificacion"), {
+type:"pie",
+data:{
+labels:["1","2","3","4","5"],
+datasets:[{
+data:[
+calificaciones.filter(x=>x==1).length,
+calificaciones.filter(x=>x==2).length,
+calificaciones.filter(x=>x==3).length,
+calificaciones.filter(x=>x==4).length,
+calificaciones.filter(x=>x==5).length
+]
+}]
+}
+})
+
+})
+
+</script>
+
+</body>
+</html>

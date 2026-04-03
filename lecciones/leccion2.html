@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,7 +20,6 @@ justify-content:center;
 h1{font-size:28px;}
 h2{font-size:24px;}
 h3{font-size:20px;}
-p, li{font-size:18px;}
 
 .container{
 width:100%;
@@ -58,16 +58,22 @@ background:#42ffbf;
 transition:0.5s;
 }
 
+.video-wrapper{
+width:100%;
+border-radius:20px;
+overflow:hidden;
+background:black;
+}
+
+video{
+width:100%;
+}
+
 textarea{
 width:100%;
 padding:10px;
 border-radius:10px;
 border:none;
-}
-
-select{
-padding:8px;
-border-radius:8px;
 }
 
 .disabled{
@@ -99,37 +105,46 @@ cursor:not-allowed;
 </div>
 </div>
 
+<!-- 🎬 VIDEO -->
+<div class="card">
+<h2>🎬 Video</h2>
+<div class="video-wrapper">
+<video id="videoClase" controls>
+<source src="videos2/numeracion.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+
+<!-- ❓ QUIZ VIDEO -->
+<div class="card" id="quizVideo" style="display:none">
+<h3>Pregunta del video</h3>
+<p id="quizPregunta"></p>
+<div id="quizOpciones"></div>
+<p id="feedback"></p>
+</div>
+
+<!-- 📘 CONTENIDO -->
 <div class="card">
 
 <h2>📘 Contenido</h2>
 
-<p>
-Un sistema de numeración es una forma de representar números utilizando símbolos.
-</p>
+<p>Un sistema de numeración es una forma de representar números mediante símbolos.</p>
 
-<p>
-El sistema más usado es el sistema decimal, que utiliza 10 dígitos (0 al 9).
-</p>
+<p>El sistema decimal usa 10 dígitos (0-9), mientras que el sistema binario usa solo 0 y 1.</p>
 
-<p>
-En informática se usa principalmente el sistema binario, que utiliza solo dos valores: 0 y 1.
-</p>
-
-<p>
-También existen otros sistemas como el octal (base 8) y hexadecimal (base 16).
-</p>
+<p>En informática, el sistema binario es fundamental porque los computadores trabajan con señales eléctricas (encendido/apagado).</p>
 
 <h3>Ejemplos</h3>
-
 <ul>
-<li>Decimal: 25</li>
-<li>Binario: 11001</li>
-<li>Octal: 31</li>
-<li>Hexadecimal: 19</li>
+<li>Decimal: 10</li>
+<li>Binario: 1010</li>
+<li>Octal: 12</li>
+<li>Hexadecimal: A</li>
 </ul>
 
 </div>
 
+<!-- 🧠 QUIZ -->
 <div class="card">
 
 <h2>🧠 Quiz</h2>
@@ -146,87 +161,79 @@ También existen otros sistemas como el octal (base 8) y hexadecimal (base 16).
 
 <hr>
 
-<p>¿Cuál es la base del sistema binario?</p>
+<p>¿Base del sistema binario?</p>
 <button class="btn" onclick="quiz(true)">2</button>
 <button class="btn" onclick="quiz(false)">10</button>
 
 <hr>
 
-<p>¿Cuál es un número binario?</p>
+<p>¿Número binario?</p>
 <button class="btn" onclick="quiz(true)">1010</button>
-<button class="btn" onclick="quiz(false)">29</button>
+<button class="btn" onclick="quiz(false)">25</button>
 
 <hr>
 
-<p>¿Cuál sistema usa 16 símbolos?</p>
+<p>¿Sistema de base 16?</p>
 <button class="btn" onclick="quiz(true)">Hexadecimal</button>
 <button class="btn" onclick="quiz(false)">Binario</button>
 
 <hr>
 
-<p>¿Qué sistema usamos a diario?</p>
+<p>¿Sistema que usamos a diario?</p>
 <button class="btn" onclick="quiz(true)">Decimal</button>
 <button class="btn" onclick="quiz(false)">Binario</button>
 
 <hr>
 
-<p>¿Cuál es la base del sistema octal?</p>
+<p>¿Base del sistema octal?</p>
 <button class="btn" onclick="quiz(true)">8</button>
 <button class="btn" onclick="quiz(false)">2</button>
 
 <hr>
 
-<p>¿Qué número es hexadecimal?</p>
+<p>¿Número hexadecimal?</p>
 <button class="btn" onclick="quiz(true)">A1</button>
 <button class="btn" onclick="quiz(false)">12</button>
 
 </div>
 
+<!-- RESULTADO -->
 <div class="card">
 <h2>Resultado final</h2>
 <button class="btn" onclick="resultado()">Ver resultado</button>
 <p id="final"></p>
 </div>
 
+<!-- OPINION -->
 <div class="card">
 
-<h2>💬 Opinión del estudiante</h2>
+<h2>💬 Opinión</h2>
 
-<textarea id="comentario" rows="4"></textarea>
-
-<p>Califica la experiencia:</p>
+<textarea id="comentario"></textarea>
 
 <select id="calificacion">
-<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-<option value="4">⭐⭐⭐⭐ Buena</option>
-<option value="3">⭐⭐⭐ Regular</option>
-<option value="2">⭐⭐ Mala</option>
-<option value="1">⭐ Muy mala</option>
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
 </select>
 
-<br><br>
-
-<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
-
+<button class="btn" onclick="guardarOpinion()">Guardar</button>
 <p id="msgGuardado"></p>
 
 </div>
 
+<!-- NAV -->
 <div class="card" style="text-align:center">
-
-<h2>📂 Navegación</h2>
 
 <button class="btn" onclick="volverPagina()">⬅ Volver</button>
 
-<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
-📝 Evaluación final
-</button>
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">Evaluación</button>
 
 <br><br>
 
-<button class="btn" onclick="verDashboard()">
-📊 Ver Dashboard Docente
-</button>
+<button class="btn" onclick="verDashboard()">📊 Dashboard</button>
 
 <p id="msgEval"></p>
 
@@ -237,7 +244,7 @@ También existen otros sistemas como el octal (base 8) y hexadecimal (base 16).
 <script>
 
 let score=0
-let totalPreguntas=8
+let totalPreguntas=10
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
@@ -245,14 +252,7 @@ let progreso=(preguntasRespondidas/totalPreguntas)*100
 document.getElementById("progress-bar").style.width=progreso+"%"
 if(progreso>=100){
 document.getElementById("btnEvaluacion").classList.remove("disabled")
-document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
 }
-}
-
-function saveName(){
-let name=document.getElementById("studentName").value
-localStorage.setItem("student",name)
-document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function quiz(correct){
@@ -269,22 +269,93 @@ alert("Incorrecto")
 
 function resultado(){
 let name=localStorage.getItem("student")
-document.getElementById("final").innerHTML=
-"Estudiante: "+name+"<br>Puntaje final: "+score
+document.getElementById("final").innerHTML="Estudiante: "+name+"<br>Puntaje: "+score
+}
+
+/* 🎬 VIDEO INTERACTIVO */
+
+let video=document.getElementById("videoClase")
+
+let preguntasVideo=[
+{tiempo:5,p:"¿Qué sistema usa 0 y 1?",op:["Binario","Decimal"],c:0},
+{tiempo:10,p:"¿Base del sistema binario?",op:["2","10"],c:0},
+{tiempo:15,p:"¿Sistema usado en computadores?",op:["Binario","Octal"],c:0}
+]
+
+let index=0
+
+video.addEventListener("timeupdate",()=>{
+
+if(index<preguntasVideo.length){
+
+let q=preguntasVideo[index]
+
+if(video.currentTime>=q.tiempo){
+
+video.pause()
+mostrarPregunta(q)
+index++
+
+}
+
+}
+
+})
+
+function mostrarPregunta(q){
+
+document.getElementById("quizVideo").style.display="block"
+document.getElementById("quizPregunta").innerText=q.p
+
+let cont=document.getElementById("quizOpciones")
+cont.innerHTML=""
+
+q.op.forEach((op,i)=>{
+
+let btn=document.createElement("button")
+btn.innerText=op
+btn.className="btn"
+
+btn.onclick=()=>{
+
+if(i===q.c){
+score+=10
+preguntasRespondidas++
+actualizarProgreso()
+document.getElementById("feedback").innerText="Correcto"
+}else{
+document.getElementById("feedback").innerText="Incorrecto"
+}
+
+setTimeout(()=>{
+document.getElementById("quizVideo").style.display="none"
+video.play()
+},1500)
+
+}
+
+cont.appendChild(btn)
+
+})
+
+}
+
+/* RESTO IGUAL */
+
+function saveName(){
+let name=document.getElementById("studentName").value
+localStorage.setItem("student",name)
+document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function guardarOpinion(){
 
-let comentario=document.getElementById("comentario").value
-let calificacion=document.getElementById("calificacion").value
-let nombre=localStorage.getItem("student")
-
 let datos={
-nombre:nombre,
+nombre:localStorage.getItem("student"),
 puntaje:score,
 progreso:preguntasRespondidas,
-comentario:comentario,
-calificacion:calificacion,
+comentario:document.getElementById("comentario").value,
+calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 2"
 }
 
@@ -292,19 +363,14 @@ fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHW
 method:"POST",
 body:JSON.stringify(datos)
 })
-.then(res=>res.text())
-.then(()=>{
-document.getElementById("msgGuardado").innerText="Opinión guardada"
-})
 
+document.getElementById("msgGuardado").innerText="Guardado"
 }
 
 function verDashboard(){
-let clave = prompt("Ingrese clave de docente:")
+let clave=prompt("Clave docente")
 if(clave==="1234"){
 window.location.href="dashboard.html"
-}else{
-alert("Clave incorrecta")
 }
 }
 
@@ -313,9 +379,8 @@ window.location.href="../index.html"
 }
 
 function irEvaluacion(){
-let progreso=(preguntasRespondidas/totalPreguntas)*100
-if(progreso<100){
-alert("Debes completar la lección")
+if((preguntasRespondidas/totalPreguntas)*100<100){
+alert("Completa la lección")
 return
 }
 window.location.href="evaluacion.html"
@@ -325,4 +390,3 @@ window.location.href="evaluacion.html"
 
 </body>
 </html>
-

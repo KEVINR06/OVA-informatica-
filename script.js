@@ -211,3 +211,9 @@ alert("Error al guardar resultados")
 })
 
 }
+
+// 🔥 FUNCIÓN CORREGIDA (FUERA DEL CATCH)
+
+function volverInicio(){
+    window.location.href="../index.html";
+}

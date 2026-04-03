@@ -19,7 +19,6 @@ justify-content:center;
 h1{font-size:28px;}
 h2{font-size:24px;}
 h3{font-size:20px;}
-p, li{font-size:18px;}
 
 .container{
 width:100%;
@@ -58,16 +57,22 @@ background:#42ffbf;
 transition:0.5s;
 }
 
+.video-wrapper{
+width:100%;
+border-radius:20px;
+overflow:hidden;
+background:black;
+}
+
+video{
+width:100%;
+}
+
 textarea{
 width:100%;
 padding:10px;
 border-radius:10px;
 border:none;
-}
-
-select{
-padding:8px;
-border-radius:8px;
 }
 
 .disabled{
@@ -99,136 +104,144 @@ cursor:not-allowed;
 </div>
 </div>
 
+<!-- 🎬 VIDEO -->
+<div class="card">
+<h2>🎬 Video</h2>
+<div class="video-wrapper">
+<video id="videoClase" controls>
+<source src="videos3/pseudocodigo.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+
+<!-- ❓ QUIZ VIDEO -->
+<div class="card" id="quizVideo" style="display:none">
+<h3>Pregunta del video</h3>
+<p id="quizPregunta"></p>
+<div id="quizOpciones"></div>
+<p id="feedback"></p>
+</div>
+
+<!-- 📘 CONTENIDO -->
 <div class="card">
 
 <h2>📘 Contenido</h2>
 
 <p>
-El pseudocódigo es una forma de escribir instrucciones de manera sencilla para resolver un problema, sin usar un lenguaje de programación específico.
+El pseudocódigo es una forma de representar soluciones a problemas mediante instrucciones claras y ordenadas.
 </p>
 
 <p>
-Se utiliza para planear algoritmos antes de programarlos, facilitando la comprensión de la lógica del problema.
+No pertenece a un lenguaje de programación específico, sino que permite entender la lógica antes de programar.
 </p>
 
 <p>
-Un algoritmo es una secuencia de pasos ordenados para resolver una tarea o problema.
+Un algoritmo es una secuencia de pasos para resolver un problema.
 </p>
 
-<h3>Ejemplo de pseudocódigo</h3>
+<h3>Ejemplo</h3>
 
 <ul>
 <li>Inicio</li>
 <li>Leer número</li>
 <li>Si número &gt; 0 entonces</li>
-<li>Mostrar "Es positivo"</li>
+<li>Mostrar "Positivo"</li>
 <li>Fin si</li>
 <li>Fin</li>
 </ul>
 
-<p>
-El pseudocódigo utiliza palabras clave como: Inicio, Fin, Si, Entonces, Mientras, Para, etc.
-</p>
-
 </div>
 
+<!-- 🧠 QUIZ -->
 <div class="card">
 
 <h2>🧠 Quiz</h2>
 
 <p>¿Qué es el pseudocódigo?</p>
-<button class="btn" onclick="quiz(true)">Forma de representar algoritmos</button>
-<button class="btn" onclick="quiz(false)">Lenguaje de programación real</button>
-
-<hr>
-
-<p>¿Para qué sirve el pseudocódigo?</p>
-<button class="btn" onclick="quiz(true)">Planear soluciones</button>
-<button class="btn" onclick="quiz(false)">Dibujar</button>
+<button class="btn" onclick="quiz(true)">Representación de algoritmos</button>
+<button class="btn" onclick="quiz(false)">Lenguaje real</button>
 
 <hr>
 
 <p>¿Qué es un algoritmo?</p>
 <button class="btn" onclick="quiz(true)">Secuencia de pasos</button>
-<button class="btn" onclick="quiz(false)">Un dibujo</button>
+<button class="btn" onclick="quiz(false)">Imagen</button>
 
 <hr>
 
-<p>¿Cuál es una palabra clave del pseudocódigo?</p>
+<p>¿Para qué sirve el pseudocódigo?</p>
+<button class="btn" onclick="quiz(true)">Planear soluciones</button>
+<button class="btn" onclick="quiz(false)">Diseñar logos</button>
+
+<hr>
+
+<p>¿Qué palabra indica inicio?</p>
 <button class="btn" onclick="quiz(true)">Inicio</button>
 <button class="btn" onclick="quiz(false)">HTML</button>
 
 <hr>
 
-<p>¿El pseudocódigo es obligatorio en programación?</p>
-<button class="btn" onclick="quiz(true)">No, pero ayuda</button>
-<button class="btn" onclick="quiz(false)">Sí, siempre</button>
-
-<hr>
-
 <p>¿Qué hace "Si... entonces"?</p>
-<button class="btn" onclick="quiz(true)">Toma decisiones</button>
-<button class="btn" onclick="quiz(false)">Imprime texto</button>
+<button class="btn" onclick="quiz(true)">Decisión</button>
+<button class="btn" onclick="quiz(false)">Repetición</button>
 
 <hr>
 
 <p>¿Qué indica "Fin"?</p>
-<button class="btn" onclick="quiz(true)">Terminación</button>
-<button class="btn" onclick="quiz(false)">Inicio</button>
+<button class="btn" onclick="quiz(true)">Terminar</button>
+<button class="btn" onclick="quiz(false)">Iniciar</button>
 
 <hr>
 
-<p>¿Qué representa "Leer"?</p>
-<button class="btn" onclick="quiz(true)">Entrada de datos</button>
+<p>¿Qué es "Leer"?</p>
+<button class="btn" onclick="quiz(true)">Entrada</button>
 <button class="btn" onclick="quiz(false)">Salida</button>
+
+<hr>
+
+<p>¿Pseudocódigo usa lenguaje humano?</p>
+<button class="btn" onclick="quiz(true)">Sí</button>
+<button class="btn" onclick="quiz(false)">No</button>
 
 </div>
 
+<!-- RESULTADO -->
 <div class="card">
 <h2>Resultado final</h2>
 <button class="btn" onclick="resultado()">Ver resultado</button>
 <p id="final"></p>
 </div>
 
+<!-- OPINION -->
 <div class="card">
 
-<h2>💬 Opinión del estudiante</h2>
+<h2>💬 Opinión</h2>
 
-<textarea id="comentario" rows="4"></textarea>
-
-<p>Califica la experiencia:</p>
+<textarea id="comentario"></textarea>
 
 <select id="calificacion">
-<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-<option value="4">⭐⭐⭐⭐ Buena</option>
-<option value="3">⭐⭐⭐ Regular</option>
-<option value="2">⭐⭐ Mala</option>
-<option value="1">⭐ Muy mala</option>
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
 </select>
 
-<br><br>
-
-<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
-
+<button class="btn" onclick="guardarOpinion()">Guardar</button>
 <p id="msgGuardado"></p>
 
 </div>
 
+<!-- NAV -->
 <div class="card" style="text-align:center">
-
-<h2>📂 Navegación</h2>
 
 <button class="btn" onclick="volverPagina()">⬅ Volver</button>
 
-<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
-📝 Evaluación final
-</button>
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">Evaluación</button>
 
 <br><br>
 
-<button class="btn" onclick="verDashboard()">
-📊 Ver Dashboard Docente
-</button>
+<button class="btn" onclick="verDashboard()">📊 Dashboard</button>
 
 <p id="msgEval"></p>
 
@@ -239,7 +252,7 @@ El pseudocódigo utiliza palabras clave como: Inicio, Fin, Si, Entonces, Mientra
 <script>
 
 let score=0
-let totalPreguntas=8
+let totalPreguntas=11
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
@@ -247,14 +260,7 @@ let progreso=(preguntasRespondidas/totalPreguntas)*100
 document.getElementById("progress-bar").style.width=progreso+"%"
 if(progreso>=100){
 document.getElementById("btnEvaluacion").classList.remove("disabled")
-document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
 }
-}
-
-function saveName(){
-let name=document.getElementById("studentName").value
-localStorage.setItem("student",name)
-document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function quiz(correct){
@@ -271,22 +277,93 @@ alert("Incorrecto")
 
 function resultado(){
 let name=localStorage.getItem("student")
-document.getElementById("final").innerHTML=
-"Estudiante: "+name+"<br>Puntaje final: "+score
+document.getElementById("final").innerHTML="Estudiante: "+name+"<br>Puntaje: "+score
+}
+
+/* 🎬 VIDEO INTERACTIVO */
+
+let video=document.getElementById("videoClase")
+
+let preguntasVideo=[
+{tiempo:5,p:"¿Qué es un algoritmo?",op:["Pasos","Imagen"],c:0},
+{tiempo:10,p:"¿Para qué sirve el pseudocódigo?",op:["Planear","Diseñar"],c:0},
+{tiempo:15,p:"¿Qué hace 'Si... entonces'?",op:["Decidir","Repetir"],c:0}
+]
+
+let index=0
+
+video.addEventListener("timeupdate",()=>{
+
+if(index<preguntasVideo.length){
+
+let q=preguntasVideo[index]
+
+if(video.currentTime>=q.tiempo){
+
+video.pause()
+mostrarPregunta(q)
+index++
+
+}
+
+}
+
+})
+
+function mostrarPregunta(q){
+
+document.getElementById("quizVideo").style.display="block"
+document.getElementById("quizPregunta").innerText=q.p
+
+let cont=document.getElementById("quizOpciones")
+cont.innerHTML=""
+
+q.op.forEach((op,i)=>{
+
+let btn=document.createElement("button")
+btn.innerText=op
+btn.className="btn"
+
+btn.onclick=()=>{
+
+if(i===q.c){
+score+=10
+preguntasRespondidas++
+actualizarProgreso()
+document.getElementById("feedback").innerText="Correcto"
+}else{
+document.getElementById("feedback").innerText="Incorrecto"
+}
+
+setTimeout(()=>{
+document.getElementById("quizVideo").style.display="none"
+video.play()
+},1500)
+
+}
+
+cont.appendChild(btn)
+
+})
+
+}
+
+/* RESTO */
+
+function saveName(){
+let name=document.getElementById("studentName").value
+localStorage.setItem("student",name)
+document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function guardarOpinion(){
 
-let comentario=document.getElementById("comentario").value
-let calificacion=document.getElementById("calificacion").value
-let nombre=localStorage.getItem("student")
-
 let datos={
-nombre:nombre,
+nombre:localStorage.getItem("student"),
 puntaje:score,
 progreso:preguntasRespondidas,
-comentario:comentario,
-calificacion:calificacion,
+comentario:document.getElementById("comentario").value,
+calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 3"
 }
 
@@ -294,19 +371,14 @@ fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHW
 method:"POST",
 body:JSON.stringify(datos)
 })
-.then(res=>res.text())
-.then(()=>{
-document.getElementById("msgGuardado").innerText="Opinión guardada"
-})
 
+document.getElementById("msgGuardado").innerText="Guardado"
 }
 
 function verDashboard(){
-let clave = prompt("Ingrese clave de docente:")
+let clave=prompt("Clave docente")
 if(clave==="1234"){
 window.location.href="dashboard.html"
-}else{
-alert("Clave incorrecta")
 }
 }
 
@@ -315,9 +387,8 @@ window.location.href="../index.html"
 }
 
 function irEvaluacion(){
-let progreso=(preguntasRespondidas/totalPreguntas)*100
-if(progreso<100){
-alert("Debes completar la lección")
+if((preguntasRespondidas/totalPreguntas)*100<100){
+alert("Completa la lección")
 return
 }
 window.location.href="evaluacion.html"

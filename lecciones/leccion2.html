@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<title>Lección 2 - Sistemas de Numeración</title>
+<title>Lección 2 - Sistemas de numeración</title>
 
 <style>
 
 body{
-background:#07131d;
+padding:24px;
 color:white;
+background:#07131d;
 font-family:Arial;
-padding:20px;
+font-size:18px;
 display:flex;
 justify-content:center;
 }
 
+h1{font-size:28px;}
+h2{font-size:24px;}
+h3{font-size:20px;}
+p, li{font-size:18px;}
+
 .container{
-width:80%;
+width:100%;
 max-width:900px;
 }
 
 .card{
 background:#0e2734;
-padding:20px;
-border-radius:25px;
-margin-top:20px;
+padding:24px;
+border-radius:30px;
+margin-top:25px;
 }
 
 .btn{
 background:#42ffbf;
+padding:8px 14px;
 border:none;
-padding:8px 15px;
 border-radius:8px;
 cursor:pointer;
 margin:5px;
-}
-
-input{
-padding:7px;
-border-radius:6px;
-border:none;
-}
-
-.video-box{
-background:#0b1d27;
-height:350px;
-border-radius:15px;
-display:flex;
-justify-content:center;
-align-items:center;
 }
 
 .progress-box{
@@ -70,308 +58,271 @@ background:#42ffbf;
 transition:0.5s;
 }
 
-#chatbot-window{
-position:fixed;
-bottom:20px;
-right:20px;
-width:260px;
-background:#0e2734;
-padding:15px;
-border-radius:15px;
-}
-
-#chat{
-height:180px;
-overflow-y:auto;
-background:#07131d;
+textarea{
+width:100%;
 padding:10px;
 border-radius:10px;
-margin-bottom:10px;
+border:none;
+}
+
+select{
+padding:8px;
+border-radius:8px;
+}
+
+.disabled{
+background:gray;
+cursor:not-allowed;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h1 style="text-align:center">
-Lección 2 — Sistemas de Numeración
-</h1>
+<h1 style="text-align:center">Lección 2: Sistemas de numeración</h1>
 
 <div class="card">
-
-<h2>Registro del estudiante</h2>
-
+<h2>👤 Estudiante</h2>
 <input id="studentName" placeholder="Escribe tu nombre">
-
 <button class="btn" onclick="saveName()">Guardar</button>
-
 <p id="welcome"></p>
-
 </div>
 
 <div class="card">
-
-<h2>Progreso</h2>
-
+<h2>📊 Progreso</h2>
 <p>Puntaje: <span id="score">0</span></p>
-
 <div class="progress-box">
 <div id="progress-bar"></div>
 </div>
-
 </div>
 
 <div class="card">
 
-<h2>Video</h2>
-
-<div class="video-box">
-
-<video width="100%" controls>
-<source src="videos1/sistemas.mp4" type="video/mp4">
-</video>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>Contenido</h2>
+<h2>📘 Contenido</h2>
 
 <p>
-
-Un sistema de numeración es una forma de representar cantidades
-mediante símbolos.  
-El sistema más usado es el sistema decimal.
-
+Un sistema de numeración es una forma de representar números utilizando símbolos.
 </p>
 
 <p>
-
-Los computadores utilizan el sistema binario porque trabajan
-con señales eléctricas que pueden estar encendidas o apagadas.
-
+El sistema más usado es el sistema decimal, que utiliza 10 dígitos (0 al 9).
 </p>
+
+<p>
+En informática se usa principalmente el sistema binario, que utiliza solo dos valores: 0 y 1.
+</p>
+
+<p>
+También existen otros sistemas como el octal (base 8) y hexadecimal (base 16).
+</p>
+
+<h3>Ejemplos</h3>
 
 <ul>
-
-<li>Decimal → base 10</li>
-<li>Binario → base 2</li>
-<li>Octal → base 8</li>
-<li>Hexadecimal → base 16</li>
-
+<li>Decimal: 25</li>
+<li>Binario: 11001</li>
+<li>Octal: 31</li>
+<li>Hexadecimal: 19</li>
 </ul>
 
-<p>
-
-Ejemplo de conversión:
-
-1010 (binario)
-
-= 1×8 + 0×4 + 1×2 + 0×1  
-= 10 decimal
-
-</p>
-
 </div>
 
 <div class="card">
 
-<h2>Quiz</h2>
+<h2>🧠 Quiz</h2>
 
-<p>¿Cuántos números tiene el sistema decimal?</p>
-
-<button class="btn" onclick="quiz1(true)">10</button>
-<button class="btn" onclick="quiz1(false)">2</button>
-
-<p id="q1"></p>
+<p>¿Cuántos dígitos tiene el sistema decimal?</p>
+<button class="btn" onclick="quiz(true)">10</button>
+<button class="btn" onclick="quiz(false)">2</button>
 
 <hr>
 
-<p>¿Qué sistema usan los computadores?</p>
-
-<button class="btn" onclick="quiz2(true)">Binario</button>
-<button class="btn" onclick="quiz2(false)">Decimal</button>
-
-<p id="q2"></p>
-
-</div>
-
-<div class="card">
-
-<h2>Actividades</h2>
-
-<p>Convierte 111 binario a decimal</p>
-
-<input id="a1">
-
-<button class="btn" onclick="act1()">Verificar</button>
-
-<p id="r1"></p>
+<p>¿Qué sistema usa 0 y 1?</p>
+<button class="btn" onclick="quiz(true)">Binario</button>
+<button class="btn" onclick="quiz(false)">Decimal</button>
 
 <hr>
 
-<p>Convierte 101 binario a decimal</p>
+<p>¿Cuál es la base del sistema binario?</p>
+<button class="btn" onclick="quiz(true)">2</button>
+<button class="btn" onclick="quiz(false)">10</button>
 
-<input id="a2">
+<hr>
 
-<button class="btn" onclick="act2()">Verificar</button>
+<p>¿Cuál es un número binario?</p>
+<button class="btn" onclick="quiz(true)">1010</button>
+<button class="btn" onclick="quiz(false)">29</button>
 
-<p id="r2"></p>
+<hr>
+
+<p>¿Cuál sistema usa 16 símbolos?</p>
+<button class="btn" onclick="quiz(true)">Hexadecimal</button>
+<button class="btn" onclick="quiz(false)">Binario</button>
+
+<hr>
+
+<p>¿Qué sistema usamos a diario?</p>
+<button class="btn" onclick="quiz(true)">Decimal</button>
+<button class="btn" onclick="quiz(false)">Binario</button>
+
+<hr>
+
+<p>¿Cuál es la base del sistema octal?</p>
+<button class="btn" onclick="quiz(true)">8</button>
+<button class="btn" onclick="quiz(false)">2</button>
+
+<hr>
+
+<p>¿Qué número es hexadecimal?</p>
+<button class="btn" onclick="quiz(true)">A1</button>
+<button class="btn" onclick="quiz(false)">12</button>
 
 </div>
 
 <div class="card">
-
 <h2>Resultado final</h2>
+<button class="btn" onclick="resultado()">Ver resultado</button>
+<p id="final"></p>
+</div>
 
-<button class="btn" onclick="finalResult()">Ver resultado</button>
+<div class="card">
 
-<p id="result"></p>
+<h2>💬 Opinión del estudiante</h2>
+
+<textarea id="comentario" rows="4"></textarea>
+
+<p>Califica la experiencia:</p>
+
+<select id="calificacion">
+<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+<option value="4">⭐⭐⭐⭐ Buena</option>
+<option value="3">⭐⭐⭐ Regular</option>
+<option value="2">⭐⭐ Mala</option>
+<option value="1">⭐ Muy mala</option>
+</select>
+
+<br><br>
+
+<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
+
+<p id="msgGuardado"></p>
 
 </div>
 
+<div class="card" style="text-align:center">
+
+<h2>📂 Navegación</h2>
+
+<button class="btn" onclick="volverPagina()">⬅ Volver</button>
+
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
+📝 Evaluación final
+</button>
+
+<br><br>
+
+<button class="btn" onclick="verDashboard()">
+📊 Ver Dashboard Docente
+</button>
+
+<p id="msgEval"></p>
+
 </div>
-
-<div id="chatbot-window">
-
-<h3 style="color:#42ffbf">🤖 Tutor IA</h3>
-
-<div id="chat"></div>
-
-<input id="msg">
-
-<button onclick="bot()">Enviar</button>
 
 </div>
 
 <script>
 
 let score=0
-let progress=0
+let totalPreguntas=8
+let preguntasRespondidas=0
+
+function actualizarProgreso(){
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+document.getElementById("progress-bar").style.width=progreso+"%"
+if(progreso>=100){
+document.getElementById("btnEvaluacion").classList.remove("disabled")
+document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
+}
+}
 
 function saveName(){
-
 let name=document.getElementById("studentName").value
-
 localStorage.setItem("student",name)
-
 document.getElementById("welcome").innerText="Bienvenido "+name
-
 }
 
-function correct(){
-
+function quiz(correct){
+if(correct){
 score+=10
-progress+=10
-
+preguntasRespondidas++
 document.getElementById("score").innerText=score
-document.getElementById("progress-bar").style.width=progress+"%"
-
-}
-
-function quiz1(c){
-
-if(c){
-
-document.getElementById("q1").innerText="Correcto"
-correct()
-
+actualizarProgreso()
+alert("Correcto")
 }else{
-
-document.getElementById("q1").innerText="Incorrecto"
-
+alert("Incorrecto")
+}
 }
 
-}
-
-function quiz2(c){
-
-if(c){
-
-document.getElementById("q2").innerText="Correcto"
-correct()
-
-}else{
-
-document.getElementById("q2").innerText="Incorrecto"
-
-}
-
-}
-
-function act1(){
-
-let r=document.getElementById("a1").value
-
-if(r==7){
-
-document.getElementById("r1").innerText="Correcto"
-correct()
-
-}else{
-
-document.getElementById("r1").innerText="Incorrecto"
-
-}
-
-}
-
-function act2(){
-
-let r=document.getElementById("a2").value
-
-if(r==5){
-
-document.getElementById("r2").innerText="Correcto"
-correct()
-
-}else{
-
-document.getElementById("r2").innerText="Incorrecto"
-
-}
-
-}
-
-function finalResult(){
-
+function resultado(){
 let name=localStorage.getItem("student")
+document.getElementById("final").innerHTML=
+"Estudiante: "+name+"<br>Puntaje final: "+score
+}
 
-document.getElementById("result").innerHTML=
+function guardarOpinion(){
 
-"Estudiante: "+name+"<br>"+
-"Puntaje: "+score
+let comentario=document.getElementById("comentario").value
+let calificacion=document.getElementById("calificacion").value
+let nombre=localStorage.getItem("student")
+
+let datos={
+nombre:nombre,
+puntaje:score,
+progreso:preguntasRespondidas,
+comentario:comentario,
+calificacion:calificacion,
+leccion:"Leccion 2"
+}
+
+fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec",{
+method:"POST",
+body:JSON.stringify(datos)
+})
+.then(res=>res.text())
+.then(()=>{
+document.getElementById("msgGuardado").innerText="Opinión guardada"
+})
 
 }
 
-function bot(){
+function verDashboard(){
+let clave = prompt("Ingrese clave de docente:")
+if(clave==="1234"){
+window.location.href="dashboard.html"
+}else{
+alert("Clave incorrecta")
+}
+}
 
-let q=document.getElementById("msg").value.toLowerCase()
+function volverPagina(){
+window.location.href="../index.html"
+}
 
-let r="No entendí tu pregunta"
-
-if(q.includes("binario"))
-r="El sistema binario usa solo 0 y 1."
-
-if(q.includes("decimal"))
-r="El sistema decimal usa números del 0 al 9."
-
-let chat=document.getElementById("chat")
-
-chat.innerHTML+=`<p>Tú: ${q}</p>`
-chat.innerHTML+=`<p>Bot: ${r}</p>`
-
+function irEvaluacion(){
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+if(progreso<100){
+alert("Debes completar la lección")
+return
+}
+window.location.href="evaluacion.html"
 }
 
 </script>
 
 </body>
 </html>
-
 

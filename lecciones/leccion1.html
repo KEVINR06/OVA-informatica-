@@ -11,9 +11,15 @@ padding:24px;
 color:white;
 background:#07131d;
 font-family:Arial;
+font-size:18px;
 display:flex;
 justify-content:center;
 }
+
+h1{font-size:28px;}
+h2{font-size:24px;}
+h3{font-size:20px;}
+p, li{font-size:18px;}
 
 .container{
 width:100%;
@@ -144,11 +150,15 @@ cursor:not-allowed;
 <h2>📘 Contenido</h2>
 
 <p>
-La informática es la ciencia que estudia el procesamiento automático de la información mediante computadores.
+La informática es la ciencia que se encarga de estudiar cómo se procesa, almacena y transmite la información utilizando dispositivos electrónicos como los computadores.
 </p>
 
 <p>
-Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos, crear programas y automatizar procesos.
+Hoy en día, la informática está presente en casi todo lo que hacemos: cuando usamos un celular, navegamos en internet, jugamos videojuegos o realizamos tareas escolares.
+</p>
+
+<p>
+Un sistema informático está compuesto por hardware (partes físicas) y software (programas). Ambos trabajan juntos para que el computador funcione correctamente.
 </p>
 
 <h3>Hardware</h3>
@@ -165,7 +175,6 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 <ul>
 <li>Sistema operativo</li>
-<li>Programas educativos</li>
 <li>Aplicaciones</li>
 <li>Videojuegos</li>
 </ul>
@@ -177,23 +186,50 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 <h2>🧠 Quiz</h2>
 
 <p>¿Qué estudia la informática?</p>
-
 <button class="btn" onclick="quiz(true)">Procesamiento de información</button>
 <button class="btn" onclick="quiz(false)">Construcción de casas</button>
 
 <hr>
 
 <p>¿Qué es el hardware?</p>
-
 <button class="btn" onclick="quiz(true)">Partes físicas</button>
 <button class="btn" onclick="quiz(false)">Programas</button>
 
 <hr>
 
 <p>¿Qué es el software?</p>
-
 <button class="btn" onclick="quiz(true)">Programas</button>
 <button class="btn" onclick="quiz(false)">Partes físicas</button>
+
+<hr>
+
+<p>¿Cuál es un ejemplo de hardware?</p>
+<button class="btn" onclick="quiz(true)">Teclado</button>
+<button class="btn" onclick="quiz(false)">Chrome</button>
+
+<hr>
+
+<p>¿Cuál es un ejemplo de software?</p>
+<button class="btn" onclick="quiz(true)">Word</button>
+<button class="btn" onclick="quiz(false)">Monitor</button>
+
+<hr>
+
+<p>¿Qué permite la informática?</p>
+<button class="btn" onclick="quiz(true)">Procesar información</button>
+<button class="btn" onclick="quiz(false)">Cocinar</button>
+
+<hr>
+
+<p>¿Qué hace el software?</p>
+<button class="btn" onclick="quiz(true)">Da instrucciones</button>
+<button class="btn" onclick="quiz(false)">Es físico</button>
+
+<hr>
+
+<p>¿Qué NO es hardware?</p>
+<button class="btn" onclick="quiz(true)">Sistema operativo</button>
+<button class="btn" onclick="quiz(false)">Mouse</button>
 
 </div>
 
@@ -212,19 +248,16 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 <p>Califica la experiencia:</p>
 
 <select id="calificacion">
-
 <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
 <option value="4">⭐⭐⭐⭐ Buena</option>
 <option value="3">⭐⭐⭐ Regular</option>
 <option value="2">⭐⭐ Mala</option>
 <option value="1">⭐ Muy mala</option>
-
 </select>
 
 <br><br>
 
 <button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
-
 <p id="msgGuardado"></p>
 
 </div>
@@ -233,12 +266,10 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 <h2>📂 Navegación</h2>
 
-<button class="btn" onclick="volverPagina()">
-⬅ Volver al menú principal
-</button>
+<button class="btn" onclick="volverPagina()">⬅ Volver</button>
 
 <button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
-📝 Ir a la evaluación final
+📝 Evaluación final
 </button>
 
 <p id="msgEval"></p>
@@ -249,12 +280,11 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 
 <div id="chatbot-window">
 
-<h3>🤖 Chatbot</h3>
+<h3>🤖 Tutor IA</h3>
 
 <div id="chat"></div>
 
 <input id="msg">
-
 <button onclick="bot()">Enviar</button>
 
 </div>
@@ -264,21 +294,18 @@ Gracias a la informática hoy podemos comunicarnos por internet, almacenar datos
 /* VARIABLES */
 
 let score=0
-let totalPreguntas=5
+let totalPreguntas=8
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
 
 let progreso=(preguntasRespondidas/totalPreguntas)*100
-
 document.getElementById("progress-bar").style.width=progreso+"%"
 
 if(progreso>=100){
 
 let btn=document.getElementById("btnEvaluacion")
-
 btn.classList.remove("disabled")
-
 document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
 
 }
@@ -288,34 +315,23 @@ document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
 /* ESTUDIANTE */
 
 function saveName(){
-
 let name=document.getElementById("studentName").value
-
 localStorage.setItem("student",name)
-
 document.getElementById("welcome").innerText="Bienvenido "+name
-
 }
 
-/* QUIZ GENERAL */
+/* QUIZ */
 
 function quiz(correct){
 
 if(correct){
-
 score+=10
 preguntasRespondidas++
-
 document.getElementById("score").innerText=score
-
 actualizarProgreso()
-
 alert("Correcto")
-
 }else{
-
 alert("Incorrecto")
-
 }
 
 }
@@ -323,40 +339,109 @@ alert("Incorrecto")
 /* RESULTADO */
 
 function resultado(){
-
 let name=localStorage.getItem("student")
-
 document.getElementById("final").innerHTML=
-"Estudiante: "+name+"<br>"+
-"Puntaje final: "+score
+"Estudiante: "+name+"<br>Puntaje final: "+score
+}
+
+/* VIDEO INTERACTIVO */
+
+let video=document.getElementById("videoClase")
+
+let preguntasVideo=[
+{tiempo:5,pregunta:"¿Qué estudia la informática?",opciones:["Procesamiento","Cocina"],correcta:0},
+{tiempo:10,pregunta:"¿Qué es hardware?",opciones:["Físico","Programas"],correcta:0}
+]
+
+let indexVideo=0
+
+video.addEventListener("timeupdate",()=>{
+
+if(indexVideo < preguntasVideo.length){
+
+let p=preguntasVideo[indexVideo]
+
+if(video.currentTime >= p.tiempo){
+
+video.pause()
+mostrarPreguntaVideo(p)
+indexVideo++
 
 }
 
-/* CHATBOT */
+}
+
+})
+
+function mostrarPreguntaVideo(p){
+
+document.getElementById("quizVideo").style.display="block"
+document.getElementById("quizPregunta").innerText=p.pregunta
+
+let cont=document.getElementById("quizOpciones")
+cont.innerHTML=""
+
+p.opciones.forEach((op,i)=>{
+
+let btn=document.createElement("button")
+btn.innerText=op
+btn.className="btn"
+
+btn.onclick=()=>{
+
+if(i===p.correcta){
+score+=10
+preguntasRespondidas++
+actualizarProgreso()
+document.getElementById("feedback").innerText="Correcto"
+}else{
+document.getElementById("feedback").innerText="Incorrecto"
+}
+
+setTimeout(()=>{
+document.getElementById("quizVideo").style.display="none"
+video.play()
+},1500)
+
+}
+
+cont.appendChild(btn)
+
+})
+
+}
+
+/* CHATBOT TUTOR */
 
 function bot(){
 
 let input=document.getElementById("msg")
 let chat=document.getElementById("chat")
+let mensaje=input.value.toLowerCase()
 
-let r="Pregunta sobre informática."
+let r="Interesante... ¿cómo lo explicarías tú?"
 
-if(input.value.toLowerCase().includes("hardware"))
-r="El hardware son las partes físicas del computador."
+if(mensaje.includes("hardware")){
+r="Piensa en algo que puedas tocar... ¿qué parte del computador sería?"
+}
 
-if(input.value.toLowerCase().includes("software"))
-r="El software son los programas."
+if(mensaje.includes("software")){
+r="Si no es físico… ¿dónde lo ves funcionando?"
+}
+
+if(mensaje.includes("informática")){
+r="¿En qué cosas de tu vida usas informática?"
+}
 
 chat.innerHTML+=`<p><b>Tú:</b> ${input.value}</p>`
-chat.innerHTML+=`<p><b>Bot:</b> ${r}</p>`
+chat.innerHTML+=`<p><b>IA:</b> ${r}</p>`
 
 chat.scrollTop=chat.scrollHeight
-
 input.value=""
 
 }
 
-/* OPINION (ACTUALIZADA PARA GUARDAR EN EXCEL) */
+/* OPINION */
 
 function guardarOpinion(){
 
@@ -364,31 +449,21 @@ let comentario=document.getElementById("comentario").value
 let calificacion=document.getElementById("calificacion").value
 let nombre=localStorage.getItem("student")
 
-let datos = {
-
+let datos={
 nombre:nombre,
 puntaje:score,
 progreso:preguntasRespondidas,
 comentario:comentario,
 calificacion:calificacion
-
 }
 
 fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec",{
-
 method:"POST",
 body:JSON.stringify(datos)
-
 })
-
 .then(res=>res.text())
 .then(data=>{
-
-localStorage.setItem("comentario",comentario)
-localStorage.setItem("calificacion",calificacion)
-
 document.getElementById("msgGuardado").innerText="Opinión guardada"
-
 })
 
 }
@@ -396,9 +471,7 @@ document.getElementById("msgGuardado").innerText="Opinión guardada"
 /* NAVEGACION */
 
 function volverPagina(){
-
 window.location.href="../index.html"
-
 }
 
 function irEvaluacion(){
@@ -406,11 +479,8 @@ function irEvaluacion(){
 let progreso=(preguntasRespondidas/totalPreguntas)*100
 
 if(progreso<100){
-
-alert("Debes completar la lección primero")
-
+alert("Debes completar la lección")
 return
-
 }
 
 window.location.href="evaluacion.html"

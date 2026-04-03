@@ -19,7 +19,6 @@ justify-content:center;
 h1{font-size:28px;}
 h2{font-size:24px;}
 h3{font-size:20px;}
-p, li{font-size:18px;}
 
 .container{
 width:100%;
@@ -58,16 +57,22 @@ background:#42ffbf;
 transition:0.5s;
 }
 
+.video-wrapper{
+width:100%;
+border-radius:20px;
+overflow:hidden;
+background:black;
+}
+
+video{
+width:100%;
+}
+
 textarea{
 width:100%;
 padding:10px;
 border-radius:10px;
 border:none;
-}
-
-select{
-padding:8px;
-border-radius:8px;
 }
 
 .disabled{
@@ -99,135 +104,147 @@ cursor:not-allowed;
 </div>
 </div>
 
+<!-- 🎬 VIDEO -->
+<div class="card">
+<h2>🎬 Video</h2>
+<div class="video-wrapper">
+<video id="videoClase" controls>
+<source src="videos4/htmlcss.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+
+<!-- ❓ QUIZ VIDEO -->
+<div class="card" id="quizVideo" style="display:none">
+<h3>Pregunta del video</h3>
+<p id="quizPregunta"></p>
+<div id="quizOpciones"></div>
+<p id="feedback"></p>
+</div>
+
+<!-- 📘 CONTENIDO -->
 <div class="card">
 
 <h2>📘 Contenido</h2>
 
 <p>
-HTML (HyperText Markup Language) es el lenguaje que se utiliza para crear la estructura de una página web.
+HTML (HyperText Markup Language) es el lenguaje que se usa para crear la estructura de una página web.
 </p>
 
 <p>
-CSS (Cascading Style Sheets) se utiliza para dar estilo a esa estructura, como colores, tamaños y diseño.
+CSS (Cascading Style Sheets) se utiliza para dar estilo, como colores, tamaños y diseño.
 </p>
 
 <p>
-HTML organiza el contenido y CSS lo hace visualmente atractivo.
+HTML define el contenido, mientras CSS define cómo se ve ese contenido.
 </p>
 
-<h3>Ejemplo básico HTML</h3>
+<h3>Ejemplo HTML</h3>
 
 <ul>
-<li>&lt;h1&gt;Título&lt;/h1&gt;</li>
-<li>&lt;p&gt;Párrafo&lt;/p&gt;</li>
+<li>&lt;h1&gt;Hola&lt;/h1&gt;</li>
+<li>&lt;p&gt;Texto&lt;/p&gt;</li>
 </ul>
 
-<h3>Ejemplo básico CSS</h3>
+<h3>Ejemplo CSS</h3>
 
 <ul>
-<li>body { background: black; }</li>
-<li>h1 { color: white; }</li>
+<li>h1 { color: blue; }</li>
+<li>p { font-size: 20px; }</li>
 </ul>
 
 </div>
 
+<!-- 🧠 QUIZ -->
 <div class="card">
 
 <h2>🧠 Quiz</h2>
 
 <p>¿Para qué sirve HTML?</p>
-<button class="btn" onclick="quiz(true)">Estructura de páginas</button>
-<button class="btn" onclick="quiz(false)">Programar robots</button>
+<button class="btn" onclick="quiz(true)">Estructura</button>
+<button class="btn" onclick="quiz(false)">Diseño</button>
 
 <hr>
 
 <p>¿Para qué sirve CSS?</p>
-<button class="btn" onclick="quiz(true)">Dar estilo</button>
-<button class="btn" onclick="quiz(false)">Crear bases de datos</button>
+<button class="btn" onclick="quiz(true)">Diseño</button>
+<button class="btn" onclick="quiz(false)">Estructura</button>
 
 <hr>
 
 <p>¿Qué etiqueta crea un título?</p>
-<button class="btn" onclick="quiz(true)">&lt;h1&gt;</button>
-<button class="btn" onclick="quiz(false)">&lt;css&gt;</button>
+<button class="btn" onclick="quiz(true)">h1</button>
+<button class="btn" onclick="quiz(false)">p</button>
 
 <hr>
 
 <p>¿Qué etiqueta crea un párrafo?</p>
-<button class="btn" onclick="quiz(true)">&lt;p&gt;</button>
-<button class="btn" onclick="quiz(false)">&lt;div&gt;</button>
+<button class="btn" onclick="quiz(true)">p</button>
+<button class="btn" onclick="quiz(false)">h1</button>
 
 <hr>
 
-<p>¿Qué lenguaje cambia colores?</p>
+<p>¿Qué cambia el color?</p>
 <button class="btn" onclick="quiz(true)">CSS</button>
 <button class="btn" onclick="quiz(false)">HTML</button>
 
 <hr>
 
-<p>¿Qué representa HTML?</p>
-<button class="btn" onclick="quiz(true)">Lenguaje de marcado</button>
-<button class="btn" onclick="quiz(false)">Base de datos</button>
+<p>¿HTML es?</p>
+<button class="btn" onclick="quiz(true)">Lenguaje de estructura</button>
+<button class="btn" onclick="quiz(false)">Lenguaje de estilo</button>
 
 <hr>
 
-<p>¿CSS puede cambiar tamaños?</p>
-<button class="btn" onclick="quiz(true)">Sí</button>
-<button class="btn" onclick="quiz(false)">No</button>
+<p>¿CSS es?</p>
+<button class="btn" onclick="quiz(true)">Lenguaje de estilo</button>
+<button class="btn" onclick="quiz(false)">Lenguaje de estructura</button>
 
 <hr>
 
-<p>¿HTML y CSS juntos sirven para?</p>
-<button class="btn" onclick="quiz(true)">Crear páginas web</button>
-<button class="btn" onclick="quiz(false)">Juegos físicos</button>
+<p>¿Qué define el diseño?</p>
+<button class="btn" onclick="quiz(true)">CSS</button>
+<button class="btn" onclick="quiz(false)">HTML</button>
 
 </div>
 
+<!-- RESULTADO -->
 <div class="card">
 <h2>Resultado final</h2>
 <button class="btn" onclick="resultado()">Ver resultado</button>
 <p id="final"></p>
 </div>
 
+<!-- OPINION -->
 <div class="card">
 
-<h2>💬 Opinión del estudiante</h2>
+<h2>💬 Opinión</h2>
 
-<textarea id="comentario" rows="4"></textarea>
-
-<p>Califica la experiencia:</p>
+<textarea id="comentario"></textarea>
 
 <select id="calificacion">
-<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-<option value="4">⭐⭐⭐⭐ Buena</option>
-<option value="3">⭐⭐⭐ Regular</option>
-<option value="2">⭐⭐ Mala</option>
-<option value="1">⭐ Muy mala</option>
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
 </select>
 
-<br><br>
-
-<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
-
+<button class="btn" onclick="guardarOpinion()">Guardar</button>
 <p id="msgGuardado"></p>
 
 </div>
 
+<!-- NAV -->
 <div class="card" style="text-align:center">
-
-<h2>📂 Navegación</h2>
 
 <button class="btn" onclick="volverPagina()">⬅ Volver</button>
 
-<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
-📝 Evaluación final
-</button>
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">Evaluación</button>
 
 <br><br>
 
-<button class="btn" onclick="verDashboard()">
-📊 Ver Dashboard Docente
-</button>
+<button class="btn" onclick="verDashboard()">📊 Dashboard</button>
 
 <p id="msgEval"></p>
 
@@ -238,7 +255,7 @@ HTML organiza el contenido y CSS lo hace visualmente atractivo.
 <script>
 
 let score=0
-let totalPreguntas=8
+let totalPreguntas=11
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
@@ -246,14 +263,7 @@ let progreso=(preguntasRespondidas/totalPreguntas)*100
 document.getElementById("progress-bar").style.width=progreso+"%"
 if(progreso>=100){
 document.getElementById("btnEvaluacion").classList.remove("disabled")
-document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
 }
-}
-
-function saveName(){
-let name=document.getElementById("studentName").value
-localStorage.setItem("student",name)
-document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function quiz(correct){
@@ -270,22 +280,93 @@ alert("Incorrecto")
 
 function resultado(){
 let name=localStorage.getItem("student")
-document.getElementById("final").innerHTML=
-"Estudiante: "+name+"<br>Puntaje final: "+score
+document.getElementById("final").innerHTML="Estudiante: "+name+"<br>Puntaje: "+score
+}
+
+/* 🎬 VIDEO INTERACTIVO */
+
+let video=document.getElementById("videoClase")
+
+let preguntasVideo=[
+{tiempo:5,p:"¿Para qué sirve HTML?",op:["Estructura","Color"],c:0},
+{tiempo:10,p:"¿Para qué sirve CSS?",op:["Diseño","Datos"],c:0},
+{tiempo:15,p:"¿Qué etiqueta es título?",op:["h1","p"],c:0}
+]
+
+let index=0
+
+video.addEventListener("timeupdate",()=>{
+
+if(index<preguntasVideo.length){
+
+let q=preguntasVideo[index]
+
+if(video.currentTime>=q.tiempo){
+
+video.pause()
+mostrarPregunta(q)
+index++
+
+}
+
+}
+
+})
+
+function mostrarPregunta(q){
+
+document.getElementById("quizVideo").style.display="block"
+document.getElementById("quizPregunta").innerText=q.p
+
+let cont=document.getElementById("quizOpciones")
+cont.innerHTML=""
+
+q.op.forEach((op,i)=>{
+
+let btn=document.createElement("button")
+btn.innerText=op
+btn.className="btn"
+
+btn.onclick=()=>{
+
+if(i===q.c){
+score+=10
+preguntasRespondidas++
+actualizarProgreso()
+document.getElementById("feedback").innerText="Correcto"
+}else{
+document.getElementById("feedback").innerText="Incorrecto"
+}
+
+setTimeout(()=>{
+document.getElementById("quizVideo").style.display="none"
+video.play()
+},1500)
+
+}
+
+cont.appendChild(btn)
+
+})
+
+}
+
+/* RESTO */
+
+function saveName(){
+let name=document.getElementById("studentName").value
+localStorage.setItem("student",name)
+document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
 function guardarOpinion(){
 
-let comentario=document.getElementById("comentario").value
-let calificacion=document.getElementById("calificacion").value
-let nombre=localStorage.getItem("student")
-
 let datos={
-nombre:nombre,
+nombre:localStorage.getItem("student"),
 puntaje:score,
 progreso:preguntasRespondidas,
-comentario:comentario,
-calificacion:calificacion,
+comentario:document.getElementById("comentario").value,
+calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 4"
 }
 
@@ -293,19 +374,14 @@ fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHW
 method:"POST",
 body:JSON.stringify(datos)
 })
-.then(res=>res.text())
-.then(()=>{
-document.getElementById("msgGuardado").innerText="Opinión guardada"
-})
 
+document.getElementById("msgGuardado").innerText="Guardado"
 }
 
 function verDashboard(){
-let clave = prompt("Ingrese clave de docente:")
+let clave=prompt("Clave docente")
 if(clave==="1234"){
 window.location.href="dashboard.html"
-}else{
-alert("Clave incorrecta")
 }
 }
 
@@ -314,9 +390,8 @@ window.location.href="../index.html"
 }
 
 function irEvaluacion(){
-let progreso=(preguntasRespondidas/totalPreguntas)*100
-if(progreso<100){
-alert("Debes completar la lección")
+if((preguntasRespondidas/totalPreguntas)*100<100){
+alert("Completa la lección")
 return
 }
 window.location.href="evaluacion.html"

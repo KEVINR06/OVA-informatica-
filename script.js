@@ -3,19 +3,6 @@
 let score = 0;
 let progress = 0;
 
-/* =========================
-   🔥 SINCRONIZAR SCORE
-========================= */
-
-let savedScore = localStorage.getItem("score");
-if(savedScore){
-  score = parseInt(savedScore);
-}
-
-/* =========================
-   LECCIONES
-========================= */
-
 const lessons = [
   {id:1,title:'Introducción a la informática',desc:'Conceptos básicos: hardware, software y sistemas.',content:'Contenido de la lección 1. Explicaciones, imágenes y ejemplos.'},
   {id:2,title:'Sistemas de numeración',desc:'Binario, hexadecimal y su aplicación en electrónica.',content:'Contenido de la lección 2 con ejercicios.'},
@@ -34,31 +21,46 @@ const questions = [
   {q:'¿Para qué se utiliza el pseudocódigo?', options:['Para programar directamente en un computador','Para escribir algoritmos usando un lenguaje cercano al humano','Para diseñar páginas web','Para ejecutar programas sin errores'], answer:1},
 ];
 
-// Render lecciones
+// =========================
+// LECCIONES (CORREGIDO)
+// =========================
+
 const lessonsEl = document.getElementById('lessons');
+
 if(lessonsEl){
-lessons.forEach(l=>{
-  const el = document.createElement('div'); el.className='card lesson';
-  el.innerHTML = `<h3>${l.title}</h3><p>${l.desc}</p>
-  <div style="display:flex;gap:8px;margin-top:8px">
-  <button class='btn' onclick="goToLesson(${l.id})">Abrir</button>
-  <button class='btn outline' onclick="markDone(${l.id},this)">Marcar como leída</button>
-  </div>`;
-  lessonsEl.appendChild(el);
-});
+  lessons.forEach(l=>{
+    const el = document.createElement('div'); 
+    el.className='card lesson';
+
+    el.innerHTML = `
+      <h3>${l.title}</h3>
+      <p>${l.desc}</p>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class='btn' onclick="goToLesson(${l.id})">Abrir</button>
+        <button class='btn outline' onclick="markDone(${l.id},this)">Marcar como leída</button>
+      </div>
+    `;
+
+    lessonsEl.appendChild(el);
+  });
 }
 
-/* =========================
-   🔥 CORRECCIÓN RUTA LECCIONES
-========================= */
-
+// 🔥 FUNCIÓN ARREGLADA (AQUÍ ESTABA EL PROBLEMA)
 function goToLesson(id){
-  window.location.href = "lecciones/leccion"+id+".html";
+
+  let ruta = `lecciones/leccion${id}.html`;
+
+  // si ya estás dentro de /lecciones
+  if(window.location.pathname.includes("/lecciones/")){
+    ruta = `leccion${id}.html`;
+  }
+
+  window.location.href = ruta;
 }
 
-/* =========================
-   QUIZ
-========================= */
+// =========================
+// QUIZ
+// =========================
 
 const quizEl = document.getElementById('quiz');
 
@@ -66,25 +68,35 @@ function renderQuiz(){
   if(!quizEl) return;
 
   quizEl.innerHTML='';
+
   questions.forEach((qq,i)=>{
-    const box = document.createElement('div'); box.className='card';
+    const box = document.createElement('div'); 
+    box.className='card';
+
     let opts = '';
+
     qq.options.forEach((op,j)=>{
       opts += `<div class='option' onclick='answer(${i},${j},this)'>${String.fromCharCode(65+j)}. ${op}</div>`;
     });
-    box.innerHTML = `<div class='question'>${i+1}. ${qq.q}</div><div class='options'>${opts}</div>`;
+
+    box.innerHTML = `
+      <div class='question'>${i+1}. ${qq.q}</div>
+      <div class='options'>${opts}</div>
+    `;
+
     quizEl.appendChild(box);
   });
 }
+
 renderQuiz();
 
 function answer(i,j,el){
+
   const locked = document.getElementById('lockAnswers')?.checked;
   const correct = questions[i].answer===j;
 
   if(correct){
     score += 10;
-    localStorage.setItem("score", score); // 🔥 GUARDAR
   }
 
   if(locked){
@@ -103,78 +115,52 @@ function answer(i,j,el){
   }
 }
 
-/* =========================
-   VIDEO INTERACTIVO (CORREGIDO)
-========================= */
+// =========================
+// CHAT
+// =========================
 
-document.addEventListener("DOMContentLoaded", function(){
+function sendMsg(){
+  const input = document.getElementById('inputMsg');
+  const text = input.value.trim(); 
+  if(!text) return;
 
-let video = document.getElementById("videoClase");
-if(!video) return;
+  addMsg(text,'user'); 
+  input.value='';
 
-let preguntasVideo = [
-{tiempo:5, pregunta:"¿Qué concepto se explicó?", opciones:["Opción A","Opción B"], correcta:0},
-{tiempo:12, pregunta:"¿Qué significa esto?", opciones:["Respuesta 1","Respuesta 2"], correcta:1}
-];
-
-let indexVideo = 0;
-let activa = false;
-
-video.addEventListener("timeupdate", ()=>{
-
-    if(indexVideo < preguntasVideo.length && !activa){
-
-        let p = preguntasVideo[indexVideo];
-
-        if(video.currentTime >= p.tiempo && !p.mostrada){
-
-            p.mostrada = true;
-            activa = true;
-            video.pause();
-            mostrarPreguntaVideo(p);
-            indexVideo++;
-        }
-    }
-
-});
-
-function mostrarPreguntaVideo(p){
-
-    document.getElementById("quizVideo").style.display="block";
-    document.getElementById("quizPregunta").innerText = p.pregunta;
-
-    let cont = document.getElementById("quizOpciones");
-    cont.innerHTML = "";
-
-    p.opciones.forEach((op,i)=>{
-
-        let btn = document.createElement("button");
-        btn.innerText = op;
-        btn.className = "btn";
-
-        btn.onclick = ()=>{
-
-            if(i === p.correcta){
-                score += 10;
-                localStorage.setItem("score", score); // 🔥 GUARDAR
-            }
-
-            setTimeout(()=>{
-                document.getElementById("quizVideo").style.display="none";
-                activa = false;
-                video.play();
-            },1500);
-        }
-
-        cont.appendChild(btn);
-    });
+  setTimeout(()=>{
+    const reply = generateReply(text);
+    addMsg(reply,'bot');
+  },500);
 }
 
-});
+function addMsg(txt,who){
+  const container = document.getElementById('messages');
+  if(!container) return;
 
-/* =========================
-   PROGRESO
-========================= */
+  const d = document.createElement('div'); 
+  d.className='msg '+(who==='user'?'user':'bot'); 
+  d.innerText=txt;
+
+  container.appendChild(d); 
+  container.scrollTop = container.scrollHeight;
+}
+
+function generateReply(text){
+  text = text.toLowerCase();
+
+  if(text.includes('hola')||text.includes('buenas')) return 'Hola! ¿Sobre qué lección quieres ayuda?';
+  if(text.includes('binario')) return 'El sistema binario usa base 2.';
+  if(text.includes('html')) return 'La etiqueta <p> crea un párrafo.';
+  if(text.includes('hardware')) return '¿Puedes tocarlo? entonces es hardware.';
+  if(text.includes('software')) return 'Son programas, no partes físicas.';
+  if(text.includes('informatica')) return 'Es el procesamiento de la información.';
+  
+  return 'Intenta reformular tu pregunta.';
+}
+
+// =========================
+// PROGRESO
+// =========================
 
 function completeLesson(id){
   const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
@@ -189,15 +175,71 @@ function updateProgress(){
 
   progress = percent;
 
-  document.getElementById('fillBar').style.width = percent+'%';
-  document.getElementById('progressTxt').innerText = `${done.length}/${lessons.length}`;
+  const bar = document.getElementById('fillBar');
+  const txt = document.getElementById('progressTxt');
+
+  if(bar) bar.style.width = percent+'%';
+  if(txt) txt.innerText = `${done.length}/${lessons.length}`;
 }
 
 updateProgress();
 
-/* =========================
-   VOLVER
-========================= */
+// =========================
+// OTROS
+// =========================
+
+function uploadMaterial(){
+  const f = document.getElementById('file');
+  if(f.files.length===0){
+    alert('Selecciona un archivo');
+    return;
+  }
+  alert('Archivo subido (simulación).');
+}
+
+function copyLink(){
+  navigator.clipboard?.writeText(location.href).then(()=>alert('Enlace copiado'));
+}
+
+function togglePreview(){
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+setInterval(()=>{
+  const n = Math.max(8,12 + Math.floor(Math.random()*6));
+
+  const active = document.getElementById('activeCount');
+  const last = document.getElementById('lastAccess');
+
+  if(active) active.innerText = n;
+  if(last) last.innerText = new Date().toLocaleTimeString();
+
+},5000);
+
+// =========================
+// GOOGLE SHEETS
+// =========================
+
+function guardarResultados(){
+
+let datos = {
+nombre: document.getElementById("nombre").value,
+puntaje: score,
+progreso: progress,
+comentario: document.getElementById("comentario").value,
+calificacion: document.getElementById("rating").value
+}
+
+fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec", {
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body: JSON.stringify(datos)
+})
+.then(res=>res.text())
+.then(data=>{ alert("Resultados guardados correctamente") })
+.catch(error=>{ alert("Error al guardar resultados") })
+
+}
 
 function volverInicio(){
     window.location.href="../index.html";

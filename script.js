@@ -236,7 +236,7 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycby0qVtPHcZzsOVm45kEV2aLljMOxy9z8iUigDCPcqWxjqC1V4NSWE87JwwK8QQk0GA/exec",{
+fetch("https://script.google.com/macros/s/AKfycbzlLFXOzvgia2SaKulRq_g4uJ3638LBFcNXny76wfpXA7sWbMF5wqj17-iOTatCBH7f/exec",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"

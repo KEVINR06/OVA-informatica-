@@ -365,7 +365,7 @@ puntaje:score,
 progreso:preguntasRespondidas,
 comentario:comentario,
 calificacion:calificacion,
-leccion:"Leccion 1" // 🔥 agregado
+leccion:"Leccion 1"
 }
 
 fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec",{
@@ -379,7 +379,7 @@ document.getElementById("msgGuardado").innerText="Opinión guardada"
 
 }
 
-/* 🔥 FUNCIÓN NUEVA */
+/* DASHBOARD */
 
 function verDashboard(){
 
@@ -412,6 +412,12 @@ window.location.href="evaluacion.html"
 
 }
 
+/* =========================
+   VIDEO CORREGIDO
+========================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
 let video = document.getElementById("videoClase")
 
 let preguntasVideo = [
@@ -420,15 +426,18 @@ let preguntasVideo = [
 ]
 
 let indexVideo = 0
+let activa = false
 
 video.addEventListener("timeupdate", ()=>{
 
-    if(indexVideo < preguntasVideo.length){
+    if(indexVideo < preguntasVideo.length && !activa){
 
         let p = preguntasVideo[indexVideo]
 
-        if(video.currentTime >= p.tiempo){
+        // margen para asegurar detección
+        if(video.currentTime >= p.tiempo && video.currentTime <= p.tiempo + 1){
 
+            activa = true
             video.pause()
             mostrarPreguntaVideo(p)
             indexVideo++
@@ -466,6 +475,8 @@ function mostrarPreguntaVideo(p){
 
             setTimeout(()=>{
                 document.getElementById("quizVideo").style.display="none"
+                document.getElementById("feedback").innerText=""
+                activa = false
                 video.play()
             },1500)
 
@@ -474,6 +485,46 @@ function mostrarPreguntaVideo(p){
         cont.appendChild(btn)
 
     })
+
+}
+
+})
+
+/* =========================
+   CHATBOT (TE FALTABA)
+========================= */
+
+function bot(){
+
+let input = document.getElementById("msg")
+let chat = document.getElementById("chat")
+
+let userMsg = input.value
+
+if(userMsg.trim() === "") return
+
+chat.innerHTML += "<p><b>Tú:</b> "+userMsg+"</p>"
+
+let respuesta = ""
+
+if(userMsg.toLowerCase().includes("hardware")){
+respuesta = "El hardware son las partes físicas del computador."
+}
+else if(userMsg.toLowerCase().includes("software")){
+respuesta = "El software son los programas."
+}
+else if(userMsg.toLowerCase().includes("informatica")){
+respuesta = "La informática procesa información."
+}
+else{
+respuesta = "Pregunta sobre hardware, software o informática 🙂"
+}
+
+chat.innerHTML += "<p><b>IA:</b> "+respuesta+"</p>"
+
+chat.scrollTop = chat.scrollHeight
+
+input.value = ""
 
 }
 

@@ -411,6 +411,76 @@ return
 window.location.href="evaluacion.html"
 
 }
+  <script>
+
+/* VIDEO INTERACTIVO */
+
+let video = document.getElementById("videoClase")
+
+let preguntasVideo = [
+{tiempo:5, pregunta:"¿Qué concepto se explicó?", opciones:["Opción A","Opción B"], correcta:0},
+{tiempo:12, pregunta:"¿Qué significa esto?", opciones:["Respuesta 1","Respuesta 2"], correcta:1}
+]
+
+let indexVideo = 0
+
+video.addEventListener("timeupdate", ()=>{
+
+    if(indexVideo < preguntasVideo.length){
+
+        let p = preguntasVideo[indexVideo]
+
+        if(video.currentTime >= p.tiempo){
+
+            video.pause()
+            mostrarPreguntaVideo(p)
+            indexVideo++
+
+        }
+
+    }
+
+})
+
+function mostrarPreguntaVideo(p){
+
+    document.getElementById("quizVideo").style.display="block"
+    document.getElementById("quizPregunta").innerText = p.pregunta
+
+    let cont = document.getElementById("quizOpciones")
+    cont.innerHTML = ""
+
+    p.opciones.forEach((op,i)=>{
+
+        let btn = document.createElement("button")
+        btn.innerText = op
+        btn.className = "btn"
+
+        btn.onclick = ()=>{
+
+            if(i === p.correcta){
+                score += 10
+                preguntasRespondidas++
+                actualizarProgreso()
+                document.getElementById("feedback").innerText="Correcto"
+            }else{
+                document.getElementById("feedback").innerText="Incorrecto"
+            }
+
+            setTimeout(()=>{
+                document.getElementById("quizVideo").style.display="none"
+                video.play()
+            },1500)
+
+        }
+
+        cont.appendChild(btn)
+
+    })
+
+}
+
+</script>
 
 </script>
 

@@ -273,7 +273,6 @@ Un sistema informático está compuesto por hardware (partes físicas) y softwar
 📝 Evaluación final
 </button>
 
-<!-- 🔥 BOTÓN AGREGADO -->
 <br><br>
 <button class="btn" onclick="verDashboard()">
 📊 Ver Dashboard Docente
@@ -310,13 +309,10 @@ let progreso=(preguntasRespondidas/totalPreguntas)*100
 document.getElementById("progress-bar").style.width=progreso+"%"
 
 if(progreso>=100){
-
 let btn=document.getElementById("btnEvaluacion")
 btn.classList.remove("disabled")
 document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
-
 }
-
 }
 
 /* ESTUDIANTE */
@@ -330,7 +326,6 @@ document.getElementById("welcome").innerText="Bienvenido "+name
 /* QUIZ */
 
 function quiz(correct){
-
 if(correct){
 score+=10
 preguntasRespondidas++
@@ -340,7 +335,6 @@ alert("Correcto")
 }else{
 alert("Incorrecto")
 }
-
 }
 
 /* RESULTADO */
@@ -351,7 +345,7 @@ document.getElementById("final").innerHTML=
 "Estudiante: "+name+"<br>Puntaje final: "+score
 }
 
-/* OPINION */
+/* 🔥 OPINION CORREGIDA */
 
 function guardarOpinion(){
 
@@ -368,29 +362,31 @@ calificacion:calificacion,
 leccion:"Leccion 1"
 }
 
-fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec",{
+fetch("https://script.google.com/macros/s/AKfycbyEFf_XXgxN19UqX0mPetciZPlia31GifBELFSalVxyjY9dVUibZxBO7BK8Ra1Fwhzi/exec",{
 method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify(datos)
 })
-.then(res=>res.text())
-.then(data=>{
-document.getElementById("msgGuardado").innerText="Opinión guardada"
+.then(()=>{
+document.getElementById("msgGuardado").innerText="Opinión guardada correctamente"
 })
-
+.catch(()=>{
+document.getElementById("msgGuardado").innerText="Error al guardar"
+})
 }
 
 /* DASHBOARD */
 
 function verDashboard(){
-
 let clave = prompt("Ingrese clave de docente:")
-
 if(clave === "1234"){
 window.location.href="dashboard.html"
 }else{
 alert("Clave incorrecta")
 }
-
 }
 
 /* NAVEGACION */
@@ -400,21 +396,15 @@ window.location.href="../index.html"
 }
 
 function irEvaluacion(){
-
 let progreso=(preguntasRespondidas/totalPreguntas)*100
-
 if(progreso<100){
 alert("Debes completar la lección")
 return
 }
-
 window.location.href="evaluacion.html"
-
 }
 
-/* =========================
-   VIDEO CORREGIDO
-========================= */
+/* VIDEO */
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -430,69 +420,59 @@ let activa = false
 
 video.addEventListener("timeupdate", ()=>{
 
-    if(indexVideo < preguntasVideo.length && !activa){
+if(indexVideo < preguntasVideo.length && !activa){
 
-        let p = preguntasVideo[indexVideo]
+let p = preguntasVideo[indexVideo]
 
-        // margen para asegurar detección
-        if(video.currentTime >= p.tiempo && video.currentTime <= p.tiempo + 1){
+if(video.currentTime >= p.tiempo && video.currentTime <= p.tiempo + 1){
 
-            activa = true
-            video.pause()
-            mostrarPreguntaVideo(p)
-            indexVideo++
-
-        }
-
-    }
-
+activa = true
+video.pause()
+mostrarPreguntaVideo(p)
+indexVideo++
+}
+}
 })
 
 function mostrarPreguntaVideo(p){
 
-    document.getElementById("quizVideo").style.display="block"
-    document.getElementById("quizPregunta").innerText = p.pregunta
+document.getElementById("quizVideo").style.display="block"
+document.getElementById("quizPregunta").innerText = p.pregunta
 
-    let cont = document.getElementById("quizOpciones")
-    cont.innerHTML = ""
+let cont = document.getElementById("quizOpciones")
+cont.innerHTML = ""
 
-    p.opciones.forEach((op,i)=>{
+p.opciones.forEach((op,i)=>{
 
-        let btn = document.createElement("button")
-        btn.innerText = op
-        btn.className = "btn"
+let btn = document.createElement("button")
+btn.innerText = op
+btn.className = "btn"
 
-        btn.onclick = ()=>{
+btn.onclick = ()=>{
 
-            if(i === p.correcta){
-                score += 10
-                preguntasRespondidas++
-                actualizarProgreso()
-                document.getElementById("feedback").innerText="Correcto"
-            }else{
-                document.getElementById("feedback").innerText="Incorrecto"
-            }
-
-            setTimeout(()=>{
-                document.getElementById("quizVideo").style.display="none"
-                document.getElementById("feedback").innerText=""
-                activa = false
-                video.play()
-            },1500)
-
-        }
-
-        cont.appendChild(btn)
-
-    })
-
+if(i === p.correcta){
+score += 10
+preguntasRespondidas++
+actualizarProgreso()
+document.getElementById("feedback").innerText="Correcto"
+}else{
+document.getElementById("feedback").innerText="Incorrecto"
 }
 
+setTimeout(()=>{
+document.getElementById("quizVideo").style.display="none"
+document.getElementById("feedback").innerText=""
+activa = false
+video.play()
+},1500)
+}
+
+cont.appendChild(btn)
+})
+}
 })
 
-/* =========================
-   CHATBOT (TE FALTABA)
-========================= */
+/* CHATBOT */
 
 function bot(){
 
@@ -521,18 +501,14 @@ respuesta = "Pregunta sobre hardware, software o informática 🙂"
 }
 
 chat.innerHTML += "<p><b>IA:</b> "+respuesta+"</p>"
-
 chat.scrollTop = chat.scrollHeight
-
 input.value = ""
-
 }
 
 </script>
 
 </body>
 </html>
-
 
 
 

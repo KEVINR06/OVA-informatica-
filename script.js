@@ -220,26 +220,37 @@ setInterval(()=>{
 
 function guardarResultados(){
 
-let nombre = document.getElementById("nombre")?.value;
-let comentario = document.getElementById("comentario")?.value;
-let calificacion = document.getElementById("rating")?.value;
+let nombre = localStorage.getItem("student") || "Sin nombre";
+let comentario = document.getElementById("comentario")?.value || "";
+let calificacion = document.getElementById("calificacion")?.value || 0;
 
-let datos={
+// 🔥 detecta automáticamente la lección
+let leccion = document.title || "Leccion";
+
+let datos = {
 nombre:nombre,
 puntaje:score,
-progreso:progress,
+progreso:preguntasRespondidas,
 comentario:comentario,
 calificacion:calificacion,
-leccion:"Leccion 1"
+leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycbyRH-y3VZrKSA04YhZ7vaP_F-THoOOq6eQBSLdPJuYITLW7_MWhkefRttFGpM0p3rVT/exec",{
+fetch("TU_LINK_GOOGLE_APPS_SCRIPT",{
 method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify(datos)
 })
 .then(res=>res.text())
-.then(data=>{ alert("Resultados guardados correctamente") })
-.catch(error=>{ alert("Error al guardar resultados") })
+.then(data=>{
+alert("Datos guardados correctamente");
+})
+.catch(err=>{
+console.error(err);
+alert("Error al guardar");
+});
 
 }
 

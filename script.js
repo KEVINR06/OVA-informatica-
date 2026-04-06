@@ -3,6 +3,9 @@
 let score = 0;
 let progress = 0;
 
+// 🔥 SOLUCIÓN: evitar error si no existe en esta página
+let preguntasRespondidas = 0;
+
 const lessons = [
   {id:1,title:'Introducción a la informática',desc:'Conceptos básicos: hardware, software y sistemas.',content:'Contenido de la lección 1. Explicaciones, imágenes y ejemplos.'},
   {id:2,title:'Sistemas de numeración',desc:'Binario, hexadecimal y su aplicación en electrónica.',content:'Contenido de la lección 2 con ejercicios.'},
@@ -215,7 +218,7 @@ setInterval(()=>{
 },5000);
 
 // =========================
-// GOOGLE SHEETS (CORREGIDO)
+// GOOGLE SHEETS (🔥 FIX FINAL)
 // =========================
 
 function guardarResultados(){
@@ -224,7 +227,6 @@ let nombre = localStorage.getItem("student") || "Sin nombre";
 let comentario = document.getElementById("comentario")?.value || "";
 let calificacion = document.getElementById("calificacion")?.value || 0;
 
-// 🔥 detecta automáticamente la lección
 let leccion = document.title || "Leccion";
 
 let datos = {
@@ -236,20 +238,19 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycbzlLFXOzvgia2SaKulRq_g4uJ3638LBFcNXny76wfpXA7sWbMF5wqj17-iOTatCBH7f/exec",{
+fetch("https://script.google.com/macros/s/AKfycbyEFf_XXgxN19UqX0mPetciZPlia31GifBELFSalVxyjY9dVUibZxBO7BK8Ra1Fwhzi/exec",{
 method:"POST",
+mode:"no-cors", // 🔥 CLAVE PARA QUE FUNCIONE
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify(datos)
 })
-.then(res=>res.text())
-.then(data=>{
-alert("Datos guardados correctamente");
+.then(()=>{
+alert("Datos enviados");
 })
-.catch(err=>{
-console.error(err);
-alert("Error al guardar");
+.catch(()=>{
+alert("Error al enviar");
 });
 
 }

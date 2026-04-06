@@ -236,7 +236,7 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("TU_LINK_GOOGLE_APPS_SCRIPT",{
+fetch("https://script.google.com/macros/s/AKfycby0qVtPHcZzsOVm45kEV2aLljMOxy9z8iUigDCPcqWxjqC1V4NSWE87JwwK8QQk0GA/exec",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"

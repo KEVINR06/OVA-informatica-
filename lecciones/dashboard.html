@@ -60,9 +60,12 @@ margin-top:20px;
 
 <script>
 
-let URL="PEGA_AQUI_TU_LINK" // 👈 TU LINK
+let URL="https://script.google.com/macros/s/AKfycbyRH-y3VZrKSA04YhZ7vaP_F-THoOOq6eQBSLdPJuYITLW7_MWhkefRttFGpM0p3rVT/exec" // 👈 TU LINK
 
 let datosGlobal=[]
+
+let graficoPuntaje = null
+let graficoCalificacion = null
 
 fetch(URL)
 .then(res=>res.json())
@@ -71,56 +74,15 @@ fetch(URL)
 data.shift() // elimina encabezados
 datosGlobal=data
 
-let nombres=[]
-let puntajes=[]
-let calificaciones=[]
-
 let selector=document.getElementById("selectorEstudiante")
 
 data.forEach((row,i)=>{
 
-// 🔥 llenar selector
 let option=document.createElement("option")
 option.value=i
 option.text=row[0] // nombre
 selector.appendChild(option)
 
-// datos para gráficas
-nombres.push(row[0])
-puntajes.push(row[1])
-calificaciones.push(row[4])
-
-})
-
-/* GRAFICO PUNTAJE */
-
-new Chart(document.getElementById("graficoPuntaje"), {
-type:"bar",
-data:{
-labels:nombres,
-datasets:[{
-label:"Puntaje de estudiantes",
-data:puntajes
-}]
-}
-})
-
-/* GRAFICO CALIFICACION */
-
-new Chart(document.getElementById("graficoCalificacion"), {
-type:"pie",
-data:{
-labels:["1","2","3","4","5"],
-datasets:[{
-data:[
-calificaciones.filter(x=>x==1).length,
-calificaciones.filter(x=>x==2).length,
-calificaciones.filter(x=>x==3).length,
-calificaciones.filter(x=>x==4).length,
-calificaciones.filter(x=>x==5).length
-]
-}]
-}
 })
 
 })
@@ -135,14 +97,51 @@ if(index==="") return
 
 let estudiante=datosGlobal[index]
 
+// 🔥 INFO DEL ESTUDIANTE
 document.getElementById("infoEstudiante").innerHTML=
 `
 <b>Nombre:</b> ${estudiante[0]} <br>
 <b>Puntaje:</b> ${estudiante[1]} <br>
 <b>Progreso:</b> ${estudiante[2]} <br>
 <b>Calificación:</b> ${estudiante[4]} <br>
-<b>Lección:</b> ${estudiante[5] || "No definida"}
+<b>Lección:</b> ${estudiante[5] || "No definida"} <br><br>
+
+<b>📝 Opinión:</b><br>
+"${estudiante[3] || "Sin comentario"}"
 `
+
+/* 🔥 GRAFICO PUNTAJE INDIVIDUAL */
+
+if(graficoPuntaje){
+graficoPuntaje.destroy()
+}
+
+graficoPuntaje = new Chart(document.getElementById("graficoPuntaje"), {
+type:"bar",
+data:{
+labels:["Puntaje"],
+datasets:[{
+label:"Puntaje del estudiante",
+data:[estudiante[1]]
+}]
+}
+})
+
+/* 🔥 GRAFICO CALIFICACION INDIVIDUAL */
+
+if(graficoCalificacion){
+graficoCalificacion.destroy()
+}
+
+graficoCalificacion = new Chart(document.getElementById("graficoCalificacion"), {
+type:"pie",
+data:{
+labels:["Calificación"],
+datasets:[{
+data:[estudiante[4], 5-estudiante[4]]
+}]
+}
+})
 
 }
 

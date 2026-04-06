@@ -2,12 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard OVA</title>
+<title>Dashboard OVA - Nivel Tesis</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
 body{
 font-family:Arial;
 background:#07131d;
@@ -16,9 +15,16 @@ text-align:center;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 padding:20px;
+}
+
+.card{
+background:#0e2734;
+padding:20px;
+border-radius:20px;
+margin-top:20px;
 }
 
 canvas{
@@ -32,7 +38,6 @@ padding:10px;
 border-radius:10px;
 margin-top:20px;
 }
-
 </style>
 
 </head>
@@ -41,104 +46,114 @@ margin-top:20px;
 
 <div class="container">
 
-<h1>📊 Dashboard del Docente</h1>
+<h1>📊 Dashboard Inteligente del OVA</h1>
 
-<p>Visualización del rendimiento de estudiantes</p>
-
-<!-- 🔥 SELECTOR -->
 <h3>Seleccionar estudiante</h3>
-<select id="selectorEstudiante" onchange="mostrarEstudiante()">
+<select id="selectorEstudiante" onchange="analizarEstudiante()">
 <option value="">Seleccione un estudiante</option>
 </select>
 
-<p id="infoEstudiante"></p>
+<div class="card">
+<p id="info"></p>
+<p id="opinion"></p>
+<p id="rendimiento"></p>
+</div>
 
-<canvas id="graficoPuntaje"></canvas>
-<canvas id="graficoCalificacion"></canvas>
+<canvas id="graficoEvolucion"></canvas>
 
 </div>
 
 <script>
 
-let URL="https://script.google.com/macros/s/AKfycbzlLFXOzvgia2SaKulRq_g4uJ3638LBFcNXny76wfpXA7sWbMF5wqj17-iOTatCBH7f/exec" // 👈 TU LINK
+let URL="PEGA_AQUI_TU_WEB_APP"
 
 let datosGlobal=[]
-
-let graficoPuntaje = null
-let graficoCalificacion = null
+let chart=null
 
 fetch(URL)
 .then(res=>res.json())
 .then(data=>{
 
-data.shift() // elimina encabezados
+data.shift()
 datosGlobal=data
 
 let selector=document.getElementById("selectorEstudiante")
 
-data.forEach((row,i)=>{
+let nombresUnicos=[...new Set(data.map(x=>x[0]))]
 
+nombresUnicos.forEach(nombre=>{
 let option=document.createElement("option")
-option.value=i
-option.text=row[0] // nombre
+option.value=nombre
+option.text=nombre
 selector.appendChild(option)
-
 })
 
 })
 
-/* 🔥 MOSTRAR ESTUDIANTE */
+function analizarEstudiante(){
 
-function mostrarEstudiante(){
+let nombre=document.getElementById("selectorEstudiante").value
+if(nombre==="") return
 
-let index=document.getElementById("selectorEstudiante").value
+// 🔥 filtrar TODAS sus lecciones
+let registros=datosGlobal.filter(x=>x[0]===nombre)
 
-if(index==="") return
+// ordenar por lección
+registros.sort((a,b)=> a[5].localeCompare(b[5]))
 
-let estudiante=datosGlobal[index]
+let lecciones=[]
+let puntajes=[]
+let opiniones=[]
 
-// 🔥 INFO DEL ESTUDIANTE
-document.getElementById("infoEstudiante").innerHTML=
+registros.forEach(r=>{
+lecciones.push(r[5])
+puntajes.push(Number(r[1]))
+opiniones.push(r[3])
+})
+
+// 🔥 métricas
+let promedio = puntajes.reduce((a,b)=>a+b,0)/puntajes.length
+let ultima = puntajes[puntajes.length-1]
+let ultimaOpinion = opiniones[opiniones.length-1]
+
+// 🔥 rendimiento
+let estado=""
+if(promedio >= 80){
+estado="🟢 Alto rendimiento"
+}else if(promedio >= 50){
+estado="🟡 Rendimiento medio"
+}else{
+estado="🔴 Bajo rendimiento"
+}
+
+// 🔥 mostrar info
+document.getElementById("info").innerHTML=
 `
-<b>Nombre:</b> ${estudiante[0]} <br>
-<b>Puntaje:</b> ${estudiante[1]} <br>
-<b>Progreso:</b> ${estudiante[2]} <br>
-<b>Calificación:</b> ${estudiante[4]} <br>
-<b>Lección:</b> ${estudiante[5] || "No definida"} <br><br>
-
-<b>📝 Opinión:</b><br>
-"${estudiante[3] || "Sin comentario"}"
+<b>Estudiante:</b> ${nombre} <br>
+<b>Promedio:</b> ${promedio.toFixed(1)} <br>
+<b>Último puntaje:</b> ${ultima}
 `
 
-/* 🔥 GRAFICO PUNTAJE INDIVIDUAL */
+document.getElementById("opinion").innerHTML=
+`<b>Última opinión:</b> ${ultimaOpinion}`
 
-if(graficoPuntaje){
-graficoPuntaje.destroy()
-}
+document.getElementById("rendimiento").innerHTML=
+`<b>Estado:</b> ${estado}`
 
-graficoPuntaje = new Chart(document.getElementById("graficoPuntaje"), {
-type:"bar",
+
+// 🔥 destruir gráfica anterior
+if(chart) chart.destroy()
+
+// 🔥 gráfica evolución
+chart = new Chart(document.getElementById("graficoEvolucion"), {
+type:"line",
 data:{
-labels:["Puntaje"],
+labels:lecciones,
 datasets:[{
-label:"Puntaje del estudiante",
-data:[estudiante[1]]
-}]
-}
-})
-
-/* 🔥 GRAFICO CALIFICACION INDIVIDUAL */
-
-if(graficoCalificacion){
-graficoCalificacion.destroy()
-}
-
-graficoCalificacion = new Chart(document.getElementById("graficoCalificacion"), {
-type:"pie",
-data:{
-labels:["Calificación"],
-datasets:[{
-data:[estudiante[4], 5-estudiante[4]]
+label:"Evolución del puntaje",
+data:puntajes,
+fill:false,
+tension:0.2
 }]
 }
 })

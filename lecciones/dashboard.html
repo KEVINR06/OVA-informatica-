@@ -2,11 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard OVA - Nivel Tesis</title>
+<title>Dashboard OVA</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+
 body{
 font-family:Arial;
 background:#07131d;
@@ -15,16 +16,9 @@ text-align:center;
 }
 
 .container{
-max-width:1000px;
+max-width:900px;
 margin:auto;
 padding:20px;
-}
-
-.card{
-background:#0e2734;
-padding:20px;
-border-radius:20px;
-margin-top:20px;
 }
 
 canvas{
@@ -38,6 +32,7 @@ padding:10px;
 border-radius:10px;
 margin-top:20px;
 }
+
 </style>
 
 </head>
@@ -46,42 +41,41 @@ margin-top:20px;
 
 <div class="container">
 
-<h1>📊 Dashboard Inteligente del OVA</h1>
+<h1>📊 Dashboard del Docente</h1>
+
+<p>Visualización del rendimiento de estudiantes</p>
 
 <h3>Seleccionar estudiante</h3>
-<select id="selectorEstudiante" onchange="analizarEstudiante()">
+<select id="selectorEstudiante" onchange="mostrarEstudiante()">
 <option value="">Seleccione un estudiante</option>
 </select>
 
-<div class="card">
-<p id="info"></p>
-<p id="opinion"></p>
-<p id="rendimiento"></p>
-</div>
+<p id="infoEstudiante"></p>
 
-<canvas id="graficoEvolucion"></canvas>
+<canvas id="graficoPuntaje"></canvas>
 
 </div>
 
 <script>
 
+// 🔥 PEGA AQUÍ TU URL DEL WEB APP
 let URL="https://script.google.com/macros/s/AKfycbwlj8-VREn6fDLBGHgGbUyZUz_PZ5tJ6BbRaUNr5hdsBJwQPw6apCGyEH_7c4xzxydV/exec"
 
 let datosGlobal=[]
-let chart=null
 
 fetch(URL)
 .then(res=>res.json())
 .then(data=>{
 
-data.shift()
+data.shift() // elimina encabezados
 datosGlobal=data
 
 let selector=document.getElementById("selectorEstudiante")
 
-let nombresUnicos=[...new Set(data.map(x=>x[0]))]
+// 🔥 evitar duplicados
+let nombresUnicos=[...new Set(data.map(row=>row[0]))]
 
-nombresUnicos.forEach(nombre=>{
+nombresUnicos.forEach((nombre,i)=>{
 let option=document.createElement("option")
 option.value=nombre
 option.text=nombre
@@ -90,73 +84,63 @@ selector.appendChild(option)
 
 })
 
-function analizarEstudiante(){
+.catch(()=>{
+alert("Error conectando con Google Sheets")
+})
+
+/* =========================
+   MOSTRAR ESTUDIANTE
+========================= */
+
+function mostrarEstudiante(){
 
 let nombre=document.getElementById("selectorEstudiante").value
 if(nombre==="") return
 
-// 🔥 filtrar TODAS sus lecciones
-let registros=datosGlobal.filter(x=>x[0]===nombre)
+// 🔥 filtrar datos del estudiante
+let datosEstudiante = datosGlobal.filter(d => d[0] === nombre)
 
-// ordenar por lección
-registros.sort((a,b)=> a[5].localeCompare(b[5]))
+// 🔥 separar diagnóstico y lecciones
+let diagnostico = datosEstudiante.find(d => d[5] === "Diagnostico")
+let lecciones = datosEstudiante.filter(d => d[5] !== "Diagnostico")
 
-let lecciones=[]
-let puntajes=[]
-let opiniones=[]
+// 🔥 construir gráfica
+let labels = ["Diagnóstico"]
+let valores = [diagnostico ? Number(diagnostico[1]) : 0]
 
-registros.forEach(r=>{
-lecciones.push(r[5])
-puntajes.push(Number(r[1]))
-opiniones.push(r[3])
+lecciones.forEach(l=>{
+labels.push(l[5])
+valores.push(Number(l[1]))
 })
 
-// 🔥 métricas
-let promedio = puntajes.reduce((a,b)=>a+b,0)/puntajes.length
-let ultima = puntajes[puntajes.length-1]
-let ultimaOpinion = opiniones[opiniones.length-1]
-
-// 🔥 rendimiento
-let estado=""
-if(promedio >= 80){
-estado="🟢 Alto rendimiento"
-}else if(promedio >= 50){
-estado="🟡 Rendimiento medio"
-}else{
-estado="🔴 Bajo rendimiento"
+// 🔥 destruir gráfica anterior
+if(window.grafico){
+window.grafico.destroy()
 }
 
-// 🔥 mostrar info
-document.getElementById("info").innerHTML=
-`
-<b>Estudiante:</b> ${nombre} <br>
-<b>Promedio:</b> ${promedio.toFixed(1)} <br>
-<b>Último puntaje:</b> ${ultima}
-`
-
-document.getElementById("opinion").innerHTML=
-`<b>Última opinión:</b> ${ultimaOpinion}`
-
-document.getElementById("rendimiento").innerHTML=
-`<b>Estado:</b> ${estado}`
-
-
-// 🔥 destruir gráfica anterior
-if(chart) chart.destroy()
-
-// 🔥 gráfica evolución
-chart = new Chart(document.getElementById("graficoEvolucion"), {
+// 🔥 crear gráfica
+window.grafico = new Chart(document.getElementById("graficoPuntaje"), {
 type:"line",
 data:{
-labels:lecciones,
+labels:labels,
 datasets:[{
-label:"Evolución del puntaje",
-data:puntajes,
-fill:false,
-tension:0.2
+label:"Evolución del estudiante",
+data:valores
 }]
 }
 })
+
+// 🔥 última lección para mostrar opinión
+let ultima = lecciones[lecciones.length-1]
+
+// 🔥 info del estudiante
+document.getElementById("infoEstudiante").innerHTML=
+`
+<b>Nombre:</b> ${nombre}<br>
+<b>Diagnóstico inicial:</b> ${diagnostico ? diagnostico[1] : "No registrado"}<br>
+<b>Último puntaje:</b> ${ultima ? ultima[1] : "Sin datos"}<br>
+<b>Opinión:</b> ${ultima ? ultima[3] : "Sin comentario"}
+`
 
 }
 

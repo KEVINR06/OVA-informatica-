@@ -22,7 +22,7 @@ const questions = [
 ];
 
 // =========================
-// LECCIONES (CORREGIDO)
+// LECCIONES
 // =========================
 
 const lessonsEl = document.getElementById('lessons');
@@ -45,12 +45,10 @@ if(lessonsEl){
   });
 }
 
-// 🔥 FUNCIÓN ARREGLADA (AQUÍ ESTABA EL PROBLEMA)
 function goToLesson(id){
 
   let ruta = `lecciones/leccion${id}.html`;
 
-  // si ya estás dentro de /lecciones
   if(window.location.pathname.includes("/lecciones/")){
     ruta = `leccion${id}.html`;
   }
@@ -217,23 +215,27 @@ setInterval(()=>{
 },5000);
 
 // =========================
-// GOOGLE SHEETS
+// GOOGLE SHEETS (CORREGIDO)
 // =========================
 
 function guardarResultados(){
 
-let datos = {
-nombre: document.getElementById("nombre").value,
-puntaje: score,
-progreso: progress,
-comentario: document.getElementById("comentario").value,
-calificacion: document.getElementById("rating").value
-}
+let nombre = document.getElementById("nombre")?.value;
+let comentario = document.getElementById("comentario")?.value;
+let calificacion = document.getElementById("rating")?.value;
 
-fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec", {
+let datos={
+nombre:nombre,
+puntaje:score,
+progreso:progress,
+comentario:comentario,
+calificacion:calificacion,
+leccion:"Leccion 1"
+};
+
+fetch("https://script.google.com/macros/s/AKfycbyRH-y3VZrKSA04YhZ7vaP_F-THoOOq6eQBSLdPJuYITLW7_MWhkefRttFGpM0p3rVT/exec",{
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body: JSON.stringify(datos)
+body:JSON.stringify(datos)
 })
 .then(res=>res.text())
 .then(data=>{ alert("Resultados guardados correctamente") })

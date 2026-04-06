@@ -238,21 +238,20 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycbwlj8-VREn6fDLBGHgGbUyZUz_PZ5tJ6BbRaUNr5hdsBJwQPw6apCGyEH_7c4xzxydV/exec",{
+fetch("https://script.google.com/macros/s/AKfycbzLn47Sun0xunzRcixEbslIY0WTeWrenVqFpyCIOYYgsLknpTbRLafwxvNmibi1WI8y/exec",{
 method:"POST",
-mode:"no-cors", // 🔥 CLAVE PARA QUE FUNCIONE
+mode:"no-cors", // 🔥 CLAVE
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify(datos)
 })
 .then(()=>{
-alert("Datos enviados");
+alert("Diagnóstico guardado");
 })
 .catch(()=>{
-alert("Error al enviar");
+alert("Error al guardar");
 });
-
 }
 
 function volverInicio(){

@@ -23,37 +23,19 @@ const questions = [
 
 // Render lecciones
 const lessonsEl = document.getElementById('lessons');
+if(lessonsEl){
 lessons.forEach(l=>{
   const el = document.createElement('div'); el.className='card lesson';
   el.innerHTML = `<h3>${l.title}</h3><p>${l.desc}</p><div style="display:flex;gap:8px;margin-top:8px"><button class='btn' onclick="goToLesson(${l.id})">Abrir</button><button class='btn outline' onclick="markDone(${l.id},this)">Marcar como leída</button></div>`;
   lessonsEl.appendChild(el);
 });
-
-lessons.push({
-  id:2,
-  title:'Nueva lección',
-  desc:'Descripción de la lección',
-  content:''
-});
-
-lessons.push({
-  id:3,
-  title:'Nueva lección',
-  desc:'Descripción de la lección',
-  content:''
-});
-
-lessons.push({
-  id:4,
-  title:'Nueva lección',
-  desc:'Descripción de la lección',
-  content:''
-});
-
+}
 
 // Render quiz
 const quizEl = document.getElementById('quiz');
 function renderQuiz(){
+  if(!quizEl) return;
+
   quizEl.innerHTML='';
   questions.forEach((qq,i)=>{
     const box = document.createElement('div'); box.className='card';
@@ -68,7 +50,7 @@ function renderQuiz(){
 renderQuiz();
 
 function answer(i,j,el){
-  const locked = document.getElementById('lockAnswers').checked;
+  const locked = document.getElementById('lockAnswers')?.checked;
   const correct = questions[i].answer===j;
 
   if(correct){
@@ -91,43 +73,119 @@ function answer(i,j,el){
   }
 }
 
-// Chat simple (simulación)
+/* =========================
+   CHAT (CORREGIDO)
+========================= */
+
 function sendMsg(){
   const input = document.getElementById('inputMsg');
-  const text = input.value.trim(); if(!text) return;
-  addMsg(text,'user'); input.value='';
+  const text = input.value.trim(); 
+  if(!text) return;
+
+  addMsg(text,'user'); 
+  input.value='';
+
   setTimeout(()=>{
     const reply = generateReply(text);
     addMsg(reply,'bot');
-  },500 + Math.random()*800);
+  },500);
 }
 
 function addMsg(txt,who){
   const container = document.getElementById('messages');
-  const d = document.createElement('div'); d.className='msg '+(who==='user'?'user':'bot'); d.innerText=txt;
-  container.appendChild(d); container.scrollTop = container.scrollHeight;
+  if(!container) return;
+
+  const d = document.createElement('div'); 
+  d.className='msg '+(who==='user'?'user':'bot'); 
+  d.innerText=txt;
+
+  container.appendChild(d); 
+  container.scrollTop = container.scrollHeight;
 }
 
 function generateReply(text){
   text = text.toLowerCase();
+
   if(text.includes('hola')||text.includes('buenas')) return 'Hola! ¿Sobre qué lección quieres ayuda?';
-  if(text.includes('binario')) return 'El sistema binario usa base 2. Puedes ver la lección "Sistemas de numeración".';
-  if(text.includes('html')) return 'En HTML la etiqueta <p> crea un párrafo. ¿Quieres ver un ejemplo?';
-  return 'Buena pregunta. Intenta reformularla o consulta la lección relacionada.';
+  if(text.includes('binario')) return 'El sistema binario usa base 2.';
+  if(text.includes('html')) return 'La etiqueta <p> crea un párrafo.';
+  if(text.includes('hardware')) return '¿Puedes tocarlo? entonces es hardware.';
+  if(text.includes('software')) return 'Son programas, no partes físicas.';
+  if(text.includes('informatica')) return 'Es el procesamiento de la información.';
+  
+  return 'Intenta reformular tu pregunta.';
 }
 
-// Funciones UI
-function startLesson(){ openLesson(1); }
+/* =========================
+   VIDEO INTERACTIVO (CORREGIDO)
+========================= */
 
-function goToLesson(id){
-  window.open(`lecciones/leccion${id}.html`, '_blank');
+document.addEventListener("DOMContentLoaded", function(){
+
+let video = document.getElementById("videoClase");
+if(!video) return;
+
+let preguntasVideo = [
+{tiempo:5, pregunta:"¿Qué concepto se explicó?", opciones:["Opción A","Opción B"], correcta:0},
+{tiempo:12, pregunta:"¿Qué significa esto?", opciones:["Respuesta 1","Respuesta 2"], correcta:1}
+];
+
+let indexVideo = 0;
+let activa = false;
+
+video.addEventListener("timeupdate", ()=>{
+
+    if(indexVideo < preguntasVideo.length && !activa){
+
+        let p = preguntasVideo[indexVideo];
+
+        if(video.currentTime >= p.tiempo && video.currentTime <= p.tiempo + 1){
+
+            activa = true;
+            video.pause();
+            mostrarPreguntaVideo(p);
+            indexVideo++;
+        }
+    }
+
+});
+
+function mostrarPreguntaVideo(p){
+
+    document.getElementById("quizVideo").style.display="block";
+    document.getElementById("quizPregunta").innerText = p.pregunta;
+
+    let cont = document.getElementById("quizOpciones");
+    cont.innerHTML = "";
+
+    p.opciones.forEach((op,i)=>{
+
+        let btn = document.createElement("button");
+        btn.innerText = op;
+        btn.className = "btn";
+
+        btn.onclick = ()=>{
+
+            if(i === p.correcta){
+                score += 10;
+            }
+
+            setTimeout(()=>{
+                document.getElementById("quizVideo").style.display="none";
+                activa = false;
+                video.play();
+            },1500);
+        }
+
+        cont.appendChild(btn);
+    });
 }
 
-function markDone(id,btn){
-  btn.innerText='Leído';
-  btn.disabled=true;
-  completeLesson(id);
-}
+});
+
+/* =========================
+   PROGRESO
+========================= */
 
 function completeLesson(id){
   const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
@@ -148,13 +206,17 @@ function updateProgress(){
 
 updateProgress();
 
+/* =========================
+   OTROS
+========================= */
+
 function uploadMaterial(){
   const f = document.getElementById('file');
   if(f.files.length===0){
     alert('Selecciona un archivo');
     return;
   }
-  alert('Archivo subido (simulación). En un sistema real enviarías a un servidor.');
+  alert('Archivo subido (simulación).');
 }
 
 function copyLink(){
@@ -171,48 +233,30 @@ setInterval(()=>{
   document.getElementById('lastAccess').innerText = new Date().toLocaleTimeString();
 },5000);
 
-
-// GUARDAR RESULTADOS EN GOOGLE SHEETS
+/* =========================
+   GOOGLE SHEETS
+========================= */
 
 function guardarResultados(){
 
 let datos = {
-
 nombre: document.getElementById("nombre").value,
 puntaje: score,
 progreso: progress,
 comentario: document.getElementById("comentario").value,
 calificacion: document.getElementById("rating").value
-
 }
 
 fetch("https://script.google.com/macros/s/AKfycbzpBIaFQuuCWx6a5l19VrH2F5ZCt9bZHWN5u5ovym5OQgfeR7gczx15_qD0ZgzlbZ95/exec", {
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
+headers:{"Content-Type":"application/json"},
 body: JSON.stringify(datos)
-
 })
-
 .then(res=>res.text())
-.then(data=>{
-
-alert("Resultados guardados correctamente")
-
-})
-.catch(error=>{
-
-alert("Error al guardar resultados")
-
-})
+.then(data=>{ alert("Resultados guardados correctamente") })
+.catch(error=>{ alert("Error al guardar resultados") })
 
 }
-
-// 🔥 FUNCIÓN CORREGIDA (FUERA DEL CATCH)
 
 function volverInicio(){
     window.location.href="../index.html";

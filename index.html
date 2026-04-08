@@ -155,6 +155,26 @@ let datos = {
   leccion: "Diagnostico"
 };
 
+<script>
+function guardarDiagnostico(){
+
+let nombre = localStorage.getItem("student") || "Sin nombre";
+
+// 🔥 VALIDACIÓN
+if(score === 0){
+  alert("Debes responder el cuestionario primero");
+  return;
+}
+
+let datos = {
+  nombre: nombre,
+  puntaje: score,
+  progreso: score, // 🔥 AHORA SÍ guarda el valor real
+  comentario: "Diagnóstico inicial",
+  calificacion: 0,
+  leccion: "Diagnostico"
+};
+
 fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
 method:"POST",
 mode:"no-cors",
@@ -164,11 +184,14 @@ headers:{
 body:JSON.stringify(datos)
 })
 .then(()=>{
-alert("Guardado correctamente");
+alert("Diagnóstico guardado correctamente");
 })
 .catch(()=>{
 alert("Error al guardar");
 });
+
+}
+</script>
 
 }
 </script>

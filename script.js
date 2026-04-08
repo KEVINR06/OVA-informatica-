@@ -3,7 +3,6 @@
 let score = 0;
 let progress = 0;
 
-// 🔥 SOLUCIÓN: evitar error si no existe en esta página
 let preguntasRespondidas = 0;
 
 const lessons = [
@@ -24,9 +23,7 @@ const questions = [
   {q:'¿Para qué se utiliza el pseudocódigo?', options:['Para programar directamente en un computador','Para escribir algoritmos usando un lenguaje cercano al humano','Para diseñar páginas web','Para ejecutar programas sin errores'], answer:1},
 ];
 
-// =========================
 // LECCIONES
-// =========================
 
 const lessonsEl = document.getElementById('lessons');
 
@@ -59,9 +56,7 @@ function goToLesson(id){
   window.location.href = ruta;
 }
 
-// =========================
 // QUIZ
-// =========================
 
 const quizEl = document.getElementById('quiz');
 
@@ -116,9 +111,7 @@ function answer(i,j,el){
   }
 }
 
-// =========================
 // CHAT
-// =========================
 
 function sendMsg(){
   const input = document.getElementById('inputMsg');
@@ -238,9 +231,9 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycbzLn47Sun0xunzRcixEbslIY0WTeWrenVqFpyCIOYYgsLknpTbRLafwxvNmibi1WI8y/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
 method:"POST",
-mode:"no-cors", // 🔥 CLAVE
+mode:"no-cors",
 headers:{
 "Content-Type":"application/json"
 },

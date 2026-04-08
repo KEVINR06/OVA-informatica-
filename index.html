@@ -31,7 +31,6 @@
             Cualquier Profe Puede adaptar contenidos y preguntas.
             Como primer paso da click en el boton de "Probar cuestionario", antes de ingresar a las lecciones para saber que debes reforzar. Bienvenidos</p>
           
-          <!-- 🔥 NUEVO: NOMBRE -->
           <input id="nombreEstudiante" placeholder="Escribe tu nombre">
           <button class="btn" onclick="guardarNombre()">Guardar nombre</button>
 
@@ -51,15 +50,13 @@
 
       <section class="card">
         <h3 style="margin-top:0">Lecciones</h3>
-        <div class="lessons" id="lessons">
-        </div>
+        <div class="lessons" id="lessons"></div>
       </section>
 
       <section class="card">
         <h3 id="quizTitle">Cuestionario de conocimientos basicos</h3>
         <div id="quiz" class="quiz"></div>
 
-        <!-- 🔥 NUEVO: BOTÓN GUARDAR -->
         <br>
         <button class="btn" onclick="guardarDiagnostico()">Guardar resultado inicial</button>
       </section>
@@ -132,7 +129,6 @@
 <script src="script.js"></script>
 
 <script>
-// 🔥 SOLO AGREGADO (NO ROMPE NADA)
 
 // guardar nombre
 function guardarNombre(){
@@ -141,26 +137,12 @@ function guardarNombre(){
   alert("Nombre guardado");
 }
 
-// guardar diagnóstico
+// guardar diagnóstico (🔥 CORREGIDO)
 function guardarDiagnostico(){
 
 let nombre = localStorage.getItem("student") || "Sin nombre";
 
-let datos = {
-  nombre: nombre,
-  puntaje: score,
-  progreso: 0,
-  comentario: "Diagnóstico inicial",
-  calificacion: 0,
-  leccion: "Diagnostico"
-};
-
-<script>
-function guardarDiagnostico(){
-
-let nombre = localStorage.getItem("student") || "Sin nombre";
-
-// 🔥 VALIDACIÓN
+// VALIDACIÓN
 if(score === 0){
   alert("Debes responder el cuestionario primero");
   return;
@@ -169,22 +151,27 @@ if(score === 0){
 let datos = {
   nombre: nombre,
   puntaje: score,
-  progreso: score, // 🔥 AHORA SÍ guarda el valor real
+  progreso: score,
   comentario: "Diagnóstico inicial",
   calificacion: 0,
   leccion: "Diagnostico"
 };
 
 fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
-  method:"POST", 
+  method:"POST",
   mode:"no-cors",
   headers:{ "Content-Type":"application/json" },
-  body:JSON.stringify(datos) }) .then(()=>{ alert("Guardado correctamente"); }) .catch(()=>{ alert("Error al guardar"); });
+  body:JSON.stringify(datos)
+})
+.then(()=>{
+  alert("Guardado correctamente");
+})
+.catch(()=>{
+  alert("Error al guardar");
+});
 
 }
-</script>
 
-}
 </script>
 
 </body>

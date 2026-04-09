@@ -5,6 +5,7 @@
 <title>Lección 1 - Introducción a la informática</title>
 
 <style>
+
 body{
 padding:24px;
 color:white;
@@ -103,6 +104,7 @@ border-radius:8px;
 background:gray;
 cursor:not-allowed;
 }
+
 </style>
 </head>
 
@@ -144,11 +146,28 @@ cursor:not-allowed;
 </div>
 
 <div class="card">
+
 <h2>📘 Contenido</h2>
-<p>La informática es la ciencia que se encarga de estudiar cómo se procesa, almacena y transmite la información.</p>
+
+<p>La informática es la ciencia que estudia el procesamiento de la información.</p>
+
+<h3>Hardware</h3>
+<ul>
+<li>Teclado</li>
+<li>Mouse</li>
+<li>Pantalla</li>
+</ul>
+
+<h3>Software</h3>
+<ul>
+<li>Sistema operativo</li>
+<li>Aplicaciones</li>
+</ul>
+
 </div>
 
 <div class="card">
+
 <h2>🧠 Quiz</h2>
 
 <p>¿Qué estudia la informática?</p>
@@ -161,86 +180,71 @@ cursor:not-allowed;
 <button class="btn" onclick="quiz(true)">Partes físicas</button>
 <button class="btn" onclick="quiz(false)">Programas</button>
 
-<hr>
-
-<p>¿Qué es el software?</p>
-<button class="btn" onclick="quiz(true)">Programas</button>
-<button class="btn" onclick="quiz(false)">Partes físicas</button>
-
-<hr>
-
-<p>¿Cuál es un ejemplo de hardware?</p>
-<button class="btn" onclick="quiz(true)">Teclado</button>
-<button class="btn" onclick="quiz(false)">Chrome</button>
-
-<hr>
-
-<p>¿Cuál es un ejemplo de software?</p>
-<button class="btn" onclick="quiz(true)">Word</button>
-<button class="btn" onclick="quiz(false)">Monitor</button>
-
-<hr>
-
-<p>¿Qué permite la informática?</p>
-<button class="btn" onclick="quiz(true)">Procesar información</button>
-<button class="btn" onclick="quiz(false)">Cocinar</button>
-
-<hr>
-
-<p>¿Qué hace el software?</p>
-<button class="btn" onclick="quiz(true)">Da instrucciones</button>
-<button class="btn" onclick="quiz(false)">Es físico</button>
-
-<hr>
-
-<p>¿Qué NO es hardware?</p>
-<button class="btn" onclick="quiz(true)">Sistema operativo</button>
-<button class="btn" onclick="quiz(false)">Mouse</button>
-
 </div>
 
 <div class="card">
+
 <h2>💬 Opinión del estudiante</h2>
+
 <textarea id="comentario"></textarea>
+
 <select id="calificacion">
 <option value="5">⭐⭐⭐⭐⭐</option>
 <option value="4">⭐⭐⭐⭐</option>
-<option value="3">⭐⭐⭐</option>
-<option value="2">⭐⭐</option>
-<option value="1">⭐</option>
 </select>
-<button class="btn" onclick="guardarOpinion()">Guardar</button>
+
+<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
+
 <p id="msgGuardado"></p>
-</div>
 
 </div>
 
+<!-- 🔥 ESTA PARTE ERA LA QUE TE FALTABA -->
+<div class="card" style="text-align:center">
+
+<h2>📂 Navegación</h2>
+
+<button class="btn" onclick="volverPagina()">⬅ Volver</button>
+
+<button id="btnEvaluacion" class="btn" onclick="irEvaluacion()">
+📝 Evaluación final
+</button>
+
+<br><br>
+
+<button class="btn" onclick="verDashboard()">
+📊 Ver Dashboard Docente
+</button>
+
+</div>
+
+</div>
+
+<!-- CHAT -->
 <div id="chatbot-window">
 <h3>🤖 Tutor IA</h3>
+
 <div id="chat"></div>
 
-<input id="msg" placeholder="Escribe tu pregunta...">
+<input id="msg" placeholder="Escribe aquí">
 <button onclick="bot()">Enviar</button>
+
 </div>
 
 <script>
 
 /* VARIABLES */
 let score=0
-let preguntasRespondidas=0
 
-/* NOMBRE */
 function saveName(){
 let name=document.getElementById("studentName").value
 localStorage.setItem("student",name)
 document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
-/* QUIZ */
 function quiz(correct){
 if(correct){
 score+=10
-preguntasRespondidas++
 document.getElementById("score").innerText=score
 alert("Correcto")
 }else{
@@ -248,13 +252,12 @@ alert("Incorrecto")
 }
 }
 
-/* 🔥 GUARDAR GOOGLE SHEETS (ARREGLADO) */
+/* 🔥 GOOGLE SHEETS */
 function guardarOpinion(){
 
 let datos={
 nombre:localStorage.getItem("student")||"Sin nombre",
 puntaje:score,
-progreso:preguntasRespondidas,
 comentario:document.getElementById("comentario").value,
 calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 1"
@@ -268,19 +271,33 @@ body:JSON.stringify(datos)
 .then(()=>{
 document.getElementById("msgGuardado").innerText="Guardado correctamente"
 })
-.catch(()=>{
-document.getElementById("msgGuardado").innerText="Error al guardar"
-})
 }
 
-/* =========================
-   CHATBOT CORREGIDO
-========================= */
+/* NAVEGACION */
 
-let inputChat = document.getElementById("msg")
+function volverPagina(){
+window.location.href="../index.html"
+}
 
-inputChat.addEventListener("keypress", function(e){
-if(e.key === "Enter"){
+function irEvaluacion(){
+window.location.href="evaluacion.html"
+}
+
+function verDashboard(){
+let clave=prompt("Clave docente:")
+if(clave==="1234"){
+window.location.href="dashboard.html"
+}else{
+alert("Clave incorrecta")
+}
+}
+
+/* CHATBOT */
+
+let inputChat=document.getElementById("msg")
+
+inputChat.addEventListener("keypress",function(e){
+if(e.key==="Enter"){
 e.preventDefault()
 bot()
 }
@@ -288,33 +305,28 @@ bot()
 
 function bot(){
 
-let input = document.getElementById("msg")
-let chat = document.getElementById("chat")
+let input=document.getElementById("msg")
+let chat=document.getElementById("chat")
 
-let userMsg = input.value.trim()
+let userMsg=input.value.trim()
 
-if(userMsg === "") return
+if(userMsg==="") return
 
-chat.innerHTML += "<p><b>Tú:</b> "+userMsg+"</p>"
+chat.innerHTML+="<p><b>Tú:</b> "+userMsg+"</p>"
 
-let respuesta = ""
+let respuesta=""
 
 if(userMsg.toLowerCase().includes("hardware")){
-respuesta = "El hardware son las partes físicas."
-}
-else if(userMsg.toLowerCase().includes("software")){
-respuesta = "El software son programas."
-}
-else{
-respuesta = "Pregunta sobre informática 🙂"
+respuesta="El hardware son partes físicas"
+}else{
+respuesta="Pregunta sobre informática"
 }
 
-chat.innerHTML += "<p><b>IA:</b> "+respuesta+"</p>"
+chat.innerHTML+="<p><b>IA:</b> "+respuesta+"</p>"
 
-// 🔥 SCROLL AUTOMÁTICO
-chat.scrollTop = chat.scrollHeight
+chat.scrollTop=chat.scrollHeight
 
-input.value = ""
+input.value=""
 
 }
 

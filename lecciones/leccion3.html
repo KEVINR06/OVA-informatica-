@@ -80,6 +80,26 @@ background:gray;
 cursor:not-allowed;
 }
 
+/* CHATBOT */
+#chatbot-window{
+position:fixed;
+bottom:20px;
+right:20px;
+width:280px;
+background:#0e2734;
+padding:15px;
+border-radius:20px;
+}
+
+#chat{
+height:180px;
+overflow-y:auto;
+background:#07131d;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
 </style>
 </head>
 
@@ -104,7 +124,6 @@ cursor:not-allowed;
 </div>
 </div>
 
-<!-- 🎬 VIDEO -->
 <div class="card">
 <h2>🎬 Video</h2>
 <div class="video-wrapper">
@@ -114,7 +133,6 @@ cursor:not-allowed;
 </div>
 </div>
 
-<!-- ❓ QUIZ VIDEO -->
 <div class="card" id="quizVideo" style="display:none">
 <h3>Pregunta del video</h3>
 <p id="quizPregunta"></p>
@@ -122,25 +140,14 @@ cursor:not-allowed;
 <p id="feedback"></p>
 </div>
 
-<!-- 📘 CONTENIDO -->
 <div class="card">
-
 <h2>📘 Contenido</h2>
 
-<p>
-El pseudocódigo es una forma de representar soluciones a problemas mediante instrucciones claras y ordenadas.
-</p>
-
-<p>
-No pertenece a un lenguaje de programación específico, sino que permite entender la lógica antes de programar.
-</p>
-
-<p>
-Un algoritmo es una secuencia de pasos para resolver un problema.
-</p>
+<p>El pseudocódigo es una forma de representar soluciones a problemas mediante instrucciones claras y ordenadas.</p>
+<p>No pertenece a un lenguaje de programación específico, sino que permite entender la lógica antes de programar.</p>
+<p>Un algoritmo es una secuencia de pasos para resolver un problema.</p>
 
 <h3>Ejemplo</h3>
-
 <ul>
 <li>Inicio</li>
 <li>Leer número</li>
@@ -149,12 +156,9 @@ Un algoritmo es una secuencia de pasos para resolver un problema.
 <li>Fin si</li>
 <li>Fin</li>
 </ul>
-
 </div>
 
-<!-- 🧠 QUIZ -->
 <div class="card">
-
 <h2>🧠 Quiz</h2>
 
 <p>¿Qué es el pseudocódigo?</p>
@@ -205,16 +209,13 @@ Un algoritmo es una secuencia de pasos para resolver un problema.
 
 </div>
 
-<!-- RESULTADO -->
 <div class="card">
 <h2>Resultado final</h2>
 <button class="btn" onclick="resultado()">Ver resultado</button>
 <p id="final"></p>
 </div>
 
-<!-- OPINION -->
 <div class="card">
-
 <h2>💬 Opinión</h2>
 
 <textarea id="comentario"></textarea>
@@ -229,10 +230,8 @@ Un algoritmo es una secuencia de pasos para resolver un problema.
 
 <button class="btn" onclick="guardarOpinion()">Guardar</button>
 <p id="msgGuardado"></p>
-
 </div>
 
-<!-- NAV -->
 <div class="card" style="text-align:center">
 
 <button class="btn" onclick="volverPagina()">⬅ Volver</button>
@@ -249,10 +248,18 @@ Un algoritmo es una secuencia de pasos para resolver un problema.
 
 </div>
 
+<!-- CHATBOT -->
+<div id="chatbot-window">
+<h3>🤖 Tutor IA</h3>
+<div id="chat"></div>
+<input id="msg" placeholder="Escribe..." onkeydown="if(event.key==='Enter') bot()">
+<button onclick="bot()">Enviar</button>
+</div>
+
 <script>
 
 let score=0
-let totalPreguntas=11
+let totalPreguntas=8
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
@@ -280,76 +287,6 @@ let name=localStorage.getItem("student")
 document.getElementById("final").innerHTML="Estudiante: "+name+"<br>Puntaje: "+score
 }
 
-/* 🎬 VIDEO INTERACTIVO */
-
-let video=document.getElementById("videoClase")
-
-let preguntasVideo=[
-{tiempo:5,p:"¿Qué es un algoritmo?",op:["Pasos","Imagen"],c:0},
-{tiempo:10,p:"¿Para qué sirve el pseudocódigo?",op:["Planear","Diseñar"],c:0},
-{tiempo:15,p:"¿Qué hace 'Si... entonces'?",op:["Decidir","Repetir"],c:0}
-]
-
-let index=0
-
-video.addEventListener("timeupdate",()=>{
-
-if(index<preguntasVideo.length){
-
-let q=preguntasVideo[index]
-
-if(video.currentTime>=q.tiempo){
-
-video.pause()
-mostrarPregunta(q)
-index++
-
-}
-
-}
-
-})
-
-function mostrarPregunta(q){
-
-document.getElementById("quizVideo").style.display="block"
-document.getElementById("quizPregunta").innerText=q.p
-
-let cont=document.getElementById("quizOpciones")
-cont.innerHTML=""
-
-q.op.forEach((op,i)=>{
-
-let btn=document.createElement("button")
-btn.innerText=op
-btn.className="btn"
-
-btn.onclick=()=>{
-
-if(i===q.c){
-score+=10
-preguntasRespondidas++
-actualizarProgreso()
-document.getElementById("feedback").innerText="Correcto"
-}else{
-document.getElementById("feedback").innerText="Incorrecto"
-}
-
-setTimeout(()=>{
-document.getElementById("quizVideo").style.display="none"
-video.play()
-},1500)
-
-}
-
-cont.appendChild(btn)
-
-})
-
-}
-
-/* RESTO */
-
 function saveName(){
 let name=document.getElementById("studentName").value
 localStorage.setItem("student",name)
@@ -367,12 +304,14 @@ calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 3"
 }
 
-fetch("https://script.google.com/macros/s/AKfycbwlj8-VREn6fDLBGHgGbUyZUz_PZ5tJ6BbRaUNr5hdsBJwQPw6apCGyEH_7c4xzxydV/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
 method:"POST",
+mode:"no-cors",
+headers:{ "Content-Type":"application/json" },
 body:JSON.stringify(datos)
 })
 
-document.getElementById("msgGuardado").innerText="Guardado"
+document.getElementById("msgGuardado").innerText="Guardado correctamente"
 }
 
 function verDashboard(){
@@ -394,10 +333,36 @@ return
 window.location.href="evaluacion3.html"
 }
 
+/* CHATBOT */
+
+function bot(){
+
+let input=document.getElementById("msg")
+let chat=document.getElementById("chat")
+
+let userMsg=input.value
+if(userMsg.trim()==="") return
+
+chat.innerHTML += "<p><b>Tú:</b> "+userMsg+"</p>"
+
+let respuesta=""
+
+if(userMsg.toLowerCase().includes("algoritmo")){
+respuesta="Un algoritmo es una secuencia de pasos."
+}
+else if(userMsg.toLowerCase().includes("pseudocodigo")){
+respuesta="Es una forma de planear soluciones antes de programar."
+}
+else{
+respuesta="Pregunta sobre pseudocódigo o algoritmos 🙂"
+}
+
+chat.innerHTML += "<p><b>IA:</b> "+respuesta+"</p>"
+chat.scrollTop = chat.scrollHeight
+input.value=""
+}
+
 </script>
 
 </body>
 </html>
-
-
-

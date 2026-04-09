@@ -80,6 +80,26 @@ background:gray;
 cursor:not-allowed;
 }
 
+/* CHATBOT */
+#chatbot-window{
+position:fixed;
+bottom:20px;
+right:20px;
+width:280px;
+background:#0e2734;
+padding:15px;
+border-radius:20px;
+}
+
+#chat{
+height:180px;
+overflow-y:auto;
+background:#07131d;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
 </style>
 </head>
 
@@ -155,7 +175,7 @@ HTML define el contenido, mientras CSS define cómo se ve ese contenido.
 
 </div>
 
-<!-- 🧠 QUIZ -->
+<!-- 🧠 QUIZ (COMPLETO, NO MODIFICADO) -->
 <div class="card">
 
 <h2>🧠 Quiz</h2>
@@ -252,10 +272,18 @@ HTML define el contenido, mientras CSS define cómo se ve ese contenido.
 
 </div>
 
+<!-- 🤖 CHATBOT -->
+<div id="chatbot-window">
+<h3>🤖 Tutor IA</h3>
+<div id="chat"></div>
+<input id="msg" placeholder="Escribe..." onkeydown="if(event.key==='Enter') bot()">
+<button onclick="bot()">Enviar</button>
+</div>
+
 <script>
 
 let score=0
-let totalPreguntas=11
+let totalPreguntas=8
 let preguntasRespondidas=0
 
 function actualizarProgreso(){
@@ -283,76 +311,6 @@ let name=localStorage.getItem("student")
 document.getElementById("final").innerHTML="Estudiante: "+name+"<br>Puntaje: "+score
 }
 
-/* 🎬 VIDEO INTERACTIVO */
-
-let video=document.getElementById("videoClase")
-
-let preguntasVideo=[
-{tiempo:5,p:"¿Para qué sirve HTML?",op:["Estructura","Color"],c:0},
-{tiempo:10,p:"¿Para qué sirve CSS?",op:["Diseño","Datos"],c:0},
-{tiempo:15,p:"¿Qué etiqueta es título?",op:["h1","p"],c:0}
-]
-
-let index=0
-
-video.addEventListener("timeupdate",()=>{
-
-if(index<preguntasVideo.length){
-
-let q=preguntasVideo[index]
-
-if(video.currentTime>=q.tiempo){
-
-video.pause()
-mostrarPregunta(q)
-index++
-
-}
-
-}
-
-})
-
-function mostrarPregunta(q){
-
-document.getElementById("quizVideo").style.display="block"
-document.getElementById("quizPregunta").innerText=q.p
-
-let cont=document.getElementById("quizOpciones")
-cont.innerHTML=""
-
-q.op.forEach((op,i)=>{
-
-let btn=document.createElement("button")
-btn.innerText=op
-btn.className="btn"
-
-btn.onclick=()=>{
-
-if(i===q.c){
-score+=10
-preguntasRespondidas++
-actualizarProgreso()
-document.getElementById("feedback").innerText="Correcto"
-}else{
-document.getElementById("feedback").innerText="Incorrecto"
-}
-
-setTimeout(()=>{
-document.getElementById("quizVideo").style.display="none"
-video.play()
-},1500)
-
-}
-
-cont.appendChild(btn)
-
-})
-
-}
-
-/* RESTO */
-
 function saveName(){
 let name=document.getElementById("studentName").value
 localStorage.setItem("student",name)
@@ -370,12 +328,14 @@ calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 4"
 }
 
-fetch("https://script.google.com/macros/s/AKfycbwlj8-VREn6fDLBGHgGbUyZUz_PZ5tJ6BbRaUNr5hdsBJwQPw6apCGyEH_7c4xzxydV/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
 method:"POST",
+mode:"no-cors",
+headers:{ "Content-Type":"application/json" },
 body:JSON.stringify(datos)
 })
 
-document.getElementById("msgGuardado").innerText="Guardado"
+document.getElementById("msgGuardado").innerText="Guardado correctamente"
 }
 
 function verDashboard(){
@@ -394,11 +354,40 @@ if((preguntasRespondidas/totalPreguntas)*100<100){
 alert("Completa la lección")
 return
 }
-window.location.href="evaluacion.html"
+window.location.href="evaluacion4.html"
+}
+
+/* 🤖 CHATBOT */
+
+function bot(){
+
+let input=document.getElementById("msg")
+let chat=document.getElementById("chat")
+
+let txt=input.value
+if(txt.trim()==="") return
+
+chat.innerHTML+="<p><b>Tú:</b> "+txt+"</p>"
+
+let r=""
+
+if(txt.toLowerCase().includes("html")){
+r="HTML estructura la página web"
+}
+else if(txt.toLowerCase().includes("css")){
+r="CSS da estilo a la página"
+}
+else{
+r="Pregunta sobre HTML o CSS 🙂"
+}
+
+chat.innerHTML+="<p><b>IA:</b> "+r+"</p>"
+chat.scrollTop=chat.scrollHeight
+input.value=""
+
 }
 
 </script>
 
 </body>
 </html>
-

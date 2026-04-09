@@ -149,19 +149,34 @@ cursor:not-allowed;
 
 <h2>📘 Contenido</h2>
 
-<p>La informática es la ciencia que estudia el procesamiento de la información.</p>
+<p>
+La informática es la ciencia que se encarga de estudiar cómo se procesa, almacena y transmite la información utilizando dispositivos electrónicos como los computadores.
+</p>
+
+<p>
+Hoy en día, la informática está presente en casi todo lo que hacemos: cuando usamos un celular, navegamos en internet, jugamos videojuegos o realizamos tareas escolares.
+</p>
+
+<p>
+Un sistema informático está compuesto por hardware (partes físicas) y software (programas). Ambos trabajan juntos para que el computador funcione correctamente.
+</p>
 
 <h3>Hardware</h3>
+
 <ul>
 <li>Teclado</li>
 <li>Mouse</li>
 <li>Pantalla</li>
+<li>Procesador</li>
+<li>Memoria RAM</li>
 </ul>
 
 <h3>Software</h3>
+
 <ul>
 <li>Sistema operativo</li>
 <li>Aplicaciones</li>
+<li>Videojuegos</li>
 </ul>
 
 </div>
@@ -180,18 +195,67 @@ cursor:not-allowed;
 <button class="btn" onclick="quiz(true)">Partes físicas</button>
 <button class="btn" onclick="quiz(false)">Programas</button>
 
+<hr>
+
+<p>¿Qué es el software?</p>
+<button class="btn" onclick="quiz(true)">Programas</button>
+<button class="btn" onclick="quiz(false)">Partes físicas</button>
+
+<hr>
+
+<p>¿Cuál es un ejemplo de hardware?</p>
+<button class="btn" onclick="quiz(true)">Teclado</button>
+<button class="btn" onclick="quiz(false)">Chrome</button>
+
+<hr>
+
+<p>¿Cuál es un ejemplo de software?</p>
+<button class="btn" onclick="quiz(true)">Word</button>
+<button class="btn" onclick="quiz(false)">Monitor</button>
+
+<hr>
+
+<p>¿Qué permite la informática?</p>
+<button class="btn" onclick="quiz(true)">Procesar información</button>
+<button class="btn" onclick="quiz(false)">Cocinar</button>
+
+<hr>
+
+<p>¿Qué hace el software?</p>
+<button class="btn" onclick="quiz(true)">Da instrucciones</button>
+<button class="btn" onclick="quiz(false)">Es físico</button>
+
+<hr>
+
+<p>¿Qué NO es hardware?</p>
+<button class="btn" onclick="quiz(true)">Sistema operativo</button>
+<button class="btn" onclick="quiz(false)">Mouse</button>
+
+</div>
+
+<div class="card">
+<h2>Resultado final</h2>
+<button class="btn" onclick="resultado()">Ver resultado</button>
+<p id="final"></p>
 </div>
 
 <div class="card">
 
 <h2>💬 Opinión del estudiante</h2>
 
-<textarea id="comentario"></textarea>
+<textarea id="comentario" rows="4"></textarea>
+
+<p>Califica la experiencia:</p>
 
 <select id="calificacion">
-<option value="5">⭐⭐⭐⭐⭐</option>
-<option value="4">⭐⭐⭐⭐</option>
+<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+<option value="4">⭐⭐⭐⭐ Buena</option>
+<option value="3">⭐⭐⭐ Regular</option>
+<option value="2">⭐⭐ Mala</option>
+<option value="1">⭐ Muy mala</option>
 </select>
+
+<br><br>
 
 <button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
 
@@ -199,14 +263,13 @@ cursor:not-allowed;
 
 </div>
 
-<!-- 🔥 ESTA PARTE ERA LA QUE TE FALTABA -->
 <div class="card" style="text-align:center">
 
 <h2>📂 Navegación</h2>
 
 <button class="btn" onclick="volverPagina()">⬅ Volver</button>
 
-<button id="btnEvaluacion" class="btn" onclick="irEvaluacion()">
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
 📝 Evaluación final
 </button>
 
@@ -216,12 +279,14 @@ cursor:not-allowed;
 📊 Ver Dashboard Docente
 </button>
 
-</div>
+<p id="msgEval"></p>
 
 </div>
 
-<!-- CHAT -->
+</div>
+
 <div id="chatbot-window">
+
 <h3>🤖 Tutor IA</h3>
 
 <div id="chat"></div>
@@ -235,29 +300,52 @@ cursor:not-allowed;
 
 /* VARIABLES */
 let score=0
+let totalPreguntas=8
+let preguntasRespondidas=0
 
+function actualizarProgreso(){
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+document.getElementById("progress-bar").style.width=progreso+"%"
+if(progreso>=100){
+document.getElementById("btnEvaluacion").classList.remove("disabled")
+document.getElementById("msgEval").innerText="Puedes ir a la evaluación final"
+}
+}
+
+/* ESTUDIANTE */
 function saveName(){
 let name=document.getElementById("studentName").value
 localStorage.setItem("student",name)
 document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
+/* QUIZ */
 function quiz(correct){
 if(correct){
 score+=10
+preguntasRespondidas++
 document.getElementById("score").innerText=score
+actualizarProgreso()
 alert("Correcto")
 }else{
 alert("Incorrecto")
 }
 }
 
-/* 🔥 GOOGLE SHEETS */
+/* RESULTADO */
+function resultado(){
+let name=localStorage.getItem("student")
+document.getElementById("final").innerHTML=
+"Estudiante: "+name+"<br>Puntaje final: "+score
+}
+
+/* 🔥 GOOGLE SHEETS FIX */
 function guardarOpinion(){
 
 let datos={
 nombre:localStorage.getItem("student")||"Sin nombre",
 puntaje:score,
+progreso:preguntasRespondidas,
 comentario:document.getElementById("comentario").value,
 calificacion:document.getElementById("calificacion").value,
 leccion:"Leccion 1"
@@ -269,22 +357,23 @@ mode:"no-cors",
 body:JSON.stringify(datos)
 })
 .then(()=>{
-document.getElementById("msgGuardado").innerText="Guardado correctamente"
+document.getElementById("msgGuardado").innerText="Opinión guardada correctamente"
 })
 }
 
-/* NAVEGACION */
-
+/* NAV */
 function volverPagina(){
 window.location.href="../index.html"
 }
-
 function irEvaluacion(){
+if(preguntasRespondidas<totalPreguntas){
+alert("Debes completar la lección")
+return
+}
 window.location.href="evaluacion.html"
 }
-
 function verDashboard(){
-let clave=prompt("Clave docente:")
+let clave=prompt("Ingrese clave de docente:")
 if(clave==="1234"){
 window.location.href="dashboard.html"
 }else{
@@ -293,10 +382,7 @@ alert("Clave incorrecta")
 }
 
 /* CHATBOT */
-
-let inputChat=document.getElementById("msg")
-
-inputChat.addEventListener("keypress",function(e){
+document.getElementById("msg").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 e.preventDefault()
 bot()
@@ -304,37 +390,32 @@ bot()
 })
 
 function bot(){
-
 let input=document.getElementById("msg")
 let chat=document.getElementById("chat")
 
 let userMsg=input.value.trim()
-
 if(userMsg==="") return
 
 chat.innerHTML+="<p><b>Tú:</b> "+userMsg+"</p>"
 
-let respuesta=""
+let respuesta="Pregunta sobre informática 🙂"
 
 if(userMsg.toLowerCase().includes("hardware")){
-respuesta="El hardware son partes físicas"
-}else{
-respuesta="Pregunta sobre informática"
+respuesta="El hardware son las partes físicas del computador."
+}
+else if(userMsg.toLowerCase().includes("software")){
+respuesta="El software son los programas."
 }
 
 chat.innerHTML+="<p><b>IA:</b> "+respuesta+"</p>"
-
 chat.scrollTop=chat.scrollHeight
-
 input.value=""
-
 }
 
 </script>
 
 </body>
 </html>
-
 
 
 

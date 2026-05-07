@@ -699,12 +699,6 @@ let chat=document.getElementById("chatbox")
 chat.style.display = chat.style.display==="none"?"block":"none"
 }
 
-function sendMessage(){
-let input=document.getElementById("chat-input")
-let box=document.getElementById("messages")
-box.innerHTML += "<p>"+input.value+"</p>"
-input.value=""
-}
 function actualizarProgreso(){
 
 let totalPreguntas = 8  // porque tienes 8 preguntas
@@ -854,8 +848,7 @@ box.innerHTML += `<div class="msg bot">🤖 Pensando...</div>`;
 box.scrollTop = box.scrollHeight;
 
 try{
-
-  let response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
+const response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
     method:"POST",
     headers:{
       "Content-Type":"application/json"

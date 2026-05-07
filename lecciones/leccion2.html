@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Lección 2 - Circuitos básicos</title>
+
+<style>
+
+body{
+padding:24px;
+color:white;
+background:#07131d;
+font-family:Arial;
+display:flex;
+justify-content:center;
+}
+
+.container{
+width:100%;
+max-width:900px;
+}
+
+.card{
+background:#0e2734;
+padding:24px;
+border-radius:30px;
+margin-top:25px;
+}
+
+.btn{
+background:#42ffbf;
+padding:8px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
+
+.sidebar{
+position:fixed;
+left:20px;
+top:50%;
+transform:translateY(-50%);
+width:200px;
+background:#0b1d27;
+padding:15px;
+border-radius:20px;
+}
+
+/* PROGRESO */
+.progress-box{
+width:100%;
+height:20px;
+background:#07131d;
+border-radius:10px;
+overflow:hidden;
+}
+
+#progress-bar{
+height:100%;
+width:0%;
+background:#42ffbf;
+transition:0.5s;
+}
+
+/* VIDEO */
+.video-wrapper{
+width:100%;
+border-radius:20px;
+overflow:hidden;
+background:black;
+}
+
+.video-wrapper video{
+width:100%;
+}
+/* BOTÓN FLOTANTE */
+#chatbot-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+
+  background:#42ffbf;
+  border:none;
+  padding:18px;
+  border-radius:50%;
+
+  font-size:22px;
+  cursor:pointer;
+
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
+  transition:0.3s;
+}
+
+#chatbot-btn:hover{
+  transform:scale(1.1);
+}
+
+/* CAJA DEL CHAT */
+#chatbox{
+  display:none;
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  width:300px;
+
+  background:white;
+  border-radius:20px;
+  padding:15px;
+
+  border:2px solid #42ffbf;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* CONTENEDOR */
+#messages{
+  height:200px;
+  overflow-y:auto;
+  padding:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  background:transparent; /* 🔥 sin fondo */
+}
+
+/* BURBUJAS */
+.msg{
+  padding:10px 14px;
+  border-radius:15px;
+  max-width:75%;
+  font-size:14px;
+  line-height:1.4;
+}
+
+/* USUARIO */
+.msg.user{
+  background:#42ffbf;
+  color:#000;
+  align-self:flex-end;
+}
+
+/* BOT */
+.msg.bot{
+  background:#1e3a4a;
+  color:#fff;
+  align-self:flex-start;
+}
+
+/* INPUT */
+#chat-input{
+  width:95%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:8px;
+}
+
+/* BOTÓN ENVIAR */
+.chat-send{
+  width:100%;
+  padding:10px;
+
+  background:#42ffbf;
+  border:none;
+  border-radius:10px;
+
+  font-weight:bold;
+  cursor:pointer;
+}
+
+textarea{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+}
+
+select{
+padding:8px;
+border-radius:8px;
+}
+
+.disabled{
+background:gray;
+cursor:not-allowed;
+}
+.quiz-container{
+  display:flex;
+  gap:40px;
+  align-items:flex-start;
+}
+
+.quiz-left{
+  flex:1;
+}
+
+.quiz-img{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
+}
+
+.quiz-img img{
+  width:500px;
+  border-radius:15px;
+  margin-left: -100px; 
+  margin-top: 180px;
+}
+.percepcion-container{
+  display:flex;
+  gap:40px;
+  align-items:flex-start;
+}
+
+.percepcion-left{
+  flex:1;
+}
+
+.percepcion-img{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  margin-top:50px;
+}
+
+.percepcion-img img{
+  width:500px;
+  border-radius:1px;
+  margin-left: -300px; 
+  margin-top: 50px;
+}
+
+/* BOTONES */
+.q-btn{
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #E6EEF3;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+}
+
+/* HOVER */
+.q-btn:hover{
+  background: rgba(96,165,250,0.15);
+  transform: translateY(-2px);
+}
+
+/* CORRECTO */
+.q-btn.correct{
+  background: rgba(110,231,183,0.2);
+  border-color: rgba(110,231,183,0.5);
+}
+
+/* INCORRECTO */
+.q-btn.wrong{
+  background: rgba(250,128,114,0.15);
+  border-color: rgba(250,128,114,0.4);
+}
+
+/* FEEDBACK */
+.quiz-feedback{
+  margin-top: 10px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<h3>📊 Progreso</h3>
+
+<p>Puntaje: <span id="score">0</span></p>
+
+<div class="progress-box">
+<div id="progress-bar"></div>
+</div>
+
+<br>
+
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
+📝 Evaluación final
+</button>
+
+<br><br>
+
+<button class="btn" onclick="verDashboard()">
+📊 Dashboard
+</button>
+
+<p id="msgEval"></p>
+
+</div>
+
+<div class="container">
+
+<h1 style="text-align:center">Lección 2: Circuitos básicos</h1>
+
+<div class="card">
+<h2>👤 Estudiante</h2>
+<input id="studentName" placeholder="Escribe tu nombre">
+<button class="btn" onclick="saveName()">Guardar</button>
+<p id="welcome"></p>
+</div>
+
+<div class="card">
+  <h2>🎬 Video introductorio</h2>
+
+  <div class="video-wrapper">
+    <video id="miVideo" controls width="100%">
+      <source src="videos1/Circuitoseléctricos.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- 🔥 AQUÍ -->
+  <div id="quizVideo" class="quiz-video"></div>
+
+</div>
+
+<div class="card">
+
+<h2>🔌 Circuitos eléctricos</h2>
+
+<p>
+Un circuito eléctrico es un <b>camino cerrado por donde circula la corriente eléctrica</b>.
+</p>
+
+<p>
+Para que un circuito funcione correctamente necesita varios componentes conectados entre sí.
+</p>
+
+<h3>⚡ Componentes de un circuito</h3>
+
+<h4>🔋 Batería (Fuente de energía)</h4>
+<p>
+Es el elemento que proporciona la energía eléctrica necesaria para que el circuito funcione.
+</p>
+
+<p>
+👉 Sin batería, no hay corriente.
+</p>
+
+<h4>🔌 Cables</h4>
+<p>
+Son conductores que permiten el paso de la corriente eléctrica entre los componentes.
+</p>
+
+<p>
+👉 Conectan todo el circuito.
+</p>
+
+<h4>💡 LED (Diodo emisor de luz)</h4>
+<p>
+Es un componente que convierte la energía eléctrica en luz.
+</p>
+
+<ul>
+<li>Tiene polaridad (+ y -)</li>
+<li>Si se conecta al revés, no funciona</li>
+</ul>
+
+<h4>🔥 Resistencia</h4>
+<p>
+La resistencia limita la cantidad de corriente eléctrica que circula en el circuito.
+</p>
+
+<p>
+👉 Evita que los componentes se dañen, especialmente el LED.
+</p>
+
+<h4>🔘 Interruptor</h4>
+<p>
+Permite abrir o cerrar el circuito.
+</p>
+
+<ul>
+<li><b>Abierto:</b> No pasa corriente</li>
+<li><b>Cerrado:</b> Pasa corriente</li>
+</ul>
+
+<h3>🔄 Tipos de circuitos</h3>
+
+<h4>🔹 Circuito en serie</h4>
+<p>
+Los componentes están conectados uno tras otro.
+</p>
+
+<ul>
+<li>Si uno falla, todo el circuito deja de funcionar</li>
+<li>La corriente es la misma en todo el circuito</li>
+</ul>
+
+<h4>🔹 Circuito en paralelo</h4>
+<p>
+Los componentes están conectados en ramas independientes.
+</p>
+
+<ul>
+<li>Si uno falla, los demás siguen funcionando</li>
+<li>Es el más usado en casas</li>
+</ul>
+
+<h4>🔹 Circuito mixto</h4>
+<p>
+Es una combinación de circuito en serie y paralelo.
+</p>
+
+<h3>⚖️ Diferencias</h3>
+
+<table border="1" style="width:100%; text-align:center;">
+<tr>
+<th>Serie</th>
+<th>Paralelo</th>
+</tr>
+<tr>
+<td>Un solo camino</td>
+<td>Varios caminos</td>
+</tr>
+<tr>
+<td>Si falla uno, falla todo</td>
+<td>Funcionan independientes</td>
+</tr>
+</table>
+
+<h3>🎯 Conclusión</h3>
+<p>
+Los circuitos eléctricos permiten el funcionamiento de dispositivos electrónicos y son fundamentales en la electrónica y la robótica.
+</p>
+
+</div>
+<div class="card">
+<h2>🔌 Simulador de circuito completo</h2>
+
+<p>Selecciona los elementos necesarios para encender un LED:</p>
+
+<label><input type="checkbox" id="bat"> 🔋 Batería</label><br>
+<label><input type="checkbox" id="res"> ⚙️ Resistencia</label><br>
+<label><input type="checkbox" id="led"> 💡 LED</label><br>
+<label><input type="checkbox" id="cable"> 🔗 Cable</label><br>
+
+<br>
+
+<button class="btn" onclick="analizarCircuito()">Analizar circuito</button>
+<button class="btn" onclick="simular()">Simular</button>
+
+<br><br>
+
+<div id="ledVisual" style="width:50px;height:50px;background:red;border-radius:50%;margin:auto;"></div>
+
+<p id="resAct2"></p>
+</div>
+
+<div class="quiz-container">
+
+  <div class="quiz-left">
+
+<h2>🧠 Quiz</h2>
+
+<p>¿Qué es un circuito?</p>
+<button class="btn" onclick="quiz(true)">Camino por donde circula la corriente</button>
+<button class="btn" onclick="quiz(false)">Un programa</button>
+
+<p>¿Función de la resistencia?</p>
+<button class="btn" onclick="quiz(true)">Limitar la corriente</button>
+<button class="btn" onclick="quiz(false)">Encender el LED</button>
+
+<p>¿Qué pasa en serie si un componente falla?</p>
+<button class="btn" onclick="quiz(true)">Todo se apaga</button>
+<button class="btn" onclick="quiz(false)">Nada pasa</button>
+
+<p>¿Ventaja del paralelo?</p>
+<button class="btn" onclick="quiz(true)">Funcionan independientes</button>
+<button class="btn" onclick="quiz(false)">Todo se apaga</button>
+
+<p>¿Fuente de energía?</p>
+<button class="btn" onclick="quiz(true)">Batería</button>
+<button class="btn" onclick="quiz(false)">Cable</button>
+
+<p>¿Elemento que emite luz?</p>
+<button class="btn" onclick="quiz(true)">LED</button>
+<button class="btn" onclick="quiz(false)">Resistencia</button>
+
+<p>¿Qué conecta los componentes?</p>
+<button class="btn" onclick="quiz(true)">Cables</button>
+<button class="btn" onclick="quiz(false)">Pantalla</button>
+
+<p>¿Circuito combinado?</p>
+<button class="btn" onclick="quiz(true)">Mixto</button>
+<button class="btn" onclick="quiz(false)">Serie</button>
+
+</div>
+
+<div class="quiz-img">
+    <img src="../img/resistencia.jpeg">
+  </div>
+  </div>
+
+<div class="card">
+
+    <div class="percepcion-container">
+
+    <div class="percepcion-left">
+<h2>💬 Percepción del estudiante</h2>
+
+<p>El OVA me ayudó:</p>
+<select id="p1">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Fue fácil:</p>
+<select id="p2">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Chatbot ayudó:</p>
+<select id="p3">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Motivación:</p>
+<select id="p4">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+<p>Comentario:</p>
+
+<textarea id="comentario"></textarea>
+
+<select id="calificacion">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
+
+<br><br>
+
+<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
+
+<p id="msgGuardado"></p>
+
+</div>
+
+<div class="percepcion-img">
+    <img src="../img/ledss.png">
+  </div>
+
+</div>
+
+<button id="chatbot-btn" onclick="toggleChat()">💬</button>
+
+<div id="chatbox">
+<div id="messages"></div>
+<input id="chat-input">
+<button class="chat-send" onclick="sendMessage()">Enviar</button>
+</div>
+
+<script>
+
+let score=0
+let totalPreguntas=8
+let preguntasRespondidas=0
+
+function actualizar(){
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+document.getElementById("progress-bar").style.width=progreso+"%"
+
+if(progreso>=100){
+document.getElementById("btnEvaluacion").classList.remove("disabled")
+}
+}
+
+function quiz(correct){
+if(correct){
+score+=10
+preguntasRespondidas++
+document.getElementById("score").innerText=score
+actualizar()
+alert("Correcto")
+}else{
+alert("Incorrecto")
+}
+}
+
+function resultado(){
+let name=localStorage.getItem("student")
+document.getElementById("final").innerHTML="Estudiante: "+name+" Puntaje: "+score
+}
+
+function saveName(){
+let name=document.getElementById("studentName").value
+localStorage.setItem("student",name)
+document.getElementById("welcome").innerText="Bienvenido "+name
+}
+
+function guardarOpinion(){
+
+fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec",{
+
+method:"POST",
+mode:"no-cors",
+
+body:JSON.stringify({
+
+nombre: localStorage.getItem("student"),
+
+puntaje: score,
+
+progreso: preguntasRespondidas,
+
+utilidad: Number(document.getElementById("p1").value),
+
+facilidad: Number(document.getElementById("p2").value),
+
+ia: Number(document.getElementById("p3").value),
+
+motivacion: Number(document.getElementById("p4").value),
+
+comentario: document.getElementById("comentario").value,
+
+calificacion: Number(document.getElementById("calificacion").value),
+
+leccion:"Leccion 2"
+
+})
+
+})
+
+.then(()=>{
+
+document.getElementById("msgGuardado").innerText="✅ Guardado"
+
+})
+
+.catch(()=>{
+
+document.getElementById("msgGuardado").innerText="❌ Error"
+
+})
+
+}
+
+function irEvaluacion(){
+if(preguntasRespondidas<totalPreguntas){
+alert("Completa la lección")
+return
+}
+window.location.href="evaluacion2.html"
+}
+
+function verDashboard(){
+if(prompt("Clave")==="1234"){
+window.location.href="dashboard.html"
+}
+}
+
+/* CHAT */
+function toggleChat(){
+let chat=document.getElementById("chatbox")
+chat.style.display = chat.style.display==="none"?"block":"none"
+}
+
+
+
+function analizarCircuito(){
+
+let faltantes=[]
+
+if(!bat.checked) faltantes.push("batería")
+if(!res.checked) faltantes.push("resistencia")
+if(!led.checked) faltantes.push("LED")
+if(!cable.checked) faltantes.push("cables")
+
+if(faltantes.length===0){
+resAct2.innerText="✔ Circuito completo, listo para simular"
+}else{
+resAct2.innerText="❌ Falta: " + faltantes.join(", ")
+}
+
+}
+
+function simular(){
+
+let ok = bat.checked && res.checked && led.checked && cable.checked
+
+if(ok){
+ledVisual.style.background="lime"
+resAct2.innerText="💡 ¡LED encendido correctamente!"
+}else{
+ledVisual.style.background="red"
+resAct2.innerText="⚠️ El circuito no funciona correctamente"
+}
+
+}
+
+const video = document.getElementById("miVideo");
+const box = document.getElementById("quizVideo");
+
+let preguntaActual = 0;
+
+const preguntas = [
+
+{
+  tiempo: 15,
+  pregunta: "¿Qué necesitas para que el circuito funcione?",
+  correcta: "Cables y batería",
+  incorrecta: "Interruptor y Arduino"
+},
+
+{
+  tiempo: 30,
+  pregunta: "¿Qué hace una resistencia?",
+  correcta: "Limita corriente",
+  incorrecta: "Produce energía"
+},
+
+{
+  tiempo: 45,
+  pregunta: "¿Qué pasa en un circuito serie si un componente falla?",
+  correcta: "Todo se apaga",
+  incorrecta: "Nada cambia"
+},
+
+{
+  tiempo: 60,
+  pregunta: "¿Qué ventaja tiene el circuito paralelo?",
+  correcta: "Los componentes funcionan independientes",
+  incorrecta: "Solo funciona un LED"
+},
+
+{
+  tiempo: 75,
+  pregunta: "¿Qué componente emite luz?",
+  correcta: "LED",
+  incorrecta: "Resistencia"
+}
+
+];
+
+video.addEventListener("timeupdate", function(){
+
+  if(preguntaActual >= preguntas.length) return;
+
+  let p = preguntas[preguntaActual];
+
+  if(video.currentTime >= p.tiempo){
+
+    video.pause();
+
+    box.innerHTML = `
+      <div class="quiz-card">
+
+        <p class="quiz-q">
+          <b>${p.pregunta}</b>
+        </p>
+
+        <div class="quiz-options">
+
+          <button class="q-btn"
+          onclick="responderVideo(event, true)">
+          ${p.correcta}
+          </button>
+
+          <button class="q-btn"
+          onclick="responderVideo(event, false)">
+          ${p.incorrecta}
+          </button>
+
+        </div>
+
+        <p id="feedback" class="quiz-feedback"></p>
+
+      </div>
+    `;
+  }
+
+});
+
+function responderVideo(e, correcto){
+
+  const feedback = document.getElementById("feedback");
+
+  if(correcto){
+
+    e.target.classList.add("correct");
+
+    feedback.innerHTML = "✅ Correcto, puedes continuar";
+    feedback.style.color = "#6EE7B7";
+
+    preguntaActual++;
+
+    setTimeout(()=>{
+
+      box.innerHTML = "";
+      video.play();
+
+    },1000);
+
+  }else{
+
+    e.target.classList.add("wrong");
+
+    feedback.innerHTML = "❌ Incorrecto, intenta nuevamente";
+    feedback.style.color = "#f87171";
+
+  }
+
+}
+
+async function sendMessage(){
+
+let input = document.getElementById("chat-input");
+let box = document.getElementById("messages");
+
+let texto = input.value.trim();
+if(!texto) return;
+
+// 🧑 MENSAJE USUARIO
+box.innerHTML += `<div class="msg user">🧑 ${texto}</div>`;
+box.scrollTop = box.scrollHeight;
+
+// limpiar input
+input.value="";
+
+// 🤖 mensaje temporal
+box.innerHTML += `<div class="msg bot">🤖 Pensando...</div>`;
+box.scrollTop = box.scrollHeight;
+
+try{
+
+  let response = await fetch("http://localhost:5000/chat",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify({
+      mensaje: texto,
+      leccion: "leccion2"
+    })
+  });
+
+  let data = await response.json();
+
+  // 🔥 REEMPLAZA "Pensando..."
+  let mensajes = document.querySelectorAll(".msg.bot");
+  mensajes[mensajes.length - 1].innerHTML = `🤖 ${data.respuesta}`;
+
+}catch(error){
+
+  console.log(error);
+
+  let mensajes = document.querySelectorAll(".msg.bot");
+  mensajes[mensajes.length - 1].innerHTML = "❌ Error al conectar con el servidor";
+
+}
+}
+
+</script>
+
+</body>
+</html>

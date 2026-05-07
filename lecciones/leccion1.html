@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Lección 1 - Introducción a la informática</title>
+
+<style>
+body{
+padding:24px;
+color:white;
+background:#07131d;
+font-family:Arial;
+display:flex;
+justify-content:center;
+}
+
+.container{
+width:100%;
+max-width:900px;
+}
+
+.card{
+background:#0e2734;
+padding:24px;
+border-radius:30px;
+margin-top:25px;
+}
+
+.btn{
+background:#42ffbf;
+padding:8px 14px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
+
+.sidebar{
+position:fixed;
+left:20px;
+top:50%;
+transform:translateY(-50%);
+width:200px;
+background:#0b1d27;
+padding:15px;
+border-radius:20px;
+}
+
+.progress-box{
+width:100%;
+height:20px;
+background:#07131d;
+border-radius:10px;
+overflow:hidden;
+}
+
+#progress-bar{
+height:100%;
+width:0%;
+background:#42ffbf;
+transition:0.5s;
+}
+
+.video-wrapper{
+width:100%;
+border-radius:20px;
+overflow:hidden;
+background:black;
+}
+
+.video-wrapper video{
+width:100%;
+}
+
+/* BOTÓN FLOTANTE */
+#chatbot-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+
+  background:#42ffbf;
+  border:none;
+  padding:18px;
+  border-radius:50%;
+
+  font-size:22px;
+  cursor:pointer;
+
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
+  transition:0.3s;
+}
+
+#chatbot-btn:hover{
+  transform:scale(1.1);
+}
+
+/* CAJA DEL CHAT */
+#chatbox{
+  display:none;
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  width:300px;
+
+  background:white;
+  border-radius:20px;
+  padding:15px;
+
+  border:2px solid #42ffbf;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* CONTENEDOR */
+#messages{
+  height:200px;
+  overflow-y:auto;
+  padding:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  background:transparent; /* 🔥 sin fondo */
+}
+
+/* BURBUJAS */
+.msg{
+  padding:10px 14px;
+  border-radius:15px;
+  max-width:75%;
+  font-size:14px;
+  line-height:1.4;
+}
+
+/* USUARIO */
+.msg.user{
+  background:#42ffbf;
+  color:#000;
+  align-self:flex-end;
+}
+
+/* BOT */
+.msg.bot{
+  background:#1e3a4a;
+  color:#fff;
+  align-self:flex-start;
+}
+
+/* INPUT */
+#chat-input{
+  width:95%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:8px;
+}
+
+/* BOTÓN ENVIAR */
+.chat-send{
+  width:100%;
+  padding:10px;
+
+  background:#42ffbf;
+  border:none;
+  border-radius:10px;
+
+  font-weight:bold;
+  cursor:pointer;
+}
+
+select{
+padding:8px;
+border-radius:8px;
+}
+
+.disabled{
+background:gray;
+cursor:not-allowed;
+}
+.contenedor-act{
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* IZQUIERDA */
+#act1{
+  flex: 1;
+}
+
+/* DERECHA */
+.imagen-act{
+  flex: 1;
+  display: -600px;
+  justify-content: 60px;
+}
+.imagen-act img{
+  width: 150;
+  max-width: 500px;
+  margin-left: -100px; 
+  margin-top: 80px;    
+}
+
+/* BOTÓN */
+.btn-validar{
+  margin-top: 15px;
+}
+
+.quiz-container{
+  display:flex;
+  gap:40px;
+  align-items:flex-start;
+}
+
+.quiz-left{
+  flex:1;
+}
+
+.quiz-img{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
+}
+
+.quiz-img img{
+  width:500px;
+  border-radius:15px;
+  margin-left: -100px; 
+  margin-top: 180px;    
+}
+.percepcion-container{
+  display:flex;
+  gap:40px;
+  align-items:flex-start;
+}
+
+.percepcion-left{
+  flex:1;
+}
+
+.percepcion-img{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  margin-top:50px;
+}
+
+.percepcion-img img{
+  width:500px;
+  border-radius:1px;
+  margin-left: -300px; 
+  margin-top: 50px;
+}
+
+/* VIDEO */
+.video-wrapper video{
+  border-radius: 15px;
+  max-height: 420px;
+}
+
+/* CONTENEDOR */
+.quiz-video{
+  margin-top:16px;
+}
+
+/* TARJETA */
+.quiz-card{
+  background: linear-gradient(145deg, #0f2a3a, #0c2230);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* PREGUNTA */
+.quiz-q{
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+/* OPCIONES */
+.quiz-options{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* BOTONES */
+.q-btn{
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #E6EEF3;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+}
+
+/* HOVER */
+.q-btn:hover{
+  background: rgba(96,165,250,0.15);
+  transform: translateY(-2px);
+}
+
+/* CORRECTO */
+.q-btn.correct{
+  background: rgba(110,231,183,0.2);
+  border-color: rgba(110,231,183,0.5);
+}
+
+/* INCORRECTO */
+.q-btn.wrong{
+  background: rgba(250,128,114,0.15);
+  border-color: rgba(250,128,114,0.4);
+}
+
+/* FEEDBACK */
+.quiz-feedback{
+  margin-top: 10px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h3>📊 Progreso</h3>
+<p>Puntaje: <span id="score">0</span></p>
+
+<div class="progress-box">
+<div id="progress-bar"></div>
+</div>
+
+<br>
+
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">📝 Evaluación final</button>
+
+<br><br>
+
+<button class="btn" onclick="verDashboard()">📊 Dashboard</button>
+
+<p id="msgEval"></p>
+</div>
+
+<div class="container">
+<div class="contenedor-act"></div>
+
+<h1 style="text-align:center">Lección 1: Introducción a la informática</h1>
+
+<div class="card">
+<h2>👤 Estudiante</h2>
+<input id="studentName" placeholder="Escribe tu nombre">
+<button class="btn" onclick="saveName()">Guardar</button>
+<p id="welcome"></p>
+</div>
+
+
+<div class="card">
+  <h2>🎬 Video introductorio</h2>
+
+  <div class="video-wrapper">
+    <video id="miVideo" controls width="100%">
+      <source src="videos1/Softwaredefini.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+  </div>
+
+  <!-- 🔥 AQUÍ APARECEN LAS PREGUNTAS -->
+  <div id="quizVideo" style="margin-top:15px;"></div>
+</div>
+
+<div class="card">
+<h2>📘 Introducción a la informática</h2>
+
+<p>
+La informática es la ciencia que se encarga del <b>procesamiento automático de la información</b> mediante dispositivos electrónicos como computadores, celulares y sistemas digitales.
+</p>
+
+<p>
+Su objetivo es permitir que la información sea <b>recibida, almacenada, procesada y mostrada</b> de forma rápida y eficiente.
+</p>
+
+<h3>🧩 Componentes de un sistema informático</h3>
+
+<h4>💻 Hardware</h4>
+<p>
+El hardware corresponde a todas las <b>partes físicas</b> del computador, es decir, todo lo que se puede ver y tocar.
+</p>
+
+<ul>
+<li><b>Teclado:</b> Permite ingresar datos</li>
+<li><b>Mouse:</b> Controla el cursor</li>
+<li><b>Monitor:</b> Muestra la información</li>
+<li><b>CPU:</b> Procesa los datos</li>
+<li><b>Memoria RAM:</b> Almacena información temporal</li>
+</ul>
+
+<p>
+👉 El hardware necesita instrucciones para funcionar.
+</p>
+
+<h4>🧠 Software</h4>
+<p>
+El software son los <b>programas</b> que le indican al hardware qué hacer.
+</p>
+
+<ul>
+<li>Sistema operativo (Windows, Linux)</li>
+<li>Aplicaciones (Word, Excel)</li>
+<li>Videojuegos</li>
+</ul>
+
+<p>
+👉 Sin software, el hardware no tiene utilidad.
+</p>
+
+<h3>⚖️ Diferencia entre hardware y software</h3>
+
+<table border="1" style="width:100%; text-align:center;">
+<tr>
+<th>Hardware</th>
+<th>Software</th>
+</tr>
+<tr>
+<td>Es físico</td>
+<td>Es digital</td>
+</tr>
+<tr>
+<td>Se puede tocar</td>
+<td>No se puede tocar</td>
+</tr>
+<tr>
+<td>Ej: teclado</td>
+<td>Ej: Word</td>
+</tr>
+<tr>
+<td>Ejecuta acciones</td>
+<td>Da instrucciones</td>
+</tr>
+</table>
+
+<h3>🎯 Conclusión</h3>
+<p>
+El hardware y el software trabajan juntos para permitir el funcionamiento de los dispositivos tecnológicos y facilitar el uso de la informática en la vida diaria.
+</p>
+
+<div class="card">
+<h2>🎮 Clasificación completa</h2>
+
+<p>Clasifica correctamente todos los elementos:</p>
+
+<div style="display:flex; gap:20px; align-items:flex-start;">
+  <div id="act1" style="flex:1;">
+
+<p>Teclado</p>
+<select id="r1">
+<option value="">Selecciona</option>
+<option value="hardware">Hardware</option>
+<option value="software">Software</option>
+</select>
+
+<p>Windows</p>
+<select id="r2">
+<option value="">Selecciona</option>
+<option value="hardware">Hardware</option>
+<option value="software">Software</option>
+</select>
+
+<p>Mouse</p>
+<select id="r3">
+<option value="">Selecciona</option>
+<option value="hardware">Hardware</option>
+<option value="software">Software</option>
+</select>
+
+<p>Excel</p>
+<select id="r4">
+<option value="">Selecciona</option>
+<option value="hardware">Hardware</option>
+<option value="software">Software</option>
+</select>
+
+<p>Monitor</p>
+<select id="r5">
+<option value="">Selecciona</option>
+<option value="hardware">Hardware</option>
+<option value="software">Software</option>
+</select>
+<button class="btn btn-validar" onclick="validarAct1()">Validar</button>
+    <p id="resAct1"></p>
+  </div>
+
+  <!-- DERECHA -->
+  <div class="imagen-act">
+    <img src="../img/softyhard.jpg">
+  </div>
+
+</div>
+
+</div>
+</div>
+
+<div class="quiz-container">
+
+  <div class="quiz-left">
+<h2>🧠 Quiz</h2>
+
+<p>¿Qué estudia la informática?</p>
+<button class="btn" onclick="quiz(true)">El procesamiento de la información</button>
+<button class="btn" onclick="quiz(false)">La fabricación de cables</button>
+
+<p>¿Qué es el hardware?</p>
+<button class="btn" onclick="quiz(true)">Las partes físicas</button>
+<button class="btn" onclick="quiz(false)">Los programas</button>
+
+<p>¿Qué es el software?</p>
+<button class="btn" onclick="quiz(true)">Los programas</button>
+<button class="btn" onclick="quiz(false)">El teclado</button>
+
+<p>¿Cuál es un ejemplo de hardware?</p>
+<button class="btn" onclick="quiz(true)">Teclado</button>
+<button class="btn" onclick="quiz(false)">Windows</button>
+
+<p>¿Cuál es un ejemplo de software?</p>
+<button class="btn" onclick="quiz(true)">Word</button>
+<button class="btn" onclick="quiz(false)">Monitor</button>
+
+<p>¿Qué permite la informática?</p>
+<button class="btn" onclick="quiz(true)">Procesar información</button>
+<button class="btn" onclick="quiz(false)">Cocinar alimentos</button>
+
+<p>¿Qué hace el software?</p>
+<button class="btn" onclick="quiz(true)">Da instrucciones al hardware</button>
+<button class="btn" onclick="quiz(false)">Es físico</button>
+
+<p>¿Qué NO es hardware?</p>
+<button class="btn" onclick="quiz(true)">Sistema operativo</button>
+<button class="btn" onclick="quiz(false)">Mouse</button>
+
+</div>
+
+<div class="quiz-img">
+    <img src="../img/hard2.jpg">
+  </div>
+
+</div>
+
+  <div class="card">
+
+  <div class="percepcion-container">
+
+    <div class="percepcion-left">
+<h2>💬 Percepción del estudiante</h2>
+
+<p>El OVA me ayudó:</p>
+<select id="p1">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Fue fácil:</p>
+<select id="p2">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Chatbot ayudó:</p>
+<select id="p3">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Motivación:</p>
+<select id="p4">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>Comentario:</p>
+<textarea id="comentario"></textarea>
+<select id="calificacion">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
+
+<br><br>
+
+<button class="btn" onclick="guardarTodo()">Guardar</button>
+
+<p id="msgGuardado"></p>
+
+</div>
+
+<div class="percepcion-img">
+    <img src="../img/software-a-medida.jpg">
+  </div>
+</div>
+</div>
+
+<button id="chatbot-btn" onclick="toggleChat()">💬</button>
+
+<div id="chatbox">
+<div id="messages"></div>
+<input id="chat-input">
+<button class="chat-send" onclick="sendMessage()">Enviar</button>
+</div>
+
+<script>
+
+let score=0
+let preguntasRespondidas=0
+
+function quiz(correct){
+
+if(correct){
+score+=10
+preguntasRespondidas++
+
+document.getElementById("score").innerText=score
+
+//ACTUALIZA LA BARRA
+actualizarProgreso()
+
+alert("Correcto")
+}else{
+alert("Incorrecto")
+}
+
+}
+
+function saveName(){
+let name=document.getElementById("studentName").value
+localStorage.setItem("student",name)
+}
+
+function guardarTodo(){
+
+let datos = {
+
+nombre: localStorage.getItem("student"),
+puntaje: score,
+progreso: preguntasRespondidas,
+
+utilidad: Number(document.getElementById("p1").value),
+facilidad: Number(document.getElementById("p2").value),
+ia: Number(document.getElementById("p3").value),
+motivacion: Number(document.getElementById("p4").value),
+
+comentario: document.getElementById("comentario").value,
+
+calificacion: Number(document.getElementById("calificacion").value),
+
+leccion: "Leccion 1"
+
+};
+
+fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec",{
+
+method:"POST",
+mode:"no-cors",
+
+body: JSON.stringify(datos)
+
+})
+
+.then(()=>{
+
+document.getElementById("msgGuardado").innerText = "✅ Guardado correctamente";
+
+})
+
+.catch(()=>{
+
+document.getElementById("msgGuardado").innerText = "❌ Error al guardar";
+
+});
+
+}
+
+function toggleChat(){
+let chat=document.getElementById("chatbox")
+chat.style.display = chat.style.display==="none"?"block":"none"
+}
+
+function sendMessage(){
+let input=document.getElementById("chat-input")
+let box=document.getElementById("messages")
+box.innerHTML += "<p>"+input.value+"</p>"
+input.value=""
+}
+function actualizarProgreso(){
+
+let totalPreguntas = 8  // porque tienes 8 preguntas
+let progreso = (preguntasRespondidas / totalPreguntas) * 100
+
+document.getElementById("progress-bar").style.width = progreso + "%"
+
+}
+
+function validarAct1(){
+
+let correctas=0
+
+if(r1.value==="hardware") correctas++
+if(r2.value==="software") correctas++
+if(r3.value==="hardware") correctas++
+if(r4.value==="software") correctas++
+if(r5.value==="hardware") correctas++
+
+let mensaje=""
+
+if(correctas===5){
+mensaje="🔥 Perfecto, dominas hardware y software"
+}
+else if(correctas>=3){
+mensaje="👍 Vas bien, pero revisa algunos conceptos"
+}
+else{
+mensaje="⚠️ Necesitas reforzar el tema"
+}
+
+document.getElementById("resAct1").innerText=mensaje
+
+}
+
+function verDashboard(){
+if(prompt("Clave")==="1234"){
+window.location.href="dashboard.html"
+}
+}
+
+</script>
+
+  <!-- PREGUNTAS -->
+  <div id="quizVideo" class="quiz-video"></div>
+</div>
+
+<script>
+const video = document.getElementById("miVideo");
+const box = document.getElementById("quizVideo");
+
+let preguntaActual = 0;
+
+const preguntas = [
+
+{
+  tiempo: 15,
+  pregunta: "¿Qué es el hardware?",
+  correcta: "Las partes físicas del computador",
+  incorrecta: "Los programas del computador"
+},
+
+{
+  tiempo: 30,
+  pregunta: "¿Qué es el software?",
+  correcta: "Programas y aplicaciones",
+  incorrecta: "Componentes electrónicos"
+},
+
+{
+  tiempo: 45,
+  pregunta: "¿Cuál es un ejemplo de hardware?",
+  correcta: "Teclado",
+  incorrecta: "Windows"
+},
+
+{
+  tiempo: 60,
+  pregunta: "¿Cuál es un ejemplo de software?",
+  correcta: "Word",
+  incorrecta: "Monitor"
+},
+
+{
+  tiempo: 75,
+  pregunta: "¿Qué permite el software?",
+  correcta: "Realizar tareas en el computador",
+  incorrecta: "Transportar electricidad"
+}
+];
+
+video.addEventListener("timeupdate", function(){
+
+  if(preguntaActual >= preguntas.length) return;
+
+  let p = preguntas[preguntaActual];
+
+  if(video.currentTime >= p.tiempo){
+
+    video.pause();
+
+    box.innerHTML = `
+      <div class="quiz-card">
+
+        <p class="quiz-q">
+          <b>${p.pregunta}</b>
+        </p>
+
+        <div class="quiz-options">
+
+          <button class="q-btn"
+          onclick="responderVideo(event, true)">
+          ${p.correcta}
+          </button>
+
+          <button class="q-btn"
+          onclick="responderVideo(event, false)">
+          ${p.incorrecta}
+          </button>
+
+        </div>
+
+        <p id="feedback" class="quiz-feedback"></p>
+
+      </div>
+    `;
+  }
+
+});
+async function sendMessage(){
+
+let input = document.getElementById("chat-input");
+let box = document.getElementById("messages");
+
+let texto = input.value.trim();
+if(!texto) return;
+
+// 🧑 MENSAJE USUARIO
+box.innerHTML += `<div class="msg user">🧑 ${texto}</div>`;
+box.scrollTop = box.scrollHeight;
+
+// limpiar input
+input.value="";
+
+// 🤖 mensaje temporal
+box.innerHTML += `<div class="msg bot">🤖 Pensando...</div>`;
+box.scrollTop = box.scrollHeight;
+
+try{
+
+  let response = await fetch("http://localhost:5000/chat",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify({
+      mensaje: texto,
+      leccion: "leccion1"   // 🔥 CAMBIA ESTO SEGÚN LA LECCIÓN
+    })
+  });
+
+  let data = await response.json();
+
+  // 🔥 REEMPLAZA "Pensando..."
+  let mensajes = document.querySelectorAll(".msg.bot");
+  mensajes[mensajes.length - 1].innerHTML = `🤖 ${data.respuesta}`;
+
+}catch(error){
+
+  console.log(error);
+
+  let mensajes = document.querySelectorAll(".msg.bot");
+  mensajes[mensajes.length - 1].innerHTML = "❌ Error al conectar con el servidor";
+
+}
+
+}
+</script>
+</body>
+</html>
+

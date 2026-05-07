@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard OVA</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#07131d;
+color:white;
+text-align:center;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+canvas{
+background:white;
+border-radius:10px;
+margin-top:20px;
+}
+
+select{
+padding:10px;
+border-radius:10px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Dashboard del Docente</h1>
+<p>Comparación del aprendizaje: Diagnóstico vs Proceso</p>
+
+<h3>Seleccionar estudiante</h3>
+<select id="selectorEstudiante" onchange="mostrarEstudiante()">
+<option value="">Seleccione un estudiante</option>
+</select>
+
+<p id="infoEstudiante"></p>
+
+<canvas id="graficoPuntaje"></canvas>
+
+</div>
+
+<script>
+
+let URL="https://script.google.com/macros/s/AKfycbwlj8-VREn6fDLBGHgGbUyZUz_PZ5tJ6BbRaUNr5hdsBJwQPw6apCGyEH_7c4xzxydV/exec"
+
+let datosGlobal=[]
+
+fetch(URL)
+.then(res=>res.json())
+.then(data=>{
+
+data.shift()
+datosGlobal=data
+
+let selector=document.getElementById("selectorEstudiante")
+
+let nombresUnicos=[...new Set(data.map(row=>row[0]))]
+
+nombresUnicos.forEach(nombre=>{
+let option=document.createElement("option")
+option.value=nombre
+option.text=nombre
+selector.appendChild(option)
+})
+
+})
+
+.catch(()=>{
+alert("Error conectando con Google Sheets")
+})
+
+/* =========================
+   MOSTRAR ESTUDIANTE
+========================= */
+
+function mostrarEstudiante(){
+
+let nombre=document.getElementById("selectorEstudiante").value
+if(nombre==="") return
+
+let datosEstudiante = datosGlobal.filter(d => d[0] === nombre)
+
+//  separar
+let diagnostico = datosEstudiante.find(d => d[5] === "Diagnostico")
+let lecciones = datosEstudiante.filter(d => d[5] !== "Diagnostico")
+
+//  ordenar lecciones correctamente (Leccion 1,2,3...)
+lecciones.sort((a,b)=>{
+return a[5].localeCompare(b[5], undefined, {numeric:true})
+})
+
+//  construir datos
+let labels = []
+let valores = []
+
+// diagnóstico
+labels.push("Diagnóstico")
+valores.push(diagnostico ? Number(diagnostico[1]) : 0)
+
+// lecciones
+lecciones.forEach(l=>{
+labels.push(l[5])
+valores.push(Number(l[1]))
+})
+
+//  calcular mejora
+let inicial = diagnostico ? Number(diagnostico[1]) : 0
+let final = valores[valores.length-1] || 0
+let mejora = final - inicial
+
+//  destruir gráfica anterior
+if(window.grafico){
+window.grafico.destroy()
+}
+
+//  gráfica evolución
+window.grafico = new Chart(document.getElementById("graficoPuntaje"), {
+type:"line",
+data:{
+labels:labels,
+datasets:[
+{
+label:"Proceso académico",
+data:valores,
+tension:0.3
+}
+]
+}
+})
+
+// última lección
+let ultima = lecciones[lecciones.length-1]
+
+// info completa (nivel tesis)
+document.getElementById("infoEstudiante").innerHTML=
+`
+<b>Nombre:</b> ${nombre}<br>
+<b>Diagnóstico inicial:</b> ${inicial}<br>
+<b>Resultado final:</b> ${final}<br>
+<b>Mejora:</b> ${mejora >=0 ? "+"+mejora : mejora}<br>
+<b>Progreso:</b> ${labels.length-1} lecciones<br>
+<b>Opinión:</b> ${ultima ? ultima[3] : "Sin comentario"}
+`
+
+}
+
+</script>
+
+</body>
+</html>

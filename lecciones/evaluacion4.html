@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Evaluación - Algoritmos y pseudocódigo</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#07131d,#0e2734);
+    color:white;
+    display:flex;
+    justify-content:center;
+}
+
+.container{
+    width:80%;
+    max-width:900px;
+    margin:40px auto;
+    background:#0e2734;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 0 30px rgba(66,255,191,0.3);
+    text-align:center;
+}
+
+h1{
+    color:#42ffbf;
+}
+
+.question{
+    text-align:left;
+    margin:25px 0;
+    padding:20px;
+    background:#07131d;
+    border-radius:15px;
+}
+
+.question h3{
+    color:#7dd8ff;
+}
+
+label{
+    display:block;
+    margin:8px 0;
+    cursor:pointer;
+}
+
+input[type="radio"]{
+    accent-color:#42ffbf;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#42ffbf;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#resultado{
+    margin-top:30px;
+    padding:20px;
+    border-radius:15px;
+    font-size:18px;
+}
+
+.buena{
+    background:rgba(66,255,191,0.2);
+    border:2px solid #42ffbf;
+}
+
+.mala{
+    background:rgba(255,80,80,0.2);
+    border:2px solid #ff4d4d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🧠 Evaluación: Algoritmos y pseudocódigo</h1>
+
+<form id="quizForm">
+
+<div class="question">
+<h3>1. ¿Qué es un algoritmo?</h3>
+<label><input type="radio" name="q1" value="1"> Conjunto de pasos para resolver un problema</label>
+<label><input type="radio" name="q1" value="0"> Un tipo de hardware</label>
+<label><input type="radio" name="q1" value="0"> Un programa de computador</label>
+</div>
+
+<div class="question">
+<h3>2. ¿Para qué sirve el pseudocódigo?</h3>
+<label><input type="radio" name="q2" value="1"> Escribir algoritmos de forma sencilla</label>
+<label><input type="radio" name="q2" value="0"> Diseñar circuitos</label>
+<label><input type="radio" name="q2" value="0"> Crear páginas web</label>
+</div>
+
+<div class="question">
+<h3>3. ¿Qué representa la secuencia en un algoritmo?</h3>
+<label><input type="radio" name="q3" value="1"> Pasos ordenados</label>
+<label><input type="radio" name="q3" value="0"> Errores del programa</label>
+<label><input type="radio" name="q3" value="0"> Decisiones aleatorias</label>
+</div>
+
+<div class="question">
+<h3>4. ¿Qué hace un condicional?</h3>
+<label><input type="radio" name="q4" value="1"> Permite tomar decisiones</label>
+<label><input type="radio" name="q4" value="0"> Repite instrucciones</label>
+<label><input type="radio" name="q4" value="0"> Finaliza el programa</label>
+</div>
+
+<div class="question">
+<h3>5. ¿Qué hace un bucle?</h3>
+<label><input type="radio" name="q5" value="1"> Repite instrucciones</label>
+<label><input type="radio" name="q5" value="0"> Toma decisiones</label>
+<label><input type="radio" name="q5" value="0"> Muestra resultados</label>
+</div>
+
+<div class="question">
+<h3>6. ¿Qué indica "Inicio" en un algoritmo?</h3>
+<label><input type="radio" name="q6" value="1"> Comienzo del proceso</label>
+<label><input type="radio" name="q6" value="0"> Fin del programa</label>
+<label><input type="radio" name="q6" value="0"> Error del sistema</label>
+</div>
+
+<div class="question">
+<h3>7. ¿Qué indica "Fin" en un algoritmo?</h3>
+<label><input type="radio" name="q7" value="1"> Termina el proceso</label>
+<label><input type="radio" name="q7" value="0"> Empieza el algoritmo</label>
+<label><input type="radio" name="q7" value="0"> Reinicia el sistema</label>
+</div>
+
+<div class="question">
+<h3>8. ¿Para qué sirven los algoritmos?</h3>
+<label><input type="radio" name="q8" value="1"> Resolver problemas</label>
+<label><input type="radio" name="q8" value="0"> Dibujar imágenes</label>
+<label><input type="radio" name="q8" value="0"> Crear hardware</label>
+</div>
+
+<button type="button" onclick="calcular()">Finalizar Evaluación</button>
+<br>
+<button type="button" onclick="volverInicio()">⬅ Volver al OVA</button>
+
+</form>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+function calcular(){
+    let total = 0;
+    let preguntas = 8;
+
+    for(let i=1; i<=preguntas; i++){
+        let respuesta = document.querySelector('input[name="q'+i+'"]:checked');
+        if(respuesta){
+            total += parseInt(respuesta.value);
+        }
+    }
+
+    let nota = (total/preguntas)*5;
+    nota = nota.toFixed(1);
+
+    let resultado = document.getElementById("resultado");
+
+    if(nota >= 4.0){
+        resultado.className = "buena";
+        resultado.innerHTML = 
+        "🎉 <b>¡Excelente desempeño!</b><br><br>" +
+        "Tu nota final es: <b>"+nota+"</b><br><br>" +
+        "Comprendes muy bien los algoritmos y el pseudocódigo.";
+    }
+    else{
+        resultado.className = "mala";
+        resultado.innerHTML = 
+        "📘 <b>Oportunidad de mejora</b><br><br>" +
+        "Tu nota final es: <b>"+nota+"</b><br><br>" +
+        "Te recomendamos practicar más la lógica de algoritmos.";
+    }
+}
+
+function volverInicio(){
+    window.location.href = "../index.html";
+}
+
+</script>
+
+
+</body>
+</html>
+

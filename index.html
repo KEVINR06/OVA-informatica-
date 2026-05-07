@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OVA — Objeto Virtual de Aprendizaje</title>
+  <meta name="description" content="OVA interactivo y atractivo — HTML, CSS y JS" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">OVA</div>
+        <div>
+          <h1>OVA Interactivo</h1>
+          <p class="lead">Aprende informática de forma guiada y atractiva</p>
+        </div>
+    </header>
+
+    <main class="main">
+      <section class="card hero">
+        <div class="hero-info">
+          <h2>Bienvenido/a al OVA</h2>
+          <p>Aca encontrarâs lecciones, cuestionarios interactivos, un "chatbot" guía y un panel para docentes. 
+            Cualquier Profe Puede adaptar contenidos y preguntas.
+            Como primer paso da click en el boton de "Probar cuestionario", antes de ingresar a las lecciones para saber que debes reforzar. Bienvenidos</p>
+          
+          <input id="nombreEstudiante" placeholder="Escribe tu nombre">
+          <button class="btn" onclick="guardarNombre()">Guardar nombre</button>
+
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <a href="lecciones/leccion1.html" class="btn">Ir a lección 1</a>
+            <button class="btn outline" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Probar cuestionario</button>
+          </div>
+        </div>
+
+        <div style="width:220px;text-align:center">
+          <img src="img/info.jpg"
+          alt="Imagen Informática"
+          style="width:180px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6)" />
+        </div>
+
+      </section>
+
+      <section class="card">
+        <h3 style="margin-top:0">Lecciones</h3>
+        <div class="lessons" id="lessons"></div>
+      </section>
+
+      <section class="card">
+        <h3 id="quizTitle">Cuestionario de conocimientos basicos</h3>
+        <div id="quiz" class="quiz"></div>
+
+        <br>
+        <button class="btn" onclick="guardarDiagnostico()">Guardar resultado inicial</button>
+      </section>
+        </div>
+      </section>
+
+    </main>
+
+
+    <footer>
+      Diseñado con ❤️ para clases dinámicas — adapta el contenido y pruébalo en tu colegio.
+    </footer>
+  </div>
+
+<script src="script.js"></script>
+
+<script>
+
+// guardar nombre
+function guardarNombre(){
+  let nombre = document.getElementById("nombreEstudiante").value;
+  localStorage.setItem("student", nombre);
+  alert("Nombre guardado");
+}
+
+// guardar diagnóstico (CORREGIDO)
+function guardarDiagnostico(){
+
+let nombre = localStorage.getItem("student") || "Sin nombre";
+
+// VALIDACIÓN
+if(score === 0){
+  alert("Debes responder el cuestionario primero");
+  return;
+}
+
+let datos = {
+  nombre: nombre,
+  puntaje: score,
+  progreso: score,
+  comentario: "Diagnóstico inicial",
+  calificacion: 0,
+  leccion: "Diagnostico"
+};
+
+fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
+  method:"POST",
+  mode:"no-cors",
+  headers:{ "Content-Type":"application/json" },
+  body:JSON.stringify(datos)
+})
+.then(()=>{
+  alert("Guardado correctamente");
+})
+.catch(()=>{
+  alert("Error al guardar");
+});
+
+}
+
+</script>
+</body>
+</html>

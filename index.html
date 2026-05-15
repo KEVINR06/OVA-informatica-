@@ -21,16 +21,31 @@
     <main class="main">
       <section class="card hero">
         <div class="hero-info">
-          <h2>Bienvenido/a al OVA</h2>
-          <p>Aca encontrarâs lecciones, cuestionarios interactivos, un "chatbot" guía y un panel para docentes. 
-            Cualquier Profe Puede adaptar contenidos y preguntas.
-            Como primer paso da click en el boton de "Probar cuestionario", antes de ingresar a las lecciones para saber que debes reforzar. Bienvenidos</p>
+          <h2>🚀 Bienvenido/a al OVA de Informática</h2>
+
+<p>
+Este Objeto Virtual de Aprendizaje (OVA) ha sido diseñado para ayudarte a aprender informática de manera interactiva, dinámica y autónoma.
+Aquí encontrarás lecciones con videos, actividades prácticas, cuestionarios interactivos y un chatbot educativo que podrá orientarte y resolver tus dudas durante el proceso de aprendizaje.
+</p>
+
+<p>
+A lo largo de las lecciones aprenderás conceptos fundamentales como hardware, software, circuitos eléctricos, programación por bloques, algoritmos y diagramas de flujo.
+Cada actividad te permitirá fortalecer tus conocimientos mientras avanzas en tu progreso dentro de la plataforma.
+</p>
+
+<p>
+📌 Antes de comenzar las lecciones, pon tu nombre primero y realiza el cuestionario diagnóstico en el botón <b>"Probar cuestionario"</b>. 
+Esto permitirá identificar los temas que necesitas reforzar y personalizar mejor tu experiencia de aprendizaje.
+</p>
+
+<p>
+💡 Explora, pregunta, interactúa y aprende a tu ritmo. ¡Bienvenido/a!
+</p>
           
           <input id="nombreEstudiante" placeholder="Escribe tu nombre">
           <button class="btn" onclick="guardarNombre()">Guardar nombre</button>
 
           <div style="margin-top:12px;display:flex;gap:10px">
-            <a href="lecciones/leccion1.html" class="btn">Ir a lección 1</a>
             <button class="btn outline" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Probar cuestionario</button>
           </div>
         </div>
@@ -54,6 +69,9 @@
 
         <br>
         <button class="btn" onclick="guardarDiagnostico()">Guardar resultado inicial</button>
+       <button class="btn" onclick="irLecciones()">
+📚 Ir a las lecciones
+</button>
       </section>
         </div>
       </section>
@@ -108,6 +126,22 @@ fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPq
 })
 .catch(()=>{
   alert("Error al guardar");
+});
+
+}
+function irLecciones(){
+
+if(score === 0){
+
+alert("⚠️ Primero debes realizar el cuestionario diagnóstico");
+
+return;
+
+}
+
+document.getElementById("lessons")
+.scrollIntoView({
+behavior:"smooth"
 });
 
 }

@@ -268,6 +268,29 @@ cursor:not-allowed;
   margin-top: 10px;
   font-size: 14px;
 }
+
+.sidebar-btn{
+
+  display:block;
+  width:85%;
+  background:#42ffbf;
+  color:#06202B !important;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  text-decoration:none;
+  font-weight:bold;
+  margin:15px auto;
+  box-shadow:0 5px 15px rgba(66,255,191,0.3);
+  transition:0.3s;
+}
+
+.sidebar-btn:hover{
+
+  transform:scale(1.05);
+  background:white;
+  color:#06202B !important;
+}
 </style>
 </head>
 
@@ -275,7 +298,9 @@ cursor:not-allowed;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-
+<a href="../index.html" class="sidebar-btn">
+⬅ Volver al inicio
+</a>
 <h3>📊 Progreso</h3>
 
 <p>Puntaje: <span id="score">0</span></p>
@@ -303,7 +328,22 @@ cursor:not-allowed;
 <div class="container">
 
 <h1 style="text-align:center">Lección 2: Circuitos básicos</h1>
+<div class="intro-leccion">
 
+<p>
+Aprenderás cómo funcionan los circuitos eléctricos, 
+la diferencia entre circuito serie y paralelo y el uso 
+de componentes como LEDs, resistencias y baterías.
+</p>
+
+<ul>
+<li>🎬 Mira el video y responde preguntas</li>
+<li>💡 Analiza los circuitos mostrados</li>
+<li>🤖 Usa el chatbot para resolver dudas</li>
+<li>🧠 Completa el quiz y actividades</li>
+</ul>
+
+</div>
 <div class="card">
 <h2>👤 Estudiante</h2>
 <input id="studentName" placeholder="Escribe tu nombre">

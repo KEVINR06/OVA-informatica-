@@ -292,6 +292,28 @@ cursor:not-allowed;
   margin-top: 10px;
   font-size: 14px;
 }
+.sidebar-btn{
+
+  display:block;
+  width:85%;
+  background:#42ffbf;
+  color:#06202B !important;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  text-decoration:none;
+  font-weight:bold;
+  margin:15px auto;
+  box-shadow:0 5px 15px rgba(66,255,191,0.3);
+  transition:0.3s;
+}
+
+.sidebar-btn:hover{
+
+  transform:scale(1.05);
+  background:white;
+  color:#06202B !important;
+}
 
 </style>
 </head>
@@ -300,6 +322,10 @@ cursor:not-allowed;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
+<a href="../index.html" class="sidebar-btn">
+⬅ Volver al inicio
+</a>
+  
 <h3>📊 Progreso</h3>
 
 <p>Puntaje: <span id="score">0</span></p>
@@ -326,7 +352,22 @@ cursor:not-allowed;
 <div class="container">
 
 <h1 style="text-align:center">Lección 3: Programación por bloques en Arduino</h1>
+<div class="intro-leccion">
 
+<p>
+En esta lección conocerás Arduino, los sensores, 
+la automatización y cómo programar utilizando 
+bloques visuales.
+</p>
+
+<ul>
+<li>🎬 Observa el funcionamiento de Arduino</li>
+<li>🧩 Aprende programación por bloques</li>
+<li>🤖 Consulta el chatbot educativo</li>
+<li>⚙️ Resuelve los retos interactivos</li>
+</ul>
+
+</div>
 <div class="card">
 <h2>👤 Estudiante</h2>
 <input id="studentName" placeholder="Escribe tu nombre">

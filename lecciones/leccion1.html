@@ -320,12 +320,50 @@ cursor:not-allowed;
   margin-top: 10px;
   font-size: 14px;
 }
+.sidebar-btn{
+
+  display:block;
+
+  width:85%;
+
+  background:#42ffbf;
+
+  color:#06202B !important;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  font-weight:bold;
+
+  margin:15px auto;
+
+  box-shadow:0 5px 15px rgba(66,255,191,0.3);
+
+  transition:0.3s;
+}
+
+.sidebar-btn:hover{
+
+  transform:scale(1.05);
+
+  background:white;
+
+  color:#06202B !important;
+}
 </style>
 </head>
 
 <body>
 
 <div class="sidebar">
+  <a href="../index.html" class="sidebar-btn">
+⬅ Volver al inicio
+</a>
 <h3>📊 Progreso</h3>
 <p>Puntaje: <span id="score">0</span></p>
 
@@ -348,14 +386,28 @@ cursor:not-allowed;
 <div class="contenedor-act"></div>
 
 <h1 style="text-align:center">Lección 1: Introducción a la informática</h1>
+<div class="intro-leccion">
 
+<p>
+En esta lección aprenderás la diferencia entre 
+<b>hardware</b> y <b>software</b>, conocerás los componentes 
+principales de un computador y cómo trabajan juntos.
+</p>
+
+<ul>
+<li>🎬 Observa el video interactivo</li>
+<li>🤖 Pregunta al chatbot tus dudas</li>
+<li>🧠 Responde las actividades y quiz</li>
+<li>📈 Completa la percepción al final</li>
+</ul>
+
+</div>
 <div class="card">
 <h2>👤 Estudiante</h2>
 <input id="studentName" placeholder="Escribe tu nombre">
 <button class="btn" onclick="saveName()">Guardar</button>
 <p id="welcome"></p>
 </div>
-
 
 <div class="card">
   <h2>🎬 Video introductorio</h2>

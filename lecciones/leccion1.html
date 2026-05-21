@@ -373,7 +373,14 @@ cursor:not-allowed;
 
 <br>
 
-<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">📝 Evaluación final</button>
+<button id="btnEvaluacion"
+class="btn disabled"
+disabled
+onclick="irEvaluacion()">
+
+📝 Evaluación final
+
+</button>
 
 <br><br>
 
@@ -753,10 +760,33 @@ chat.style.display = chat.style.display==="none"?"block":"none"
 
 function actualizarProgreso(){
 
-let totalPreguntas = 8  // porque tienes 8 preguntas
-let progreso = (preguntasRespondidas / totalPreguntas) * 100
+let totalPreguntas = 8;
 
-document.getElementById("progress-bar").style.width = progreso + "%"
+let progreso = (preguntasRespondidas / totalPreguntas) * 100;
+
+// ACTUALIZA BARRA
+document.getElementById("progress-bar").style.width = progreso + "%";
+
+// BOTÓN EVALUACIÓN
+let btn = document.getElementById("btnEvaluacion");
+
+// SI COMPLETA TODO
+if(progreso >= 100){
+
+btn.classList.remove("disabled");
+
+btn.disabled = false;
+
+document.getElementById("msgEval").innerText =
+"✅ Evaluación final habilitada";
+
+}else{
+
+btn.classList.add("disabled");
+
+btn.disabled = true;
+
+}
 
 }
 
@@ -925,7 +955,12 @@ const response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
   mensajes[mensajes.length - 1].innerHTML = "❌ Error al conectar con el servidor";
 
 }
+  
+function irEvaluacion(){
 
+window.location.href = "evaluacion1.html";
+
+}
 }
 </script>
 </body>

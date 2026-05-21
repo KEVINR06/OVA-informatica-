@@ -398,10 +398,10 @@ principales de un computador y cómo trabajan juntos.
 </p>
 
 <ul>
-<li>🎬 Observa el video interactivo</li>
-<li>🤖 Pregunta al chatbot tus dudas</li>
+<li>🎬 Observa el video interactivo, responde las preguntas que aparecen a medida que el video avanza.</li>
+<li>🤖 Pregunta al chatbot tus dudas a cerca de la lección</li>
 <li>🧠 Responde las actividades y quiz</li>
-<li>📈 Completa la percepción al final</li>
+<li>📈 Completa la encuesta al final</li>
 </ul>
 
 </div>
@@ -609,7 +609,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
     <div class="percepcion-left">
 <h2>💬 Percepción del estudiante</h2>
 
-<p>El OVA me ayudó:</p>
+<p>El OVA me ayudó a comprender mejor el tema visto en la clase:</p>
 <select id="p1">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -618,7 +618,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Fue fácil:</p>
+<p>Fue fácil de utilizar:</p>
 <select id="p2">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -627,7 +627,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Chatbot ayudó:</p>
+<p>Chatbot ayudó a solucionar dudas que tenia:</p>
 <select id="p3">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -636,7 +636,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Motivación:</p>
+<p>Me motivó a poder comprender el tema visto:</p>
 <select id="p4">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -915,33 +915,34 @@ video.addEventListener("timeupdate", function(){
 
 });
 
-  function responderVideo(event, correcta){
+  function responderVideo(e, correcto){
 
-let feedback = document.getElementById("feedback");
+  const feedback = document.getElementById("feedback");
 
-if(correcta){
+  if(correcto){
 
-event.target.classList.add("correct");
+    e.target.classList.add("correct");
 
-feedback.innerHTML = "✅ Correcto";
+    feedback.innerHTML = "✅ Correcto, puedes continuar";
+    feedback.style.color = "#6EE7B7";
 
-setTimeout(()=>{
+    preguntaActual++;
 
-box.innerHTML = "";
+    setTimeout(()=>{
 
-preguntaActual++;
+      box.innerHTML = "";
+      video.play();
 
-video.play();
+    },1000);
 
-},1200);
+  }else{
 
-}else{
+    e.target.classList.add("wrong");
 
-event.target.classList.add("wrong");
+    feedback.innerHTML = "❌ Incorrecto, intenta nuevamente";
+    feedback.style.color = "#f87171";
 
-feedback.innerHTML = "❌ Incorrecto, intenta nuevamente";
-
-}
+  }
 
 }
 async function sendMessage(){

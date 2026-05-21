@@ -38,31 +38,14 @@ margin:5px;
 }
 
 .sidebar{
-
 position:fixed;
-
 left:20px;
 top:50%;
-
 transform:translateY(-50%);
-
-width:220px;
-
+width:200px;
 background:#0b1d27;
-
-padding:18px;
-
+padding:15px;
 border-radius:20px;
-
-z-index:99999;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
-pointer-events:auto;
-isolation:isolate;
-
-}
-  .sidebar *{
-pointer-events:auto;
 }
 
 .progress-box{
@@ -391,14 +374,8 @@ cursor:not-allowed;
 </div>
 
 <br>
-
-<button id="btnEvaluacion"
-class="btn disabled"
-disabled
-onclick="irEvaluacion()">
-
+<button id="btnEvaluacion" class="btn disabled" onclick="irEvaluacion()">
 📝 Evaluación final
-
 </button>
 
 <br><br>
@@ -703,8 +680,17 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <script>
 
 let score=0
+let totalPreguntas=8
 let preguntasRespondidas=0
 
+  function actualizar(){
+let progreso=(preguntasRespondidas/totalPreguntas)*100
+document.getElementById("progress-bar").style.width=progreso+"%"
+
+if(progreso>=100){
+document.getElementById("btnEvaluacion").classList.remove("disabled")
+}
+}
 function quiz(correct){
 
 if(correct){
@@ -1005,9 +991,11 @@ const response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
 }
   }
 function irEvaluacion(){
-
-window.location.href = "evaluacion1.html";
-
+if(preguntasRespondidas<totalPreguntas){
+alert("Completa la lección")
+return
+}
+window.location.href="evaluacion2.html"
 }
 </script>
 </body>

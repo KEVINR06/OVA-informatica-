@@ -928,6 +928,36 @@ video.addEventListener("timeupdate", function(){
   }
 
 });
+
+  function responderVideo(event, correcta){
+
+let feedback = document.getElementById("feedback");
+
+if(correcta){
+
+event.target.classList.add("correct");
+
+feedback.innerHTML = "✅ Correcto";
+
+setTimeout(()=>{
+
+box.innerHTML = "";
+
+preguntaActual++;
+
+video.play();
+
+},1200);
+
+}else{
+
+event.target.classList.add("wrong");
+
+feedback.innerHTML = "❌ Incorrecto, intenta nuevamente";
+
+}
+
+}
 async function sendMessage(){
 
 let input = document.getElementById("chat-input");

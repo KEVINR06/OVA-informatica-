@@ -17,6 +17,8 @@ justify-content:center;
 .container{
 width:100%;
 max-width:900px;
+  position:relative;
+z-index:1;
 }
 
 .card{
@@ -36,15 +38,31 @@ margin:5px;
 }
 
 .sidebar{
+
 position:fixed;
+
 left:20px;
 top:50%;
+
 transform:translateY(-50%);
-width:200px;
+
+width:220px;
+
 background:#0b1d27;
-padding:15px;
+
+padding:18px;
+
 border-radius:20px;
-z-index:9999;
+
+z-index:99999;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+pointer-events:auto;
+isolation:isolate;
+
+}
+  .sidebar *{
+pointer-events:auto;
 }
 
 .progress-box{

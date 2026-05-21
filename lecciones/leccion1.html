@@ -764,18 +764,16 @@ let totalPreguntas = 8;
 
 let progreso = (preguntasRespondidas / totalPreguntas) * 100;
 
-// ACTUALIZA BARRA
 document.getElementById("progress-bar").style.width = progreso + "%";
 
-// BOTÓN EVALUACIÓN
 let btn = document.getElementById("btnEvaluacion");
 
-// SI COMPLETA TODO
 if(progreso >= 100){
 
 btn.classList.remove("disabled");
 
-btn.disabled = false;
+btn.style.pointerEvents = "auto";
+btn.style.opacity = "1";
 
 document.getElementById("msgEval").innerText =
 "✅ Evaluación final habilitada";
@@ -784,7 +782,8 @@ document.getElementById("msgEval").innerText =
 
 btn.classList.add("disabled");
 
-btn.disabled = true;
+btn.style.pointerEvents = "none";
+btn.style.opacity = "0.5";
 
 }
 

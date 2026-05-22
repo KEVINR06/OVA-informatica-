@@ -710,8 +710,15 @@ alert("Incorrecto")
 }
 
 function saveName(){
-let name=document.getElementById("studentName").value
-localStorage.setItem("student",name)
+
+let name = document.getElementById("studentName").value;
+
+localStorage.setItem("student", name);
+
+// MOSTRAR MENSAJE
+document.getElementById("welcome").innerText =
+"👋 Bienvenido " + name;
+
 }
 
 function guardarTodo(){

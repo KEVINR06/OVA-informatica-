@@ -940,7 +940,36 @@ video.addEventListener("timeupdate", function(){
   }
 
 });
+function responderVideo(e, correcto){
 
+  const feedback = document.getElementById("feedback");
+
+  if(correcto){
+
+    e.target.classList.add("correct");
+
+    feedback.innerHTML = "✅ Correcto, puedes continuar";
+    feedback.style.color = "#6EE7B7";
+
+    preguntaActual++;
+
+    setTimeout(()=>{
+
+      box.innerHTML = "";
+      video.play();
+
+    },1000);
+
+  }else{
+
+    e.target.classList.add("wrong");
+
+    feedback.innerHTML = "❌ Incorrecto, intenta nuevamente";
+    feedback.style.color = "#f87171";
+
+  }
+
+}
 async function sendMessage(){
 
 let input = document.getElementById("chat-input");

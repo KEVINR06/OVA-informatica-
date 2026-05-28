@@ -504,37 +504,53 @@ Los circuitos eléctricos permiten el funcionamiento de dispositivos electrónic
 
 <h2>🧠 Quiz</h2>
 
+<div class="pregunta">
 <p>¿Qué es un circuito?</p>
-<button class="btn" onclick="quiz(true)">Camino por donde circula la corriente</button>
-<button class="btn" onclick="quiz(false)">Un programa</button>
+<button class="btn" onclick="quiz(true,1,this)">Camino por donde circula la corriente</button>
+<button class="btn" onclick="quiz(false,1,this)">Un programa</button>
+</div>
 
+<div class="pregunta">
 <p>¿Función de la resistencia?</p>
-<button class="btn" onclick="quiz(true)">Limitar la corriente</button>
-<button class="btn" onclick="quiz(false)">Encender el LED</button>
+<button class="btn" onclick="quiz(true,2,this)">Limitar la corriente</button>
+<button class="btn" onclick="quiz(false,2,this)">Encender el LED</button>
+</div>
 
+<div class="pregunta">
 <p>¿Qué pasa en serie si un componente falla?</p>
-<button class="btn" onclick="quiz(true)">Todo se apaga</button>
-<button class="btn" onclick="quiz(false)">Nada pasa</button>
+<button class="btn" onclick="quiz(true,3,this)">Todo se apaga</button>
+<button class="btn" onclick="quiz(false,3,this)">Nada pasa</button>
+</div>
 
+<div class="pregunta">
 <p>¿Ventaja del paralelo?</p>
-<button class="btn" onclick="quiz(true)">Funcionan independientes</button>
-<button class="btn" onclick="quiz(false)">Todo se apaga</button>
+<button class="btn" onclick="quiz(true,4,this)">Funcionan independientes</button>
+<button class="btn" onclick="quiz(false,4,this)">Todo se apaga</button>
+</div>
 
+<div class="pregunta">
 <p>¿Fuente de energía?</p>
-<button class="btn" onclick="quiz(true)">Batería</button>
-<button class="btn" onclick="quiz(false)">Cable</button>
+<button class="btn" onclick="quiz(true,5,this)">Batería</button>
+<button class="btn" onclick="quiz(false,5,this)">Cable</button>
+</div>
 
+<div class="pregunta">
 <p>¿Elemento que emite luz?</p>
-<button class="btn" onclick="quiz(true)">LED</button>
-<button class="btn" onclick="quiz(false)">Resistencia</button>
+<button class="btn" onclick="quiz(true,6,this)">LED</button>
+<button class="btn" onclick="quiz(false,6,this)">Resistencia</button>
+</div>
 
+<div class="pregunta">
 <p>¿Qué conecta los componentes?</p>
-<button class="btn" onclick="quiz(true)">Cables</button>
-<button class="btn" onclick="quiz(false)">Pantalla</button>
+<button class="btn" onclick="quiz(true,7,this)">Cables</button>
+<button class="btn" onclick="quiz(false,7,this)">Pantalla</button>
+</div>
 
+<div class="pregunta">
 <p>¿Circuito combinado?</p>
-<button class="btn" onclick="quiz(true)">Mixto</button>
-<button class="btn" onclick="quiz(false)">Serie</button>
+<button class="btn" onclick="quiz(true,8,this)">Mixto</button>
+<button class="btn" onclick="quiz(false,8,this)">Serie</button>
+</div>
 
 </div>
 
@@ -634,16 +650,45 @@ document.getElementById("btnEvaluacion").classList.remove("disabled")
 }
 }
 
-function quiz(correct){
-if(correct){
-score+=10
-preguntasRespondidas++
-document.getElementById("score").innerText=score
-actualizar()
-alert("Correcto")
-}else{
-alert("Incorrecto")
+let preguntasContestadas = [];
+
+function quiz(correct, idPregunta, boton){
+
+// 🚫 SI YA FUE RESPONDIDA
+if(preguntasContestadas.includes(idPregunta)){
+return;
 }
+
+// ✅ MARCA COMO RESPONDIDA
+preguntasContestadas.push(idPregunta);
+
+// 🔒 DESACTIVA BOTONES DE ESA PREGUNTA
+let grupo = boton.parentElement.querySelectorAll("button");
+
+grupo.forEach(btn=>{
+btn.disabled = true;
+btn.style.opacity = "0.6";
+});
+
+// ✅ SI ES CORRECTA
+if(correct){
+
+score += 10;
+
+preguntasRespondidas++;
+
+document.getElementById("score").innerText = score;
+
+actualizarProgreso();
+
+alert("✅ Correcto");
+
+}else{
+
+alert("❌ Incorrecto");
+
+}
+
 }
 
 function resultado(){

@@ -649,25 +649,29 @@ if(progreso>=100){
 document.getElementById("btnEvaluacion").classList.remove("disabled")
 }
 }
-
+let score = 0;
+let preguntasRespondidas = 0;
 let preguntasContestadas = [];
 
+// QUIZ
 function quiz(correct, idPregunta, boton){
 
-// 🚫 SI YA FUE RESPONDIDA
+// 🚫 SI YA RESPONDIÓ ESA PREGUNTA
 if(preguntasContestadas.includes(idPregunta)){
 return;
 }
 
-// ✅ MARCA COMO RESPONDIDA
+// ✅ GUARDA LA PREGUNTA COMO RESPONDIDA
 preguntasContestadas.push(idPregunta);
 
-// 🔒 DESACTIVA BOTONES DE ESA PREGUNTA
-let grupo = boton.parentElement.querySelectorAll("button");
+// 🔒 BLOQUEA SOLO ESA PREGUNTA
+let grupo = boton.closest(".pregunta").querySelectorAll("button");
 
 grupo.forEach(btn=>{
+
 btn.disabled = true;
 btn.style.opacity = "0.6";
+
 });
 
 // ✅ SI ES CORRECTA
@@ -679,6 +683,7 @@ preguntasRespondidas++;
 
 document.getElementById("score").innerText = score;
 
+// ACTUALIZA PROGRESO
 actualizarProgreso();
 
 alert("✅ Correcto");
@@ -690,6 +695,43 @@ alert("❌ Incorrecto");
 }
 
 }
+
+// BARRA DE PROGRESO
+function actualizarProgreso(){
+
+let totalPreguntas = 8;
+
+let progreso = (preguntasRespondidas / totalPreguntas) * 100;
+
+// ACTUALIZA BARRA
+document.getElementById("progress-bar").style.width = progreso + "%";
+
+// BOTÓN EVALUACIÓN
+let btn = document.getElementById("btnEvaluacion");
+
+// SI TERMINA TODO
+if(progreso >= 100){
+
+btn.classList.remove("disabled");
+
+btn.style.pointerEvents = "auto";
+btn.style.opacity = "1";
+
+document.getElementById("msgEval").innerText =
+"✅ Evaluación final habilitada";
+
+}else{
+
+btn.classList.add("disabled");
+
+btn.style.pointerEvents = "none";
+btn.style.opacity = "0.5";
+
+}
+
+}
+
+
 
 function resultado(){
 let name=localStorage.getItem("student")

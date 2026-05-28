@@ -563,37 +563,36 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <h2>🧠 Quiz</h2>
 
 <p>¿Qué estudia la informática?</p>
-<button class="btn" onclick="quiz(true)">El procesamiento de la información</button>
-<button class="btn" onclick="quiz(false)">La fabricación de cables</button>
+<button class="btn" onclick="quiz(true,1,this)">El procesamiento de la información</button>
+<button class="btn" onclick="quiz(false,1,this)">La fabricación de cables</button>
 
 <p>¿Qué es el hardware?</p>
-<button class="btn" onclick="quiz(true)">Las partes físicas</button>
-<button class="btn" onclick="quiz(false)">Los programas</button>
+<button class="btn" onclick="quiz(true,2,this)">Las partes físicas</button>
+<button class="btn" onclick="quiz(false,2,this)">Los programas</button>
 
 <p>¿Qué es el software?</p>
-<button class="btn" onclick="quiz(true)">Los programas</button>
-<button class="btn" onclick="quiz(false)">El teclado</button>
+<button class="btn" onclick="quiz(true,3,this)">Los programas</button>
+<button class="btn" onclick="quiz(false,3,this)">El teclado</button>
 
 <p>¿Cuál es un ejemplo de hardware?</p>
-<button class="btn" onclick="quiz(true)">Teclado</button>
-<button class="btn" onclick="quiz(false)">Windows</button>
+<button class="btn" onclick="quiz(true,4,this)">Teclado</button>
+<button class="btn" onclick="quiz(false,4,this)">Windows</button>
 
 <p>¿Cuál es un ejemplo de software?</p>
-<button class="btn" onclick="quiz(true)">Word</button>
-<button class="btn" onclick="quiz(false)">Monitor</button>
+<button class="btn" onclick="quiz(true,5,this)">Word</button>
+<button class="btn" onclick="quiz(false,5,this)">Monitor</button>
 
 <p>¿Qué permite la informática?</p>
-<button class="btn" onclick="quiz(true)">Procesar información</button>
-<button class="btn" onclick="quiz(false)">Cocinar alimentos</button>
+<button class="btn" onclick="quiz(true,6,this)">Procesar información</button>
+<button class="btn" onclick="quiz(false,6,this)">Cocinar alimentos</button>
 
 <p>¿Qué hace el software?</p>
-<button class="btn" onclick="quiz(true)">Da instrucciones al hardware</button>
-<button class="btn" onclick="quiz(false)">Es físico</button>
+<button class="btn" onclick="quiz(true,7,this)">Da instrucciones al hardware</button>
+<button class="btn" onclick="quiz(false,7,this)">Es físico</button>
 
 <p>¿Qué NO es hardware?</p>
-<button class="btn" onclick="quiz(true)">Sistema operativo</button>
-<button class="btn" onclick="quiz(false)">Mouse</button>
-
+<button class="btn" onclick="quiz(true,8,this)">Sistema operativo</button>
+<button class="btn" onclick="quiz(false,8,this)">Mouse</button>
 </div>
 
 <div class="quiz-img">
@@ -691,20 +690,43 @@ if(progreso>=100){
 document.getElementById("btnEvaluacion").classList.remove("disabled")
 }
 }
-function quiz(correct){
+let preguntasContestadas = [];
 
+function quiz(correct, idPregunta, boton){
+
+// 🚫 SI YA FUE RESPONDIDA
+if(preguntasContestadas.includes(idPregunta)){
+return;
+}
+
+// ✅ MARCA COMO RESPONDIDA
+preguntasContestadas.push(idPregunta);
+
+// 🔒 DESACTIVA BOTONES DE ESA PREGUNTA
+let grupo = boton.parentElement.querySelectorAll("button");
+
+grupo.forEach(btn=>{
+btn.disabled = true;
+btn.style.opacity = "0.6";
+});
+
+// ✅ SI ES CORRECTA
 if(correct){
-score+=10
-preguntasRespondidas++
 
-document.getElementById("score").innerText=score
+score += 10;
 
-//ACTUALIZA LA BARRA
-actualizarProgreso()
+preguntasRespondidas++;
 
-alert("Correcto")
+document.getElementById("score").innerText = score;
+
+actualizarProgreso();
+
+alert("✅ Correcto");
+
 }else{
-alert("Incorrecto")
+
+alert("❌ Incorrecto");
+
 }
 
 }

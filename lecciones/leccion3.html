@@ -819,7 +819,8 @@ window.location.href="dashboard.html"
 /* CHAT */
 function toggleChat(){
 let chat=document.getElementById("chatbox")
-chat.style.display = chat.style.display==="none"?"block":"none"
+const visible = window.getComputedStyle(chat).display !== "none"
+chat.style.display = visible ? "none" : "block"
 }
 
 function validarAct3(){

@@ -631,6 +631,13 @@ Los circuitos eléctricos permiten el funcionamiento de dispositivos electrónic
 
 <div id="chatbox">
 <div id="messages"></div>
+<div style="margin: 8px 0;">
+  <label for="ia-select" style="font-size: 14px; color: #333;">🤖 Elige el chatbot:</label>
+  <select id="ia-select" style="margin-top: 4px;">
+    <option value="groq">Groq</option>
+    <option value="ollama">Ollama</option>
+  </select>
+</div>
 <input id="chat-input">
 <button class="chat-send" onclick="sendMessage()">Enviar</button>
 </div>
@@ -640,6 +647,14 @@ Los circuitos eléctricos permiten el funcionamiento de dispositivos electrónic
 let score=0
 let totalPreguntas=8
 let preguntasRespondidas=0
+
+const chatInput = document.getElementById("chat-input");
+chatInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    sendMessage();
+  }
+});
 
 function actualizar(){
 let progreso=(preguntasRespondidas/totalPreguntas)*100
@@ -979,13 +994,19 @@ box.scrollTop = box.scrollHeight;
 
 try{
 
-  let response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
+  const motorSeleccionado = document.getElementById("ia-select").value;
+  const chatApiUrl = motorSeleccionado === "ollama"
+    ? "http://127.0.0.1:5000/chat"
+    : "https://ova-backend-6bul.onrender.com/chat";
+
+  let response = await fetch(chatApiUrl,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
     },
     body: JSON.stringify({
       mensaje: texto,
+      motor: motorSeleccionado,
       leccion: "leccion2"
     })
   });

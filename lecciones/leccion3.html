@@ -706,6 +706,13 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 
 <div id="chatbox">
 <div id="messages"></div>
+<div style="margin: 8px 0;">
+  <label for="ia-select" style="font-size: 14px; color: #333;">🤖 Elige el chatbot:</label>
+  <select id="ia-select" style="margin-top: 4px;">
+    <option value="groq">Groq</option>
+    <option value="ollama">Ollama</option>
+  </select>
+</div>
 <input id="chat-input">
 <button class="chat-send" onclick="sendMessage()">Enviar</button>
 </div>
@@ -860,6 +867,14 @@ scoreAct3.innerText="Aciertos: "+correctas+"/3 | Intentos: "+intentos3
 
     const video = document.getElementById("miVideo");
 const box = document.getElementById("quizVideo");
+const chatInput = document.getElementById("chat-input");
+
+chatInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    sendMessage();
+  }
+});
 
 let preguntaActual = 0;
 
@@ -991,13 +1006,19 @@ box.scrollTop = box.scrollHeight;
 
 try{
 
-  let response = await fetch("https://ova-backend-6bul.onrender.com/chat",{
+  const motorSeleccionado = document.getElementById("ia-select").value;
+  const chatApiUrl = motorSeleccionado === "ollama"
+    ? "http://127.0.0.1:5000/chat"
+    : "https://ova-backend-6bul.onrender.com/chat";
+
+  let response = await fetch(chatApiUrl,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
     },
     body: JSON.stringify({
       mensaje: texto,
+      motor: motorSeleccionado,
       leccion: "leccion3"
     })
   });

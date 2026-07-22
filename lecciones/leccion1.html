@@ -690,10 +690,11 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <div id="messages"></div>
 <div style="margin: 8px 0;">
   <label for="ia-select" style="font-size: 14px; color: #333;">🤖 Elige el chatbot:</label>
-  <select id="ia-select" style="margin-top: 4px;">
+  <select id="ia-select">
     <option value="groq">Groq</option>
     <option value="ollama">Ollama</option>
-  </select>
+    <option value="llm">LLM Informática</option>
+</select>
 </div>
 <input id="chat-input">
 <button class="chat-send" onclick="sendMessage()">Enviar</button>
@@ -1005,9 +1006,24 @@ box.scrollTop = box.scrollHeight;
 
 try{
 const motorSeleccionado = document.getElementById("ia-select").value;
-const chatApiUrl = motorSeleccionado === "ollama"
-  ? "http://127.0.0.1:5000/chat"
-  : "https://ova-backend-6bul.onrender.com/chat";
+
+let chatApiUrl = "";
+
+if (motorSeleccionado === "groq") {
+
+    chatApiUrl = "https://ova-backend-6bul.onrender.com/chat";
+
+}
+else if (motorSeleccionado === "ollama") {
+
+    chatApiUrl = "http://127.0.0.1:5000/chat";
+
+}
+else if (motorSeleccionado === "llm") {
+
+    chatApiUrl = "https://lot-talented-cheap-complexity.trycloudflare.com/chat";
+
+}
 
 const response = await fetch(chatApiUrl,{
     method:"POST",

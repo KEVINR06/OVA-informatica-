@@ -101,7 +101,7 @@ function guardarDiagnostico(){
 let nombre = localStorage.getItem("student") || "Sin nombre";
 
 // VALIDACIÓN
-if(score === 0){
+if(!localStorage.getItem('quiz_completed')){
   alert("Debes responder el cuestionario primero");
   return;
 }
@@ -131,7 +131,7 @@ fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPq
 }
 function irLecciones(){
 
-if(score === 0){
+if(!localStorage.getItem('quiz_completed')){
 
 alert("⚠️ Primero debes realizar el cuestionario diagnóstico");
 

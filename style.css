@@ -266,3 +266,21 @@ footer{grid-column:1/-1;
 .lesson-info {
   flex: 1;
 }
+
+.lesson-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+  border: 1px dashed rgba(255,255,255,0.1);
+  cursor: not-allowed;
+}
+
+.lesson-disabled:hover {
+  transform: none;
+}
+
+.btn.disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

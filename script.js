@@ -77,24 +77,54 @@ const questions = [
 
 const lessonsEl = document.getElementById('lessons');
 
-if(lessonsEl){
+function checkQuizCompleted(){
+  return localStorage.getItem('quiz_completed') === 'true';
+}
+
+function enableLessons(){
+  localStorage.setItem('quiz_completed', 'true');
+  renderLessons();
+}
+
+function disableLessons(){
+  localStorage.removeItem('quiz_completed');
+  renderLessons();
+}
+
+function renderLessons(){
+  if(!lessonsEl) return;
+  
+  lessonsEl.innerHTML = '';
+  const quizDone = checkQuizCompleted();
+
   lessons.forEach(l=>{
     const el = document.createElement('div'); 
-    el.className='card lesson';
+    el.className = 'card lesson' + (quizDone ? '' : ' lesson-disabled');
+
+    let btnHtml = '';
+    if(quizDone){
+      btnHtml = `
+        <button class='btn' onclick="goToLesson(${l.id})">Abrir</button>
+        <button class='btn outline' onclick="markDone(${l.id},this)">Marcar como leída</button>
+      `;
+    } else {
+      btnHtml = `
+        <button class='btn disabled' disabled>🔒 Completa el cuestionario</button>
+      `;
+    }
 
     el.innerHTML = `
   <div style="display:flex; gap:12px; align-items:center;">
     
     <img src="${l.img}" 
-         style="width:100px; height:80px; object-fit:cover; border-radius:10px;">
+         style="width:100px; height:80px; object-fit:cover; border-radius:10px; ${!quizDone ? 'opacity:0.5;' : ''}">
     
-    <div>
+    <div style="${!quizDone ? 'opacity:0.6;' : ''}">
       <h3>${l.title}</h3>
       <p>${l.desc}</p>
 
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button class='btn' onclick="goToLesson(${l.id})">Abrir</button>
-        <button class='btn outline' onclick="markDone(${l.id},this)">Marcar como leída</button>
+        ${btnHtml}
       </div>
     </div>
 
@@ -104,6 +134,8 @@ if(lessonsEl){
     lessonsEl.appendChild(el);
   });
 }
+
+renderLessons();
 
 function goToLesson(id){
 
@@ -168,6 +200,21 @@ function answer(i,j,el){
   } else {
     el.classList.add('wrong');
     alert('Respuesta incorrecta. Revisa la lección.');
+  }
+  
+  // Verificar si todas las preguntas fueron respondidas
+  checkAllAnswered();
+}
+
+function checkAllAnswered(){
+  const allAnswered = document.querySelectorAll('.question').length > 0 && 
+                      document.querySelectorAll('.option.correct, .option.wrong').length === document.querySelectorAll('.question').length;
+  
+  if(allAnswered && score > 0){
+    enableLessons();
+    setTimeout(()=>{
+      alert('🎉 ¡Cuestionario completado! Las lecciones ya están disponibles.');
+    }, 500);
   }
 }
 

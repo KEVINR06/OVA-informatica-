@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <title>Lección 3 - Programación por bloques en Arduino</title>
 
+<script>
+  if(localStorage.getItem('quiz_completed') !== 'true'){
+    alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
+    window.location.href = '../index.html';
+  }
+</script>
+
 <style>
 
 body{
@@ -643,7 +650,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
     <div class="percepcion-left">
 <h2>💬 Percepción del estudiante</h2>
 
-<p>El OVA me ayudó:</p>
+<p>¿Consideras que el chatbot fue útil para resolver tus dudas durante el desarrollo de las lecciones?</p>
 <select id="p1">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -652,7 +659,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 <option value="5">5</option>
 </select>
 
-<p>Fue fácil:</p>
+<p>¿Consideras que el uso del OVA te ayudó a comprender mejor los temas de informática trabajados?</p>
 <select id="p2">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -661,7 +668,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 <option value="5">5</option>
 </select>
 
-<p>Chatbot ayudó:</p>
+<p>¿El uso del OVA aumentó tu interés y motivación para aprender los temas de informática?</p>
 <select id="p3">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -670,7 +677,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 <option value="5">5</option>
 </select>
 
-<p>Motivación:</p>
+<p>¿Consideras que el OVA te permitió aprender y desarrollar las actividades con mayor autonomía?</p>
 <select id="p4">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -678,6 +685,16 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 <option value="4">4</option>
 <option value="5">5</option>
 </select>
+
+<p>¿Consideras que la interacción con el OVA y el chatbot mejoró tu experiencia de aprendizaje?</p>
+<select id="p5">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
 <p>Comentario:</p>
 
 <textarea id="comentario"></textarea>
@@ -698,7 +715,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 
 </div>
 <div class="percepcion-img">
-    <img src="../img/ledyardu.jpg">
+    <img src="../img/ledyardu.jpg" style="max-width:100%; margin:0;" alt="Percepción del estudiante">
   </div>
 </div>
 
@@ -708,10 +725,11 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 <div id="messages"></div>
 <div style="margin: 8px 0;">
   <label for="ia-select" style="font-size: 14px; color: #333;">🤖 Elige el chatbot:</label>
-  <select id="ia-select" style="margin-top: 4px;">
+  <select id="ia-select">
     <option value="groq">Groq</option>
     <option value="ollama">Ollama</option>
-  </select>
+    <option value="llm">LLM Informática</option>
+</select>
 </div>
 <input id="chat-input">
 <button class="chat-send" onclick="sendMessage()">Enviar</button>
@@ -1006,13 +1024,14 @@ box.innerHTML += `<div class="msg bot">🤖 Pensando...</div>`;
 box.scrollTop = box.scrollHeight;
 
 try{
+const motorSeleccionado = document.getElementById("ia-select").value;
 
-  const motorSeleccionado = document.getElementById("ia-select").value;
-  const chatApiUrl = motorSeleccionado === "ollama"
-    ? "http://127.0.0.1:5000/chat"
-    : "https://ova-backend-6bul.onrender.com/chat";
+const chatApiUrl = "http://127.0.0.1:5000/chat";
 
-  let response = await fetch(chatApiUrl,{
+console.log("MOTOR SELECCIONADO:", motorSeleccionado);
+console.log("URL:", chatApiUrl);
+console.log("TEXTO:", texto);
+const response = await fetch(chatApiUrl,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"

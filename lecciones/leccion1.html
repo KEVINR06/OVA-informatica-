@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <title>Lección 1 - Introducción a la informática</title>
 
+<script>
+  if(localStorage.getItem('quiz_completed') !== 'true'){
+    alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
+    window.location.href = '../index.html';
+  }
+</script>
+
 <style>
 body{
 padding:24px;
@@ -624,7 +631,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
     <div class="percepcion-left">
 <h2>💬 Percepción del estudiante</h2>
 
-<p>El OVA me ayudó a comprender mejor el tema visto en la clase:</p>
+<p>¿Consideras que el chatbot fue útil para resolver tus dudas durante el desarrollo de las lecciones?</p>
 <select id="p1">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -633,7 +640,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Fue fácil de utilizar:</p>
+<p>¿Consideras que el uso del OVA te ayudó a comprender mejor los temas de informática trabajados?</p>
 <select id="p2">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -642,7 +649,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Chatbot ayudó a solucionar dudas que tenia:</p>
+<p>¿El uso del OVA aumentó tu interés y motivación para aprender los temas de informática?</p>
 <select id="p3">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -651,8 +658,17 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 <option value="5">5</option>
 </select>
 
-<p>Me motivó a poder comprender el tema visto:</p>
+<p>¿Consideras que el OVA te permitió aprender y desarrollar las actividades con mayor autonomía?</p>
 <select id="p4">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+<p>¿Consideras que la interacción con el OVA y el chatbot mejoró tu experiencia de aprendizaje?</p>
+<select id="p5">
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
@@ -672,14 +688,14 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 
 <br><br>
 
-<button class="btn" onclick="guardarTodo()">Guardar</button>
+<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
 
 <p id="msgGuardado"></p>
 
 </div>
 
 <div class="percepcion-img">
-    <img src="../img/software-a-medida.jpg">
+    <img src="../img/software-a-medida.jpg" style="max-width:100%; margin:0;" alt="Estudiante usando el OVA">
   </div>
 </div>
 </div>
@@ -1007,24 +1023,12 @@ box.scrollTop = box.scrollHeight;
 try{
 const motorSeleccionado = document.getElementById("ia-select").value;
 
-let chatApiUrl = "";
 
-if (motorSeleccionado === "groq") {
+const chatApiUrl = "http://127.0.0.1:5000/chat";
 
-    chatApiUrl = "https://ova-backend-6bul.onrender.com/chat";
-
-}
-else if (motorSeleccionado === "ollama") {
-
-    chatApiUrl = "http://127.0.0.1:5000/chat";
-
-}
-else if (motorSeleccionado === "llm") {
-
-    chatApiUrl = "https://lot-talented-cheap-complexity.trycloudflare.com/chat";
-
-}
-
+console.log("MOTOR SELECCIONADO:", motorSeleccionado);
+console.log("URL:", chatApiUrl);
+console.log("TEXTO:", texto);
 const response = await fetch(chatApiUrl,{
     method:"POST",
     headers:{

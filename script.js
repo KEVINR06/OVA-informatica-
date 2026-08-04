@@ -138,6 +138,11 @@ function renderLessons(){
 renderLessons();
 
 function goToLesson(id){
+  // Evita acceder a lecciones si el cuestionario diagnóstico no está completado
+  if(!checkQuizCompleted()){
+    alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
+    return;
+  }
 
   let ruta = `lecciones/leccion${id}.html`;
 
@@ -273,6 +278,16 @@ updateProgress();
 // =========================
 // OTROS
 // =========================
+
+// Asegura que la UI refleje correctamente el estado del cuestionario al cargar
+document.addEventListener('DOMContentLoaded', function(){
+  const statusEl = document.getElementById('quizStatus');
+  const done = checkQuizCompleted();
+  if(statusEl) statusEl.innerText = done ? '(Cuestionario completado)' : '(Cuestionario NO completado)';
+  console.log('quiz_completed:', done);
+  // Re-renderiza lecciones para forzar estado correcto
+  renderLessons();
+});
 
 function uploadMaterial(){
   const f = document.getElementById('file');

@@ -4,6 +4,7 @@ let score = 0;
 let progress = 0;
 
 let preguntasRespondidas = 0;
+const selectedAnswers = [];
 
 const lessons = [
   {
@@ -78,17 +79,24 @@ const questions = [
 const lessonsEl = document.getElementById('lessons');
 
 function checkQuizCompleted(){
-  return localStorage.getItem('quiz_completed') === 'true';
+  return localStorage.getItem('quiz_saved') === 'true';
 }
 
 function enableLessons(){
-  localStorage.setItem('quiz_completed', 'true');
+  localStorage.setItem('quiz_saved', 'true');
   renderLessons();
 }
 
 function disableLessons(){
+  localStorage.removeItem('quiz_saved');
   localStorage.removeItem('quiz_completed');
   renderLessons();
+}
+
+function clearStaleQuizCompleted(){
+  if(localStorage.getItem('quiz_completed') === 'true' && localStorage.getItem('quiz_saved') !== 'true'){
+    localStorage.removeItem('quiz_completed');
+  }
 }
 
 function renderLessons(){
@@ -184,42 +192,52 @@ function renderQuiz(){
 renderQuiz();
 
 function answer(i,j,el){
-
   const locked = document.getElementById('lockAnswers')?.checked;
-  const correct = questions[i].answer===j;
+  const correct = questions[i].answer === j;
+  const questionOpts = el.parentElement.querySelectorAll('.option');
 
-  if(correct){
-    score += 10;
-  }
+  questionOpts.forEach(o => o.classList.remove('correct','wrong'));
 
   if(locked){
     alert('El docente ha bloqueado la visualización de respuestas completas.');
     el.classList.add('wrong');
     el.innerHTML += ' — Pista: repasa la lección.';
+    selectedAnswers[i] = j;
+    checkAllAnswered();
     return;
   }
 
+  const previous = selectedAnswers[i];
+  if(previous !== null && previous !== undefined){
+    const wasCorrect = questions[i].answer === previous;
+    if(wasCorrect && !correct) score -= 10;
+    if(!wasCorrect && correct) score += 10;
+  } else if(correct){
+    score += 10;
+  }
+
+  selectedAnswers[i] = j;
+  el.classList.add(correct ? 'correct' : 'wrong');
+
   if(correct){
-    el.classList.add('correct');
     alert('¡Correcto!');
   } else {
-    el.classList.add('wrong');
     alert('Respuesta incorrecta. Revisa la lección.');
   }
-  
-  // Verificar si todas las preguntas fueron respondidas
+
   checkAllAnswered();
 }
 
+function isQuizAnswered(){
+  return selectedAnswers.length === questions.length && selectedAnswers.every(v => v !== null && v !== undefined);
+}
+
 function checkAllAnswered(){
-  const allAnswered = document.querySelectorAll('.question').length > 0 && 
-                      document.querySelectorAll('.option.correct, .option.wrong').length === document.querySelectorAll('.question').length;
-  
-  if(allAnswered && score > 0){
-    enableLessons();
-    setTimeout(()=>{
-      alert('🎉 ¡Cuestionario completado! Las lecciones ya están disponibles.');
-    }, 500);
+  const allAnswered = isQuizAnswered();
+  const statusEl = document.getElementById('quizStatus');
+
+  if(statusEl){
+    statusEl.innerText = allAnswered ? '(Cuestionario completo, guarda resultado inicial)' : '(Cuestionario NO completado)';
   }
 }
 
@@ -281,11 +299,19 @@ updateProgress();
 
 // Asegura que la UI refleje correctamente el estado del cuestionario al cargar
 document.addEventListener('DOMContentLoaded', function(){
+  clearStaleQuizCompleted();
   const statusEl = document.getElementById('quizStatus');
   const done = checkQuizCompleted();
-  if(statusEl) statusEl.innerText = done ? '(Cuestionario completado)' : '(Cuestionario NO completado)';
-  console.log('quiz_completed:', done);
-  // Re-renderiza lecciones para forzar estado correcto
+  if(statusEl){
+    if(done){
+      statusEl.innerText = '(Cuestionario completado)';
+    } else if(isQuizAnswered()){
+      statusEl.innerText = '(Cuestionario respondido, guarda resultado inicial)';
+    } else {
+      statusEl.innerText = '(Cuestionario NO completado)';
+    }
+  }
+  console.log('quiz_saved:', done);
   renderLessons();
 });
 

@@ -412,11 +412,10 @@ principales de un computador y cómo trabajan juntos.
 </ul>
 
 </div>
+
 <div class="card">
-<h2>👤 Estudiante</h2>
-<input id="studentName" placeholder="Escribe tu nombre">
-<button class="btn" onclick="saveName()">Guardar</button>
-<p id="welcome"></p>
+  <h2>👤 Estudiante</h2>
+  <p id="welcome">Cargando nombre...</p>
 </div>
 
 <div class="card">
@@ -688,7 +687,7 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
 
 <br><br>
 
-<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
+<button class="btn" onclick="guardarTodo()">Guardar opinión</button>
 
 <p id="msgGuardado"></p>
 
@@ -732,6 +731,21 @@ document.getElementById("btnEvaluacion").classList.remove("disabled")
 }
 let preguntasContestadas = [];
 
+function guardarResultadoQuizLeccion1(){
+  const nombre = localStorage.getItem("student") || "Sin nombre";
+  const resultado = {
+    nombre,
+    puntajeQuiz: score,
+    progresoQuiz: preguntasRespondidas,
+    notaQuiz: Number((score / 16).toFixed(1)),
+    leccion: "Lección 1",
+    fecha: new Date().toISOString()
+  };
+
+  localStorage.setItem("leccion1_quiz", JSON.stringify(resultado));
+  localStorage.setItem("ultimo_quiz_leccion", JSON.stringify(resultado));
+}
+
 function quiz(correct, idPregunta, boton){
 
 // 🚫 SI YA FUE RESPONDIDA
@@ -750,16 +764,12 @@ btn.disabled = true;
 btn.style.opacity = "0.6";
 });
 
-// ✅ SI ES CORRECTA
+// ✅ ACTUALIZA PUNTAJE Y PROGRESO
 if(correct){
 
 score += 10;
 
-preguntasRespondidas++;
-
 document.getElementById("score").innerText = score;
-
-actualizarProgreso();
 
 alert("✅ Correcto");
 
@@ -769,19 +779,26 @@ alert("❌ Incorrecto");
 
 }
 
-}
-
-function saveName(){
-
-let name = document.getElementById("studentName").value;
-
-localStorage.setItem("student", name);
-
-// MOSTRAR MENSAJE
-document.getElementById("welcome").innerText =
-"👋 Bienvenido " + name;
+preguntasRespondidas++;
+actualizarProgreso();
 
 }
+
+function mostrarNombre() {
+
+  let name = localStorage.getItem("student") || "";
+
+  if (name === "") {
+    document.getElementById("welcome").innerText =
+      "⚠️ No se encontró el nombre del estudiante.";
+    return;
+  }
+
+  document.getElementById("welcome").innerText =
+    "👋 Bienvenido " + name;
+}
+
+mostrarNombre();
 
 function guardarTodo(){
 
@@ -838,7 +855,20 @@ function actualizarProgreso(){
 let totalPreguntas = 8  // porque tienes 8 preguntas
 let progreso = (preguntasRespondidas / totalPreguntas) * 100
 
-document.getElementById("progress-bar").style.width = progreso + "%"
+const bar = document.getElementById("progress-bar")
+const btn = document.getElementById("btnEvaluacion")
+
+if(bar) bar.style.width = progreso + "%"
+
+if(btn){
+  const completo = progreso >= 100
+  btn.classList.toggle("disabled", !completo)
+  btn.disabled = !completo
+}
+
+if(progreso >= 100){
+  guardarResultadoQuizLeccion1()
+}
 
 }
 
@@ -1061,8 +1091,23 @@ if(preguntasRespondidas<totalPreguntas){
 alert("Completa la lección")
 return
 }
-window.location.href="evaluacion.html"
+localStorage.setItem("leccion_actual", "Lección 1")
+localStorage.setItem("leccion_actual_key", "leccion1")
+window.location.href="evaluacion.html?lesson=leccion1"
 }
+</script>
+<script>
+  let nombre = localStorage.getItem("student");
+
+  console.log("Nombre guardado:", nombre);
+
+  if (nombre) {
+    document.getElementById("welcome").innerText =
+      "👋 Bienvenido " + nombre;
+  } else {
+    document.getElementById("welcome").innerText =
+      "⚠️ No se encontró el nombre";
+  }
 </script>
 </body>
 </html>

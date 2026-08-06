@@ -169,6 +169,27 @@ button:hover{
 
 <script>
 
+function obtenerInfoLeccion(){
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("lesson") || localStorage.getItem("leccion_actual_key") || "leccion1";
+    const label = key === "leccion1" ? "Lección 1" : key;
+    return { key, label };
+}
+
+function guardarResultadoEvaluacion(nota){
+    const lesson = obtenerInfoLeccion();
+    const datos = {
+        nombre: localStorage.getItem("student") || "Sin nombre",
+        puntajeEvaluacion: Number(nota),
+        nota: Number(nota),
+        leccion: lesson.label,
+        fecha: new Date().toISOString()
+    };
+
+    localStorage.setItem(`${lesson.key}_evaluacion`, JSON.stringify(datos));
+    localStorage.setItem("ultima_evaluacion", JSON.stringify(datos));
+}
+
 function calcular(){
     let total = 0;
     let preguntas = 8; // ✅ CORREGIDO
@@ -181,7 +202,8 @@ function calcular(){
     }
 
     let nota = (total/preguntas)*5;
-    nota = nota.toFixed(1);
+    nota = Number(nota.toFixed(1));
+    guardarResultadoEvaluacion(nota);
 
     let resultado = document.getElementById("resultado");
 
@@ -190,14 +212,16 @@ function calcular(){
         resultado.innerHTML = 
         "🎉 <b>¡Excelente desempeño!</b><br><br>" +
         "Tu nota final es: <b>"+nota+"</b><br><br>" +
-        "Demuestras comprensión sólida y capacidad de análisis. Continúa así y sigue profundizando en los conceptos.";
+        "Demuestras comprensión sólida y capacidad de análisis. Continúa así y sigue profundizando en los conceptos.<br><br>" +
+        "✅ El resultado quedó guardado para el dashboard.";
     }
     else{
         resultado.className = "mala";
         resultado.innerHTML = 
         "📘 <b>Oportunidad de mejora</b><br><br>" +
         "Tu nota final es: <b>"+nota+"</b><br><br>" +
-        "Te recomendamos revisar los conceptos clave y practicar ejercicios similares. La retroalimentación es parte del proceso de aprendizaje.";
+        "Te recomendamos revisar los conceptos clave y practicar ejercicios similares. La retroalimentación es parte del proceso de aprendizaje.<br><br>" +
+        "✅ El resultado quedó guardado para el dashboard.";
     }
 }
 function volverInicio(){

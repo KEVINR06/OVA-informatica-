@@ -375,11 +375,10 @@ bloques visuales.
 </ul>
 
 </div>
+
 <div class="card">
-<h2>👤 Estudiante</h2>
-<input id="studentName" placeholder="Escribe tu nombre">
-<button class="btn" onclick="saveName()">Guardar</button>
-<p id="welcome"></p>
+  <h2>👤 Estudiante</h2>
+  <p id="welcome">Cargando nombre...</p>
 </div>
 
 <div class="card">
@@ -709,7 +708,7 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 
 <br><br>
 
-<button class="btn" onclick="guardarOpinion()">Guardar opinión</button>
+<button class="btn" onclick="guardarTodo()">Guardar opinión</button>
 
 <p id="msgGuardado"></p>
 
@@ -773,7 +772,7 @@ localStorage.setItem("student",name)
 document.getElementById("welcome").innerText="Bienvenido "+name
 }
 
-function guardarOpinion(){
+function guardarTodo(){
 
 fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec",{
 
@@ -800,7 +799,7 @@ comentario: document.getElementById("comentario").value,
 
 calificacion: Number(document.getElementById("calificacion").value),
 
-leccion:"Leccion 2"
+leccion:"Leccion 3"
 
 })
 
@@ -1060,5 +1059,18 @@ const response = await fetch(chatApiUrl,{
 }
 </script>
 
+<script>
+  let nombre = localStorage.getItem("student");
+
+  console.log("Nombre guardado:", nombre);
+
+  if (nombre) {
+    document.getElementById("welcome").innerText =
+      "👋 Bienvenido " + nombre;
+  } else {
+    document.getElementById("welcome").innerText =
+      "⚠️ No se encontró el nombre";
+  }
+</script>
 </body>
 </html>

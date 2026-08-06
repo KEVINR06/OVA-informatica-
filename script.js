@@ -364,44 +364,95 @@ calificacion:calificacion,
 leccion:leccion
 };
 
-fetch("https://script.google.com/macros/s/AKfycbxD2UFmD2OW6e2gQ4a5Q_Z4l_B6LOrJPqheLgfOZNHFgFypftUZBlFVLUQ65fkCscMl/exec",{
-method:"POST",
-mode:"no-cors",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(datos)
+fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec", {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(datos)
 })
-.then(()=>{
-alert("Diagnóstico guardado");
+.then(() => {
+
+  localStorage.setItem('quiz_saved', 'true');
+  localStorage.removeItem('quiz_completed');
+
+  renderLessons();
+
+  const statusEl = document.getElementById('quizStatus');
+
+  if(statusEl) {
+    statusEl.innerText = '(Cuestionario completado)';
+  }
+
+  alert("Guardado correctamente. Las lecciones están desbloqueadas.");
+
 })
-.catch(()=>{
-alert("Error al guardar");
+.catch(() => {
+  alert("Error al guardar");
 });
 }
 
 function volverInicio(){
-    window.location.href="../index.html";
+    window.location.href = "../index.html";
 }
-
 function guardarPercepcion(){
 
-let datos={
-nombre:localStorage.getItem("student"),
-puntaje:score,
-progreso:preguntasRespondidas,
+  let datos = {
 
-utilidad:document.getElementById("p1").value,
-facilidad:document.getElementById("p2").value,
-ia:document.getElementById("p3").value,
-motivacion:document.getElementById("p4").value,
+    nombre: localStorage.getItem("student") || "Sin nombre",
 
-comentario:document.getElementById("comentario").value,
-leccion:"Leccion X"
+    puntaje: score,
+
+    progreso: preguntasRespondidas,
+
+    utilidad: document.getElementById("p1")?.value || 0,
+
+    facilidad: document.getElementById("p2")?.value || 0,
+
+    ia: document.getElementById("p3")?.value || 0,
+
+    motivacion: document.getElementById("p4")?.value || 0,
+
+    comentario: document.getElementById("comentario")?.value || "",
+
+    calificacion: document.getElementById("calificacion")?.value || 0,
+
+    leccion: document.title || "Leccion"
+
+  };
+
+
+  fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec", {
+
+    method: "POST",
+
+    mode: "no-cors",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify(datos)
+
+  })
+
+  .then(() => {
+
+    document.getElementById("msgGuardado").innerText =
+      "Guardado correctamente";
+
+    alert("Resultado de la lección guardado correctamente.");
+
+  })
+
+  .catch((error) => {
+
+    console.error("Error al guardar:", error);
+
+    alert("Error al guardar el resultado.");
+
+  });
+
 }
 
-.then(()=>{
-document.getElementById("msgGuardado").innerText="Guardado"
-})
-
-}

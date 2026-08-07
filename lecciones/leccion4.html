@@ -5,7 +5,7 @@
 <title>Lección 4 - Algoritmos y pseudocódigo</title>
 
 <script>
-  if(localStorage.getItem('quiz_saved') !== 'true'){
+  if(sessionStorage.getItem('quiz_saved') !== 'true'){
     alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
     window.location.href = '../index.html';
   }
@@ -583,37 +583,53 @@ Comprender el uso de <b>setup()</b>, <b>loop()</b> y los diagramas de flujo perm
 
 <h2>🧠 Quiz</h2>
 
+<div class="pregunta" data-question="1">
 <p>¿Qué es un algoritmo?</p>
-<button class="btn" onclick="quiz(true)">Pasos para resolver un problema</button>
-<button class="btn" onclick="quiz(false)">Un hardware</button>
+<button class="btn" onclick="quiz(true, 1, this)">Pasos para resolver un problema</button>
+<button class="btn" onclick="quiz(false, 1, this)">Un hardware</button>
+</div>
 
+<div class="pregunta" data-question="2">
 <p>¿Para qué sirve el pseudocódigo?</p>
-<button class="btn" onclick="quiz(true)">Escribir algoritmos fácilmente</button>
-<button class="btn" onclick="quiz(false)">Diseñar circuitos</button>
+<button class="btn" onclick="quiz(true, 2, this)">Escribir algoritmos fácilmente</button>
+<button class="btn" onclick="quiz(false, 2, this)">Diseñar circuitos</button>
+</div>
 
+<div class="pregunta" data-question="3">
 <p>¿Qué es una secuencia?</p>
-<button class="btn" onclick="quiz(true)">Pasos ordenados</button>
-<button class="btn" onclick="quiz(false)">Errores</button>
+<button class="btn" onclick="quiz(true, 3, this)">Pasos ordenados</button>
+<button class="btn" onclick="quiz(false, 3, this)">Errores</button>
+</div>
 
+<div class="pregunta" data-question="4">
 <p>¿Qué hace un condicional?</p>
-<button class="btn" onclick="quiz(true)">Toma decisiones</button>
-<button class="btn" onclick="quiz(false)">Repite acciones</button>
+<button class="btn" onclick="quiz(true, 4, this)">Toma decisiones</button>
+<button class="btn" onclick="quiz(false, 4, this)">Repite acciones</button>
+</div>
 
+<div class="pregunta" data-question="5">
 <p>¿Qué hace un bucle?</p>
-<button class="btn" onclick="quiz(true)">Repite instrucciones</button>
-<button class="btn" onclick="quiz(false)">Apaga el programa</button>
+<button class="btn" onclick="quiz(true, 5, this)">Repite instrucciones</button>
+<button class="btn" onclick="quiz(false, 5, this)">Apaga el programa</button>
+</div>
 
+<div class="pregunta" data-question="6">
 <p>¿Qué significa inicio?</p>
-<button class="btn" onclick="quiz(true)">Comienzo del algoritmo</button>
-<button class="btn" onclick="quiz(false)">Fin</button>
+<button class="btn" onclick="quiz(true, 6, this)">Comienzo del algoritmo</button>
+<button class="btn" onclick="quiz(false, 6, this)">Fin</button>
+</div>
 
+<div class="pregunta" data-question="7">
 <p>¿Qué significa fin?</p>
-<button class="btn" onclick="quiz(true)">Termina el algoritmo</button>
-<button class="btn" onclick="quiz(false)">Empieza</button>
+<button class="btn" onclick="quiz(true, 7, this)">Termina el algoritmo</button>
+<button class="btn" onclick="quiz(false, 7, this)">Empieza</button>
+</div>
 
+<div class="pregunta" data-question="8">
 <p>¿Qué permite un algoritmo?</p>
-<button class="btn" onclick="quiz(true)">Resolver problemas</button>
-<button class="btn" onclick="quiz(false)">Dibujar</button>
+<button class="btn" onclick="quiz(true, 8, this)">Resolver problemas</button>
+<button class="btn" onclick="quiz(false, 8, this)">Dibujar</button>
+</div>
 
 </div>
 
@@ -720,6 +736,24 @@ let score=0
 let totalPreguntas=8
 let preguntasRespondidas=0
 
+function mezclarOpcionesQuiz(){
+  document.querySelectorAll('.pregunta').forEach((pregunta) => {
+    const botones = Array.from(pregunta.querySelectorAll('button'));
+    if (botones.length < 2) return;
+
+    const mezclados = [...botones];
+    for (let i = mezclados.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [mezclados[i], mezclados[j]] = [mezclados[j], mezclados[i]];
+    }
+
+    botones.forEach((boton) => boton.remove());
+    mezclados.forEach((boton) => pregunta.appendChild(boton));
+  });
+}
+
+window.addEventListener('DOMContentLoaded', mezclarOpcionesQuiz);
+
 const chatInput = document.getElementById("chat-input");
 chatInput.addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
@@ -737,16 +771,29 @@ document.getElementById("btnEvaluacion").classList.remove("disabled")
 }
 }
 
-function quiz(correct){
+let preguntasContestadas = [];
+
+function quiz(correct, idPregunta, boton){
+if(preguntasContestadas.includes(idPregunta)) return;
+
+preguntasContestadas.push(idPregunta);
+preguntasRespondidas++;
+
+let grupo = boton.closest('.pregunta').querySelectorAll('button');
+grupo.forEach(btn => {
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+});
+
 if(correct){
 score+=10
-preguntasRespondidas++
 document.getElementById("score").innerText=score
-actualizar()
-alert("Correcto")
+alert("✅ Correcto")
 }else{
-alert("Incorrecto")
+alert("❌ Incorrecto")
 }
+
+actualizar();
 }
 
 function resultado(){

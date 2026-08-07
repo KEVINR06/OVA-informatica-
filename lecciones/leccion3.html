@@ -5,7 +5,7 @@
 <title>Lección 3 - Programación por bloques en Arduino</title>
 
 <script>
-  if(localStorage.getItem('quiz_saved') !== 'true'){
+  if(sessionStorage.getItem('quiz_saved') !== 'true'){
     alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
     window.location.href = '../index.html';
   }
@@ -602,37 +602,53 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 
 <h2>🧠 Quiz</h2>
 
+<div class="pregunta" data-question="1">
 <p>¿Qué es la programación por bloques?</p>
 <button class="btn" onclick="quiz(true)">Programar con bloques visuales</button>
 <button class="btn" onclick="quiz(false)">Escribir código complejo</button>
+</div>
 
+<div class="pregunta" data-question="2">
 <p>¿Para qué sirve Arduino?</p>
 <button class="btn" onclick="quiz(true)">Controlar dispositivos electrónicos</button>
 <button class="btn" onclick="quiz(false)">Editar imágenes</button>
+</div>
 
+<div class="pregunta" data-question="3">
 <p>¿Qué bloque encendería un LED?</p>
 <button class="btn" onclick="quiz(true)">Fijar pin en HIGH</button>
 <button class="btn" onclick="quiz(false)">Leer sensor</button>
+</div>
 
+<div class="pregunta" data-question="4">
 <p>¿Qué es un condicional?</p>
 <button class="btn" onclick="quiz(true)">Tomar decisiones</button>
 <button class="btn" onclick="quiz(false)">Repetir acciones</button>
+</div>
 
+<div class="pregunta" data-question="5">
 <p>¿Qué hace un bucle?</p>
 <button class="btn" onclick="quiz(true)">Repetir instrucciones</button>
 <button class="btn" onclick="quiz(false)">Apagar el programa</button>
+</div>
 
+<div class="pregunta" data-question="6">
 <p>¿Qué herramienta permite simular Arduino?</p>
 <button class="btn" onclick="quiz(true)">Tinkercad</button>
 <button class="btn" onclick="quiz(false)">Word</button>
+</div>
 
+<div class="pregunta" data-question="7">
 <p>¿Qué tipo de bloque usa decisiones?</p>
 <button class="btn" onclick="quiz(true)">Condicional</button>
 <button class="btn" onclick="quiz(false)">Salida</button>
+</div>
 
+<div class="pregunta" data-question="8">
 <p>¿Qué controla un servo?</p>
 <button class="btn" onclick="quiz(true)">Movimiento</button>
 <button class="btn" onclick="quiz(false)">Sonido</button>
+</div>
 
 </div>
 
@@ -739,6 +755,24 @@ Arduino y la programación por bloques permiten controlar dispositivos electrón
 let score=0
 let totalPreguntas=8
 let preguntasRespondidas=0
+
+function mezclarOpcionesQuiz(){
+  document.querySelectorAll('.pregunta').forEach((pregunta) => {
+    const botones = Array.from(pregunta.querySelectorAll('button'));
+    if (botones.length < 2) return;
+
+    const mezclados = [...botones];
+    for (let i = mezclados.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [mezclados[i], mezclados[j]] = [mezclados[j], mezclados[i]];
+    }
+
+    botones.forEach((boton) => boton.remove());
+    mezclados.forEach((boton) => pregunta.appendChild(boton));
+  });
+}
+
+window.addEventListener('DOMContentLoaded', mezclarOpcionesQuiz);
 
 function actualizar(){
 let progreso=(preguntasRespondidas/totalPreguntas)*100

@@ -5,7 +5,7 @@
 <title>Lección 1 - Introducción a la informática</title>
 
 <script>
-  if(localStorage.getItem('quiz_saved') !== 'true'){
+  if(sessionStorage.getItem('quiz_saved') !== 'true'){
     alert('⚠️ Debes completar el cuestionario diagnóstico antes de acceder a las lecciones.');
     window.location.href = '../index.html';
   }
@@ -568,49 +568,49 @@ El hardware y el software trabajan juntos para permitir el funcionamiento de los
   <div class="quiz-left">
 <h2>🧠 Quiz</h2>
 
-<div class="pregunta">
+<div class="pregunta" data-question="1">
 <p>¿Qué estudia la informática?</p>
 <button class="btn" onclick="quiz(true,1,this)">El procesamiento de la información</button>
 <button class="btn" onclick="quiz(false,1,this)">La fabricación de cables</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="2">
 <p>¿Qué es el hardware?</p>
 <button class="btn" onclick="quiz(true,2,this)">Las partes físicas</button>
 <button class="btn" onclick="quiz(false,2,this)">Los programas</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="3">
 <p>¿Qué es el software?</p>
 <button class="btn" onclick="quiz(true,3,this)">Los programas</button>
 <button class="btn" onclick="quiz(false,3,this)">El teclado</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="4">
 <p>¿Cuál es un ejemplo de hardware?</p>
 <button class="btn" onclick="quiz(true,4,this)">Teclado</button>
 <button class="btn" onclick="quiz(false,4,this)">Windows</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="5">
 <p>¿Cuál es un ejemplo de software?</p>
 <button class="btn" onclick="quiz(true,5,this)">Word</button>
 <button class="btn" onclick="quiz(false,5,this)">Monitor</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="6">
 <p>¿Qué permite la informática?</p>
 <button class="btn" onclick="quiz(true,6,this)">Procesar información</button>
 <button class="btn" onclick="quiz(false,6,this)">Cocinar alimentos</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="7">
 <p>¿Qué hace el software?</p>
 <button class="btn" onclick="quiz(true,7,this)">Da instrucciones al hardware</button>
 <button class="btn" onclick="quiz(false,7,this)">Es físico</button>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-question="8">
 <p>¿Qué NO es hardware?</p>
 <button class="btn" onclick="quiz(true,8,this)">Sistema operativo</button>
 <button class="btn" onclick="quiz(false,8,this)">Mouse</button>
@@ -742,9 +742,27 @@ function guardarResultadoQuizLeccion1(){
     fecha: new Date().toISOString()
   };
 
-  localStorage.setItem("leccion1_quiz", JSON.stringify(resultado));
-  localStorage.setItem("ultimo_quiz_leccion", JSON.stringify(resultado));
+  sessionStorage.setItem("leccion1_quiz", JSON.stringify(resultado));
+  sessionStorage.setItem("ultimo_quiz_leccion", JSON.stringify(resultado));
 }
+
+function mezclarOpcionesQuiz(){
+  document.querySelectorAll('.pregunta').forEach((pregunta) => {
+    const botones = Array.from(pregunta.querySelectorAll('button'));
+    if (botones.length < 2) return;
+
+    const mezclados = [...botones];
+    for (let i = mezclados.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [mezclados[i], mezclados[j]] = [mezclados[j], mezclados[i]];
+    }
+
+    botones.forEach((boton) => boton.remove());
+    mezclados.forEach((boton) => pregunta.appendChild(boton));
+  });
+}
+
+window.addEventListener('DOMContentLoaded', mezclarOpcionesQuiz);
 
 function quiz(correct, idPregunta, boton){
 
@@ -1091,8 +1109,8 @@ if(preguntasRespondidas<totalPreguntas){
 alert("Completa la lección")
 return
 }
-localStorage.setItem("leccion_actual", "Lección 1")
-localStorage.setItem("leccion_actual_key", "leccion1")
+sessionStorage.setItem("leccion_actual", "Lección 1")
+sessionStorage.setItem("leccion_actual_key", "leccion1")
 window.location.href="evaluacion.html?lesson=leccion1"
 }
 </script>

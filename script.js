@@ -79,23 +79,23 @@ const questions = [
 const lessonsEl = document.getElementById('lessons');
 
 function checkQuizCompleted(){
-  return localStorage.getItem('quiz_saved') === 'true';
+  return sessionStorage.getItem('quiz_saved') === 'true';
 }
 
 function enableLessons(){
-  localStorage.setItem('quiz_saved', 'true');
+  sessionStorage.setItem('quiz_saved', 'true');
   renderLessons();
 }
 
 function disableLessons(){
-  localStorage.removeItem('quiz_saved');
-  localStorage.removeItem('quiz_completed');
+  sessionStorage.removeItem('quiz_saved');
+  sessionStorage.removeItem('quiz_completed');
   renderLessons();
 }
 
 function clearStaleQuizCompleted(){
-  if(localStorage.getItem('quiz_completed') === 'true' && localStorage.getItem('quiz_saved') !== 'true'){
-    localStorage.removeItem('quiz_completed');
+  if(sessionStorage.getItem('quiz_completed') === 'true' && sessionStorage.getItem('quiz_saved') !== 'true'){
+    sessionStorage.removeItem('quiz_completed');
   }
 }
 
@@ -272,14 +272,14 @@ function generateReply(text){
 // =========================
 
 function completeLesson(id){
-  const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
+  const done = JSON.parse(sessionStorage.getItem('ova_done')||'[]');
   if(!done.includes(id)) done.push(id);
-  localStorage.setItem('ova_done', JSON.stringify(done));
+  sessionStorage.setItem('ova_done', JSON.stringify(done));
   updateProgress();
 }
 
 function updateProgress(){
-  const done = JSON.parse(localStorage.getItem('ova_done')||'[]');
+  const done = JSON.parse(sessionStorage.getItem('ova_done')||'[]');
   const percent = Math.round((done.length/lessons.length)*100);
 
   progress = percent;
@@ -374,8 +374,8 @@ fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUt
 })
 .then(() => {
 
-  localStorage.setItem('quiz_saved', 'true');
-  localStorage.removeItem('quiz_completed');
+  sessionStorage.setItem('quiz_saved', 'true');
+  sessionStorage.removeItem('quiz_completed');
 
   renderLessons();
 

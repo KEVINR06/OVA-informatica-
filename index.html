@@ -114,7 +114,7 @@ function guardarDiagnostico(){
     fecha: new Date().toISOString()
   };
 
-  localStorage.setItem('diagnostico_inicial', JSON.stringify(datos));
+  sessionStorage.setItem('diagnostico_inicial', JSON.stringify(datos));
 
   fetch("https://script.google.com/macros/s/AKfycbzrpndcBvNCbJT9ymmt6nWTYaZoRieRUtMuFGECg3j4Vq8EwGtSIi8MuJ_84vHwItMC/exec",{
     method:"POST",
@@ -123,8 +123,8 @@ function guardarDiagnostico(){
     body:JSON.stringify(datos)
   })
   .then(()=>{
-    localStorage.setItem('quiz_saved', 'true');
-    localStorage.removeItem('quiz_completed');
+    sessionStorage.setItem('quiz_saved', 'true');
+    sessionStorage.removeItem('quiz_completed');
     renderLessons();
     const statusEl = document.getElementById('quizStatus');
     if(statusEl) statusEl.innerText = '(Cuestionario completado)';
@@ -137,7 +137,7 @@ function guardarDiagnostico(){
 }
 function irLecciones(){
 
-if(!localStorage.getItem('quiz_saved')){
+if(!sessionStorage.getItem('quiz_saved')){
   alert("⚠️ Primero debes realizar el cuestionario diagnóstico y guardar resultado inicial");
   return;
 }

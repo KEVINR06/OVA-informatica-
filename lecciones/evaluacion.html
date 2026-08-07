@@ -171,7 +171,7 @@ button:hover{
 
 function obtenerInfoLeccion(){
     const params = new URLSearchParams(window.location.search);
-    const key = params.get("lesson") || localStorage.getItem("leccion_actual_key") || "leccion1";
+    const key = params.get("lesson") || sessionStorage.getItem("leccion_actual_key") || "leccion1";
     const label = key === "leccion1" ? "Lección 1" : key;
     return { key, label };
 }
@@ -186,9 +186,27 @@ function guardarResultadoEvaluacion(nota){
         fecha: new Date().toISOString()
     };
 
-    localStorage.setItem(`${lesson.key}_evaluacion`, JSON.stringify(datos));
-    localStorage.setItem("ultima_evaluacion", JSON.stringify(datos));
+    sessionStorage.setItem(`${lesson.key}_evaluacion`, JSON.stringify(datos));
+    sessionStorage.setItem("ultima_evaluacion", JSON.stringify(datos));
 }
+
+function ordenarOpcionesPorPregunta(){
+    document.querySelectorAll('.question').forEach((question) => {
+        const opciones = Array.from(question.querySelectorAll(':scope > label'));
+        if (opciones.length < 2) return;
+
+        const desordenadas = [...opciones];
+        for (let i = desordenadas.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [desordenadas[i], desordenadas[j]] = [desordenadas[j], desordenadas[i]];
+        }
+
+        opciones.forEach((opcion) => opcion.remove());
+        desordenadas.forEach((opcion) => question.appendChild(opcion));
+    });
+}
+
+window.addEventListener('DOMContentLoaded', ordenarOpcionesPorPregunta);
 
 function calcular(){
     let total = 0;

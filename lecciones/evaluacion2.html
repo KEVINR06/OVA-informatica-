@@ -130,6 +130,24 @@ button{
 
 <script>
 
+function ordenarOpcionesPorPregunta(){
+    document.querySelectorAll('.question').forEach((question) => {
+        const opciones = Array.from(question.querySelectorAll(':scope > label'));
+        if (opciones.length < 2) return;
+
+        const desordenadas = [...opciones];
+        for (let i = desordenadas.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [desordenadas[i], desordenadas[j]] = [desordenadas[j], desordenadas[i]];
+        }
+
+        opciones.forEach((opcion) => opcion.remove());
+        desordenadas.forEach((opcion) => question.appendChild(opcion));
+    });
+}
+
+window.addEventListener('DOMContentLoaded', ordenarOpcionesPorPregunta);
+
 function calcular(){
     let total=0;
     let preguntas=8;

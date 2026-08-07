@@ -4,7 +4,6 @@ let score = 0;
 let progress = 0;
 
 let preguntasRespondidas = 0;
-const selectedAnswers = [];
 
 const lessons = [
   {
@@ -74,6 +73,8 @@ const questions = [
    answer:1},
 ];
 
+let selectedAnswers = Array(questions.length).fill(undefined);
+
 // LECCIONES
 
 const lessonsEl = document.getElementById('lessons');
@@ -122,20 +123,15 @@ function renderLessons(){
     }
 
     el.innerHTML = `
-  <div style="display:flex; gap:12px; align-items:center;">
-    
-    <img src="${l.img}" 
-         style="width:100px; height:80px; object-fit:cover; border-radius:10px; ${!quizDone ? 'opacity:0.5;' : ''}">
-    
-    <div style="${!quizDone ? 'opacity:0.6;' : ''}">
-      <h3>${l.title}</h3>
-      <p>${l.desc}</p>
+  <img src="${l.img}" style="${!quizDone ? 'opacity:0.5;' : ''}">
 
-      <div style="display:flex;gap:8px;margin-top:8px">
-        ${btnHtml}
-      </div>
+  <div class="lesson-info" style="${!quizDone ? 'opacity:0.6;' : ''}">
+    <h3>${l.title}</h3>
+    <p>${l.desc}</p>
+
+    <div class="lesson-actions">
+      ${btnHtml}
     </div>
-
   </div>
 `;
 
@@ -196,7 +192,16 @@ function answer(i,j,el){
   const correct = questions[i].answer === j;
   const questionOpts = el.parentElement.querySelectorAll('.option');
 
-  questionOpts.forEach(o => o.classList.remove('correct','wrong'));
+  const previous = selectedAnswers[i];
+  if(previous !== null && previous !== undefined){
+    return;
+  }
+
+  questionOpts.forEach(o => {
+    o.classList.remove('correct','wrong');
+    o.classList.add('answered');
+    o.style.pointerEvents = 'none';
+  });
 
   if(locked){
     alert('El docente ha bloqueado la visualización de respuestas completas.');
@@ -207,12 +212,7 @@ function answer(i,j,el){
     return;
   }
 
-  const previous = selectedAnswers[i];
-  if(previous !== null && previous !== undefined){
-    const wasCorrect = questions[i].answer === previous;
-    if(wasCorrect && !correct) score -= 10;
-    if(!wasCorrect && correct) score += 10;
-  } else if(correct){
+  if(correct){
     score += 10;
   }
 

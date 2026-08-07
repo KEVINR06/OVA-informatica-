@@ -22,6 +22,8 @@ margin:0;
 font-family:Arial, sans-serif;
 background:#07131d;
 color:white;
+font-size:16px;
+line-height:1.5;
 }
 
 .container{
@@ -143,11 +145,20 @@ color:#94a3b8;
 /* RESPONSIVE */
 
 @media(max-width:800px){
-
-.graficas{
-grid-template-columns:1fr;
+body{font-size:15px; padding:0;}
+.container{padding:16px 12px;}
+.graficas{grid-template-columns:1fr;}
+.info-grid{grid-template-columns:1fr;}
+.card, .selector-container, .comentario{padding:16px;}
+.info-card .valor{font-size:22px;}
+select{font-size:15px;}
 }
 
+@media(max-width:480px){
+body{font-size:14px;}
+.container{padding:12px 10px;}
+.info-card{padding:14px;}
+h1{font-size:24px;}
 }
 
 </style>

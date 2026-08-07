@@ -16,46 +16,45 @@
           <h1>OVA Interactivo</h1>
           <p class="lead">Aprende informática de forma guiada y atractiva</p>
         </div>
+      </div>
     </header>
 
     <main class="main">
       <section class="card hero">
         <div class="hero-info">
-          <h2>🚀 Bienvenido/a al OVA de Informática</h2>
+          <div class="hero-copy">
+            <h2>🚀 Bienvenido/a al OVA de Informática</h2>
 
-<p>
-Este Objeto Virtual de Aprendizaje (OVA) ha sido diseñado para ayudarte a aprender informática de manera interactiva, dinámica y autónoma.
-Aquí encontrarás lecciones con videos, actividades prácticas, cuestionarios interactivos y un chatbot educativo que podrá orientarte y resolver tus dudas durante el proceso de aprendizaje.
-</p>
+            <p>
+            Este Objeto Virtual de Aprendizaje (OVA) ha sido diseñado para ayudarte a aprender informática de manera interactiva, dinámica y autónoma.
+            Aquí encontrarás lecciones con videos, actividades prácticas, cuestionarios interactivos y un chatbot educativo que podrá orientarte y resolver tus dudas durante el proceso de aprendizaje.
+            </p>
 
-<p>
-A lo largo de las lecciones aprenderás conceptos fundamentales como hardware, software, circuitos eléctricos, programación por bloques, algoritmos y diagramas de flujo.
-Cada actividad te permitirá fortalecer tus conocimientos mientras avanzas en tu progreso dentro de la plataforma.
-</p>
+            <p>
+            A lo largo de las lecciones aprenderás conceptos fundamentales como hardware, software, circuitos eléctricos, programación por bloques, algoritmos y diagramas de flujo.
+            Cada actividad te permitirá fortalecer tus conocimientos mientras avanzas en tu progreso dentro de la plataforma.
+            </p>
 
-<p>
-📌 Antes de comenzar las lecciones, pon tu nombre primero y realiza el cuestionario diagnóstico en el botón <b>"Probar cuestionario"</b>. 
-Esto permitirá identificar los temas que necesitas reforzar y personalizar mejor tu experiencia de aprendizaje.
-</p>
+            <p>
+            📌 Antes de comenzar las lecciones, pon tu nombre primero y realiza el cuestionario diagnóstico en el botón <b>"Probar cuestionario"</b>.
+            Esto permitirá identificar los temas que necesitas reforzar y personalizar mejor tu experiencia de aprendizaje.
+            </p>
 
-<p>
-💡 Explora, pregunta, interactúa y aprende a tu ritmo. ¡Bienvenido/a!
-</p>
-          
-          <input id="nombreEstudiante" placeholder="Escribe tu nombre">
-          <button class="btn" onclick="guardarNombre()">Guardar nombre</button>
+            <p>
+            💡 Explora, pregunta, interactúa y aprende a tu ritmo. ¡Bienvenido/a!
+            </p>
+          </div>
 
-          <div style="margin-top:12px;display:flex;gap:10px">
+          <div class="hero-actions">
+            <input id="nombreEstudiante" placeholder="Escribe tu nombre">
+            <button class="btn" onclick="guardarNombre()">Guardar nombre</button>
             <button class="btn outline" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Probar cuestionario</button>
           </div>
         </div>
 
-        <div style="width:220px;text-align:center">
-          <img src="img/info.jpg"
-          alt="Imagen Informática"
-          style="width:180px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6)" />
+        <div class="hero-visual">
+          <img src="img/info.jpg" alt="Imagen Informática" />
         </div>
-
       </section>
 
       <section class="card">
@@ -69,13 +68,10 @@ Esto permitirá identificar los temas que necesitas reforzar y personalizar mejo
 
         <br>
         <button class="btn" onclick="guardarDiagnostico()">Guardar resultado inicial</button>
-       <button class="btn" onclick="irLecciones()">
+        <button class="btn" onclick="irLecciones()">
 📚 Ir a las lecciones
 </button>
       </section>
-        </div>
-      </section>
-
     </main>
 
 

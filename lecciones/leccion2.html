@@ -695,6 +695,8 @@ Los circuitos eléctricos permiten el funcionamiento de dispositivos electrónic
 <button class="chat-send" onclick="sendMessage()">Enviar</button>
 </div>
 
+<script src="../chat-config.js"></script>
+
 <script>
 
 let score=0
@@ -1060,7 +1062,7 @@ box.scrollTop = box.scrollHeight;
 try{
 const motorSeleccionado = document.getElementById("ia-select").value;
 
-const chatApiUrl = "https://sapphire-general-polished-portrait.trycloudflare.com/chat";
+const chatApiUrl = CHAT_API_URL;
 
 console.log("MOTOR SELECCIONADO:", motorSeleccionado);
 console.log("URL:", chatApiUrl);
@@ -1094,6 +1096,7 @@ const response = await fetch(chatApiUrl,{
 }
 
 </script>
+
 <script>
   let nombre = localStorage.getItem("student");
 

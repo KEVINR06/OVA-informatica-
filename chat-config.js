@@ -1,0 +1,1 @@
+const CHAT_API_URL = "https://since-prefers-psp-organisations.trycloudflare.com/chat";

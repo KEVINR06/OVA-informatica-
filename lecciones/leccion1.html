@@ -958,6 +958,8 @@ window.location.href="dashboard.html"
   <div id="quizVideo" class="quiz-video"></div>
 </div>
 
+<script src="../chat-config.js"></script>
+
 <script>
 const video = document.getElementById("miVideo");
 const box = document.getElementById("quizVideo");
@@ -1079,6 +1081,8 @@ video.addEventListener("timeupdate", function(){
   }
 
 }
+
+
 async function sendMessage(){
 
 let input = document.getElementById("chat-input");
@@ -1102,7 +1106,7 @@ try{
 const motorSeleccionado = document.getElementById("ia-select").value;
 
 
-const chatApiUrl = "https://sapphire-general-polished-portrait.trycloudflare.com/chat";;
+const chatApiUrl = CHAT_API_URL;
 
 console.log("MOTOR SELECCIONADO:", motorSeleccionado);
 console.log("URL:", chatApiUrl);

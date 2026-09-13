@@ -1,1 +1,1 @@
-const CHAT_API_URL = "https://diana-caring-hugo-wages.trycloudflare.com/chat";
+const CHAT_API_URL = "https://gorgeous-screw-bat-riders.trycloudflare.com/chat";
